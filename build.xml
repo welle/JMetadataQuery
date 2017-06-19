@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project name="JMetadataQuery" default="jars" basedir=".">
+
+	<target name="chkBuildProperties" >
+		<available file="build.properties" type="file" property="build.properties.present"/>
+	</target>
+	<target name="copyBuildProperties" unless="build.properties.present" >
+		<echo message="Creating properties file." />
+    	<copy file="build.properties.sample" tofile="build.properties" overwrite="false" verbose="true" />
+	</target>
+	<target name="init" depends="chkBuildProperties,copyBuildProperties" >
+		<echo message="Reading properties files." />
+    	<property file="build.properties" />
+    	<property file="version.properties" />
+	</target>
+
+    <target name="clean" depends="init">
+        <ant antfile="buildJars.xml" target="clean" />
+
+        <delete dir="JMetadataQuery/classes" />
+    </target>
+
+    <target name="all" depends="jars,javadoc" />
+
+    <target name="jars" depends="init">
+        <echo message="Build JMetadataQuery Jars" />
+
+        <property name="classes" value="JMetadataQuery/classes" />
+
+        <ant antfile="buildJars.xml" />
+    	<copy todir="${copy_jars_dest}">
+            <fileset dir="D:/Projets Java/JMetadataQuery/build/" includes="*" />
+        </copy>
+    </target>
+
+    <target name="javadoc" depends="init">
+        <echo message="Running Javadoc on JMetadataQuery" />
+
+        <ant antfile="buildJavadoc.xml" />
+    </target>
+
+</project>
