@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.search.video;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -15,7 +16,7 @@ import aka.jmetadataquery.main.types.search.Criteria;
 public class VideoExtensionSearch extends Criteria<VideoExtensionSearchEnum, String> {
 
     private final Op operation;
-    private List<@NonNull String> extensionList;
+    private final List<@NonNull String> extensionList = new ArrayList<>();
 
     /**
      * Constructor.

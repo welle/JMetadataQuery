@@ -91,7 +91,7 @@ public enum VideoExtensionEnum {
      * @return corresponding VideoExtensionEnum
      */
     @Nullable
-    public VideoExtensionEnum getLanguageEnum(@Nullable final String extensionStr) {
+    public VideoExtensionEnum geVideoExtensionEnum(@Nullable final String extensionStr) {
         VideoExtensionEnum result = null;
         if (extensionStr != null) {
             final String trimmedLanguage = extensionStr.trim();
@@ -116,14 +116,7 @@ public enum VideoExtensionEnum {
      */
     @NonNull
     public static List<@NonNull String> getAllExtensions() {
-        return VideoExtensionEnum.ALL_EXTENSIONS;
-    }
-
-    /**
-     * @return all values
-     */
-    @NonNull
-    public static List<@NonNull String> getAllValues() {
         return ALL_EXTENSIONS;
     }
+
 }

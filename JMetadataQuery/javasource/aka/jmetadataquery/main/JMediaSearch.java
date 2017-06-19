@@ -50,10 +50,18 @@ public final class JMediaSearch {
         return result;
     }
 
-    private boolean isFileMatchingCriteria(@NonNull final File currentFile, @NonNull final SearchQuery query) {
+    /**
+     * Is the given file match the given query.
+     *
+     * @param currentFile
+     * @param query
+     * @return List of file founded
+     */
+    public boolean isFileMatchingCriteria(@NonNull final File currentFile, @NonNull final SearchQuery query) {
         boolean isFileMatchingCriteria = true;
         try {
             final JMetaData jMetaData = new JMetaData();
+            jMetaData.open(currentFile);
             if (jMetaData.open(currentFile)) {
                 for (final Criteria<?, ?> criteria : query.getSearchs()) {
                     isFileMatchingCriteria = criteria.matchCriteria(jMetaData);
