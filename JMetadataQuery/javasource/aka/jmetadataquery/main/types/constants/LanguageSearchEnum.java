@@ -7,29 +7,28 @@ import java.util.List;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import aka.jmetadataquery.main.types.constants.interfaces.Search;
 import aka.jmetadataquery.main.types.constants.subtypes.LanguageEnum;
 
 /**
  * @author charlottew
  *
  */
-public enum LanguageSearchEnum implements Search<LanguageSearchEnum> {
+public enum LanguageSearchEnum {
 
     /**
-     * Version Originale (gÃ©nÃ©rique).
+     * Version Originale (générique).
      */
     VO(LanguageEnum.VO),
     /**
-     * Version FranÃ§aise (gÃ©nÃ©rique).
+     * Version Française (générique).
      */
     VF(LanguageEnum.VF),
     /**
-     * Version Francophone QuÃ©bÃ©coise.
+     * Version Francophone Québécoise.
      */
     VQF(LanguageEnum.VQF, LanguageEnum.VFQ, LanguageEnum.VQ),
     /**
-     * Version Francophone FranÃ§aise.
+     * Version Francophone Française.
      */
     VFF(LanguageEnum.VFF, LanguageEnum.VFI, LanguageEnum.VFB);
 
@@ -56,9 +55,8 @@ public enum LanguageSearchEnum implements Search<LanguageSearchEnum> {
      * @param language
      * @return corresponding LanguageSearchEnum
      */
-    @Override
     @Nullable
-    public LanguageSearchEnum getSearchEnum(@Nullable final String language) {
+    public static LanguageSearchEnum getSearchEnum(@Nullable final String language) {
         LanguageSearchEnum result = null;
         if (language != null) {
             final String trimmedLanguage = language.trim();

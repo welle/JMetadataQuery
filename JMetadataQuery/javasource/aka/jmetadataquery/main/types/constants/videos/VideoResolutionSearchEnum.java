@@ -3,13 +3,12 @@ package aka.jmetadataquery.main.types.constants.videos;
 import org.eclipse.jdt.annotation.Nullable;
 
 import aka.jmetadata.main.constants.video.Resolution;
-import aka.jmetadataquery.main.types.constants.interfaces.VideoSearch;
 
 /**
  * @author charlottew
  *
  */
-public enum VideoResolutionSearchEnum implements VideoSearch<VideoResolutionSearchEnum> {
+public enum VideoResolutionSearchEnum {
 
     /**
      * R_1080.
@@ -72,9 +71,8 @@ public enum VideoResolutionSearchEnum implements VideoSearch<VideoResolutionSear
      * @param resolutionStr
      * @return corresponding VideoResolutionSearchEnum
      */
-    @Override
     @Nullable
-    public VideoResolutionSearchEnum getSearchEnum(@Nullable final String resolutionStr) {
+    public static VideoResolutionSearchEnum getSearchEnum(@Nullable final String resolutionStr) {
         VideoResolutionSearchEnum result = null;
         if (resolutionStr != null) {
             final String trimmedLanguage = resolutionStr.trim();

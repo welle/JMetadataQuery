@@ -118,4 +118,12 @@ public enum VideoExtensionEnum {
     public static List<@NonNull String> getAllExtensions() {
         return VideoExtensionEnum.ALL_EXTENSIONS;
     }
+
+    /**
+     * @return all values
+     */
+    @NonNull
+    public static List<@NonNull String> getAllValues() {
+        return ALL_EXTENSIONS;
+    }
 }

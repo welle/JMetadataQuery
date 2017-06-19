@@ -3,13 +3,12 @@ package aka.jmetadataquery.main.types.constants.videos;
 import org.eclipse.jdt.annotation.Nullable;
 
 import aka.jmetadata.main.constants.video.AspectRatio;
-import aka.jmetadataquery.main.types.constants.interfaces.VideoSearch;
 
 /**
  * @author charlottew
  *
  */
-public enum VideoAspectRatioSearchEnum implements VideoSearch<VideoAspectRatioSearchEnum> {
+public enum VideoAspectRatioSearchEnum {
 
     /**
      * AS_1_33.
@@ -62,9 +61,8 @@ public enum VideoAspectRatioSearchEnum implements VideoSearch<VideoAspectRatioSe
      * @param aspectRatioStr
      * @return corresponding VideoResolutionSearchEnum
      */
-    @Override
     @Nullable
-    public VideoAspectRatioSearchEnum getSearchEnum(@Nullable final String aspectRatioStr) {
+    public static VideoAspectRatioSearchEnum getSearchEnum(@Nullable final String aspectRatioStr) {
         VideoAspectRatioSearchEnum result = null;
         if (aspectRatioStr != null) {
             final String trimmedLanguage = aspectRatioStr.trim();

@@ -1,11 +1,11 @@
 package aka.jmetadataquery.main.types;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.ComboCondition;
+import aka.jmetadataquery.main.types.search.Criteria;
 
 /**
  * Search query.
@@ -14,16 +14,35 @@ import com.healthmarketscience.sqlbuilder.ComboCondition;
  */
 public final class SearchQuery {
 
-    private @NonNull final Map<SearchKeys, ComboCondition.Op> searchKeysMap = new HashMap<>();
+    @NonNull
+    private final List<@NonNull Criteria> searchEnumList = new ArrayList<>();
 
     /**
-     * Constructor.
+     * Add search criteria.
      *
-     * @param searchKey searchkey
-     * @param operation ComboCondition.Op
+     * @param searchKeys
      */
-    public SearchQuery(@NonNull final SearchKeys searchKey, final ComboCondition.Op operation) {
-        this.searchKeysMap.put(searchKey, operation);
+    public void addSearchCriteria(@NonNull final Criteria @NonNull... searchKeys) {
+        for (final @NonNull Criteria searchkey : searchKeys) {
+            this.searchEnumList.add(searchkey);
+        }
+    }
+
+    /**
+     * Remove search criteria.
+     *
+     * @param searchKeys
+     */
+    public void removeSearchCriteria(@NonNull final Criteria @NonNull... searchKeys) {
+        for (final Criteria searchkey : searchKeys) {
+            this.searchEnumList.remove(searchkey);
+        }
+
+//        final SearchQuery query = new SearchQuery(new SearchKeys(VideoExtensionSearchEnum.AVI, BinaryCondition.lessThanOrEq(VideoExtensionSearchEnum.AVI, null)), null);
+    }
+
+    public @NonNull List<@NonNull Criteria> getSearchs() {
+        return this.searchEnumList;
     }
 
 }

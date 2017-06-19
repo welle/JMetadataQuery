@@ -7,14 +7,13 @@ import java.util.List;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import aka.jmetadataquery.main.types.constants.interfaces.VideoSearch;
 import aka.jmetadataquery.main.types.constants.videos.subtypes.VideoExtensionEnum;
 
 /**
  * @author charlottew
  *
  */
-public enum VideoExtensionSearchEnum implements VideoSearch<VideoExtensionSearchEnum> {
+public enum VideoExtensionSearchEnum {
 
     /**
      * Matroska.
@@ -64,9 +63,8 @@ public enum VideoExtensionSearchEnum implements VideoSearch<VideoExtensionSearch
      * @param extension
      * @return corresponding VideoExtensionSearchEnum
      */
-    @Override
     @Nullable
-    public VideoExtensionSearchEnum getSearchEnum(@Nullable final String extension) {
+    public static VideoExtensionSearchEnum getSearchEnum(@Nullable final String extension) {
         VideoExtensionSearchEnum result = null;
         if (extension != null) {
             final String trimmedLanguage = extension.trim();
