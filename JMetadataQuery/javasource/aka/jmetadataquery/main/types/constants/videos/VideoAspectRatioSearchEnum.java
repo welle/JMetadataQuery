@@ -1,0 +1,84 @@
+package aka.jmetadataquery.main.types.constants.videos;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import aka.jmetadata.main.constants.video.AspectRatio;
+import aka.jmetadataquery.main.types.constants.interfaces.VideoSearch;
+
+/**
+ * @author charlottew
+ *
+ */
+public enum VideoAspectRatioSearchEnum implements VideoSearch<VideoAspectRatioSearchEnum> {
+
+    /**
+     * AS_1_33.
+     */
+    AS_1_33(AspectRatio.AS_1_33),
+
+    /**
+     * AS_1_66.
+     */
+    AS_1_66(AspectRatio.AS_1_66),
+
+    /**
+     * AS_1_78.
+     */
+    AS_1_78(AspectRatio.AS_1_78),
+
+    /**
+     * AS_1_85.
+     */
+    AS_1_85(AspectRatio.AS_1_85),
+
+    /**
+     * AS_2_20.
+     */
+    AS_2_20(AspectRatio.AS_2_20),
+
+    /**
+     * AS_2_35.
+     */
+    AS_2_35(AspectRatio.AS_2_35);
+
+    private final AspectRatio ratio;
+
+    VideoAspectRatioSearchEnum(final AspectRatio ratio) {
+        this.ratio = ratio;
+    }
+
+    /**
+     * Get the aspect ratio of the ENUM.
+     *
+     * @return the aspect ratio of the ENUM
+     */
+    public AspectRatio getAspectRatio() {
+        return this.ratio;
+    }
+
+    /**
+     * Get VideoAspectRatioSearchEnum corresponding to given string.
+     *
+     * @param aspectRatioStr
+     * @return corresponding VideoResolutionSearchEnum
+     */
+    @Override
+    @Nullable
+    public VideoAspectRatioSearchEnum getSearchEnum(@Nullable final String aspectRatioStr) {
+        VideoAspectRatioSearchEnum result = null;
+        if (aspectRatioStr != null) {
+            final String trimmedLanguage = aspectRatioStr.trim();
+            if (trimmedLanguage.length() > 0) {
+                for (final VideoAspectRatioSearchEnum videoSearchEnum : VideoAspectRatioSearchEnum.values()) {
+                    if (aspectRatioStr.equals(videoSearchEnum.getAspectRatio())) {
+                        result = videoSearchEnum;
+                        // found, just break
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+}
