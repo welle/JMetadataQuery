@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.constants.videos;
+package aka.jmetadataquery.main.types.constants.audio;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +10,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author charlottew
  *
  */
-public enum VideoCodecSearchEnum {
+public enum AudioCodecSearchEnum {
 
     /**
      * Unknown.
@@ -18,24 +18,24 @@ public enum VideoCodecSearchEnum {
     UNKNOWN(""),
 
     /**
-     * MPEG-1.
+     * AAC.
      */
-    MPEG_1("MPEG-1"),
+    AAC("AAC"),
 
     /**
-     * MPEG-2.
+     * AC-3.
      */
-    MPEG_2("MPEG-2"),
+    AC_3("AC-3", "Dolby Digital"),
 
     /**
-     * MPEG-4 ASP.
+     * MPEG-1/2 Audio Layer III (mp3).
      */
-    MPEG_4_ASP("MPEG-4 ASP", "MPEG-4 Part 2", "MPEG-4 Visual"),
+    MP_3("MPEG-1/2 Audio Layer III", "mp3", "MPEG-4 Visual"),
 
     /**
-     * H.264.
+     * DTS.
      */
-    H264("H.264", "H264", "H 264", "MPEG-4 AVC", "MPEG-4 Part 10", "AVC"),
+    DTS("A_DTS", "H264", "H 264", "MPEG-4 AVC", "MPEG-4 Part 10", "AVC"),
 
     /**
      * HEVC.
@@ -45,7 +45,7 @@ public enum VideoCodecSearchEnum {
     @NonNull
     private final List<@NonNull String> codecs;
 
-    VideoCodecSearchEnum(@NonNull final String @NonNull... codecsParam) {
+    AudioCodecSearchEnum(@NonNull final String @NonNull... codecsParam) {
         this.codecs = Arrays.asList(codecsParam);
     }
 
@@ -56,6 +56,9 @@ public enum VideoCodecSearchEnum {
      */
     @NonNull
     public List<@NonNull String> getValues() {
+        for (final String string : this.codecs) {
+            System.err.println("getValues:" + string);
+        }
         return this.codecs;
     }
 
@@ -66,12 +69,12 @@ public enum VideoCodecSearchEnum {
      * @return corresponding VideoCodecSearchEnum
      */
     @Nullable
-    public static VideoCodecSearchEnum getVideoCodecSearchEnum(@Nullable final String param) {
-        VideoCodecSearchEnum result = UNKNOWN;
+    public static AudioCodecSearchEnum getVideoCodecSearchEnum(@Nullable final String param) {
+        AudioCodecSearchEnum result = UNKNOWN;
         if (param != null) {
             final String trimmedParam = param.trim().toLowerCase();
             if (trimmedParam.length() > 0) {
-                for (final VideoCodecSearchEnum videoSearchEnum : VideoCodecSearchEnum.values()) {
+                for (final AudioCodecSearchEnum videoSearchEnum : AudioCodecSearchEnum.values()) {
                     final List<@NonNull String> values = videoSearchEnum.codecs;
                     for (final String expectedCodec : values) {
                         if (trimmedParam.equals(expectedCodec)) {
