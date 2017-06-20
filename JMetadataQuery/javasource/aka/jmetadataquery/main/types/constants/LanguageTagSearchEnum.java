@@ -13,7 +13,7 @@ import aka.jmetadataquery.main.types.constants.subtypes.LanguageTagEnum;
  * @author charlottew
  *
  */
-public enum LanguageSearchEnum {
+public enum LanguageTagSearchEnum {
 
     /**
      * Version Originale (générique).
@@ -35,7 +35,7 @@ public enum LanguageSearchEnum {
     @NonNull
     private final List<aka.jmetadataquery.main.types.constants.subtypes.LanguageTagEnum> languageList = new ArrayList<>();
 
-    LanguageSearchEnum(@NonNull final LanguageTagEnum @NonNull... languages) {
+    LanguageTagSearchEnum(@NonNull final LanguageTagEnum @NonNull... languages) {
         this.languageList.addAll(Arrays.asList(languages));
     }
 
@@ -56,12 +56,12 @@ public enum LanguageSearchEnum {
      * @return corresponding LanguageSearchEnum
      */
     @Nullable
-    public static LanguageSearchEnum getSearchEnum(@Nullable final String language) {
-        LanguageSearchEnum result = null;
+    public static LanguageTagSearchEnum getSearchEnum(@Nullable final String language) {
+        LanguageTagSearchEnum result = null;
         if (language != null) {
             final String trimmedLanguage = language.trim();
             if (trimmedLanguage.length() > 0) {
-                for (final LanguageSearchEnum languageSearchEnum : LanguageSearchEnum.values()) {
+                for (final LanguageTagSearchEnum languageSearchEnum : LanguageTagSearchEnum.values()) {
                     final boolean containsSearchStr = languageSearchEnum.getLanguagesList().stream().filter(s -> s.getValue().equalsIgnoreCase(language)).findFirst().isPresent();
                     if (containsSearchStr) {
                         result = languageSearchEnum;

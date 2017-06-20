@@ -12,11 +12,13 @@ import aka.jmetadataquery.main.JMediaSearch;
 import aka.jmetadataquery.main.types.SearchQuery;
 import aka.jmetadataquery.main.types.constants.subtypes.LanguageEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoAspectRatioSearchEnum;
+import aka.jmetadataquery.main.types.constants.videos.VideoCodecSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoExtensionSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
 import aka.jmetadataquery.main.types.search.text.TextLanguageSearch;
 import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
+import aka.jmetadataquery.main.types.search.video.VideoCodecSearch;
 import aka.jmetadataquery.main.types.search.video.VideoExtensionSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
@@ -43,6 +45,32 @@ public class JMediaSearch_Test {
         query = new SearchQuery();
         videoExtensionSearch = new VideoExtensionSearch(Op.EQUAL_TO, VideoExtensionSearchEnum.MKV);
         query.addSearchCriteria(videoExtensionSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testVideoFormat() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        VideoCodecSearch videoCodecSearch = new VideoCodecSearch(Op.NOT_EQUAL_TO, VideoCodecSearchEnum.HEVC);
+        query.addSearchCriteria(videoCodecSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoCodecSearch = new VideoCodecSearch(Op.EQUAL_TO, VideoCodecSearchEnum.H264);
+        query.addSearchCriteria(videoCodecSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);

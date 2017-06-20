@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.constants.videos;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import aka.jmetadata.main.constants.video.Resolution;
@@ -50,9 +51,10 @@ public enum VideoResolutionSearchEnum {
      */
     R_1440(Resolution.R_1440);
 
+    @NonNull
     private final Resolution resolution;
 
-    VideoResolutionSearchEnum(final Resolution resolution) {
+    VideoResolutionSearchEnum(@NonNull final Resolution resolution) {
         this.resolution = resolution;
     }
 
@@ -61,6 +63,7 @@ public enum VideoResolutionSearchEnum {
      *
      * @return the value of the ENUM
      */
+    @NonNull
     public Resolution getResolution() {
         return this.resolution;
     }

@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.constants.videos;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import aka.jmetadata.main.constants.video.AspectRatio;
@@ -40,9 +41,10 @@ public enum VideoAspectRatioSearchEnum {
      */
     AS_2_35(AspectRatio.AS_2_35);
 
+    @NonNull
     private final AspectRatio ratio;
 
-    VideoAspectRatioSearchEnum(final AspectRatio ratio) {
+    VideoAspectRatioSearchEnum(@NonNull final AspectRatio ratio) {
         this.ratio = ratio;
     }
 
@@ -51,6 +53,7 @@ public enum VideoAspectRatioSearchEnum {
      *
      * @return the aspect ratio of the ENUM
      */
+    @NonNull
     public AspectRatio getAspectRatio() {
         return this.ratio;
     }
