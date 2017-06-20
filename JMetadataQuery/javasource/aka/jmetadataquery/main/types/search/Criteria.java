@@ -46,28 +46,76 @@ public abstract class Criteria<S, T extends Comparable<T>> {
         boolean result = false;
 
         if (operation == BinaryCondition.Op.EQUAL_TO) {
-            result = wantedValue.equals(currentValue);
+            if (wantedValue instanceof String) {
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
+                result = currentValueString.equals(wantedValueString);
+            } else {
+                result = wantedValue.equals(currentValue);
+            }
         } else if (operation == BinaryCondition.Op.GREATER_THAN) {
-            result = wantedValue.compareTo(currentValue) > 0;
+            if (wantedValue instanceof String) {
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
+                result = currentValueString.compareTo(wantedValueString) > 0;
+            } else {
+                result = wantedValue.compareTo(currentValue) > 0;
+            }
         } else if (operation == BinaryCondition.Op.GREATER_THAN_OR_EQUAL_TO) {
-            result = wantedValue.compareTo(currentValue) >= 0;
+            if (wantedValue instanceof String) {
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
+                result = currentValueString.compareTo(wantedValueString) >= 0;
+            } else {
+                result = wantedValue.compareTo(currentValue) >= 0;
+            }
         } else if (operation == BinaryCondition.Op.LESS_THAN) {
-            result = wantedValue.compareTo(currentValue) < 0;
+            if (wantedValue instanceof String) {
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
+                result = currentValueString.compareTo(wantedValueString) < 0;
+            } else {
+                result = wantedValue.compareTo(currentValue) < 0;
+            }
         } else if (operation == BinaryCondition.Op.LESS_THAN_OR_EQUAL_TO) {
-            result = wantedValue.compareTo(currentValue) <= 0;
+            if (wantedValue instanceof String) {
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
+                result = currentValueString.compareTo(wantedValueString) <= 0;
+            } else {
+                result = wantedValue.compareTo(currentValue) <= 0;
+            }
         } else if (operation == BinaryCondition.Op.LIKE) {
             if (wantedValue instanceof String) {
-                final String wantedValueString = (String) wantedValue;
-                final String currentValueString = (String) wantedValue;
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
                 result = currentValueString.contains(wantedValueString);
             }
         } else if (operation == BinaryCondition.Op.NOT_EQUAL_TO) {
-            result = !wantedValue.equals(currentValue);
+            if (wantedValue instanceof String) {
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
+                result = !currentValueString.equals(wantedValueString);
+            } else {
+                result = !wantedValue.equals(currentValue);
+            }
         } else if (operation == BinaryCondition.Op.NOT_LIKE) {
-            final String wantedValueString = (String) wantedValue;
-            final String currentValueString = (String) wantedValue;
-            result = !currentValueString.contains(wantedValueString);
+            if (wantedValue instanceof String) {
+                final String wantedValueString = getString((@NonNull String) wantedValue);
+                final String currentValueString = getString((@NonNull String) currentValue);
+                result = !currentValueString.contains(wantedValueString);
+            }
         }
+
+        return result;
+    }
+
+    @NonNull
+    private String getString(@NonNull final String value) {
+        String result = value;
+
+        result = result.trim();
+        result = result.toLowerCase();
 
         return result;
     }

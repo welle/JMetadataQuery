@@ -1,5 +1,8 @@
 package aka.jmetadataquery.main.types.constants.subtypes;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -11,71 +14,34 @@ import org.eclipse.jdt.annotation.Nullable;
 public enum LanguageEnum {
 
     /**
-     * Version Originale (générique).
+     * English.
      */
-    VO("VO", "Version Originale"),
+    ENGLISH("English", "Eng", "En"),
 
     /**
-     * Version Française (générique).
+     * Francais.
      */
-    VF("VF", "Version Française"),
+    FRENCH("French", "Fre", "Fr"),
 
     /**
-     * Version Francophone Québécoise.
+     * German.
      */
-    VQF("VQF", "Version Francophone Québécoise"),
+    GERMAN("German", "Gr", "De");
 
-    /**
-     * Version Francophone Québécoise.
-     */
-    VFQ("VFQ", "Version Francophone Québécoise"),
+    private @NonNull List<@NonNull String> languages;
 
-    /**
-     * Version Québécoise.
-     */
-    VQ("VQ", "Version Québécoise"),
-
-    /**
-     * Version Francophone Française.
-     */
-    VFF("VFF", "Version Francophone Française"),
-
-    /**
-     * Version Francophone Internationale.
-     */
-    VFI("VFI", "Version Francophone Internationale"),
-
-    /**
-     * Version Francophone Belge.
-     */
-    VFB("VFB", "Version Francophone Belge");
-
-    private @NonNull String language;
-    private @NonNull String description;
-
-    LanguageEnum(@NonNull final String language, @NonNull final String description) {
-        this.language = language;
-        this.description = description;
+    LanguageEnum(@NonNull final String... languages) {
+        this.languages = Arrays.asList(languages);
     }
 
     /**
-     * Get the value of the ENUM.
+     * Get the values of the ENUM.
      *
-     * @return the value of the ENUM
+     * @return the values of the ENUM
      */
     @NonNull
-    public String getValue() {
-        return this.language;
-    }
-
-    /**
-     * Get the description of the ENUM.
-     *
-     * @return the description of the ENUM
-     */
-    @NonNull
-    public String getDescription() {
-        return this.description;
+    public List<@NonNull String> getValues() {
+        return this.languages;
     }
 
     /**
@@ -91,10 +57,12 @@ public enum LanguageEnum {
             final String trimmedLanguage = languageStr.trim();
             if (trimmedLanguage.length() > 0) {
                 for (final LanguageEnum languageEnum : LanguageEnum.values()) {
-                    if (languageEnum.getValue().equalsIgnoreCase(trimmedLanguage)) {
-                        result = languageEnum;
-                        // found, just break
-                        break;
+                    for (final String language : this.languages) {
+                        if (language.equalsIgnoreCase(trimmedLanguage)) {
+                            result = languageEnum;
+                            // found, just break
+                            break;
+                        }
                     }
                 }
             }
