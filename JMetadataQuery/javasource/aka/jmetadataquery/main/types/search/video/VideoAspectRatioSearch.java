@@ -10,31 +10,31 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
-import aka.jmetadata.main.constants.video.Resolution;
+import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadata.main.helper.MediaInfoHelper;
-import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
+import aka.jmetadataquery.main.types.constants.videos.VideoAspectRatioSearchEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
 /**
- * Video resolution search.
+ * Video aspect ratio search.
  *
  * @author charlottew
  */
-public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, Resolution> {
+public class VideoAspectRatioSearch extends Criteria<VideoAspectRatioSearchEnum, AspectRatio> {
 
     private final Op operation;
-    private @NonNull final VideoResolutionSearchEnum videoResolutionSearchEnum;
+    private @NonNull final VideoAspectRatioSearchEnum videoAspectRatioSearchEnum;
 
     /**
      * Constructor.
      *
      * @param operation
-     * @param videoResolutionSearchEnum
+     * @param videoAspectRatioSearchEnum
      */
-    public VideoResolutionSearch(final BinaryCondition.Op operation, @NonNull final VideoResolutionSearchEnum videoResolutionSearchEnum) {
-        super(videoResolutionSearchEnum);
+    public VideoAspectRatioSearch(final BinaryCondition.Op operation, @NonNull final VideoAspectRatioSearchEnum videoAspectRatioSearchEnum) {
+        super(videoAspectRatioSearchEnum);
         this.operation = operation;
-        this.videoResolutionSearchEnum = videoResolutionSearchEnum;
+        this.videoAspectRatioSearchEnum = videoAspectRatioSearchEnum;
     }
 
     @Override
@@ -45,15 +45,12 @@ public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, R
         if (!videoStreams.isEmpty()) {
             final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
             @Nullable
+            final Long widthAsLong = jMetaDataVideo.getWidthAsLong();
             final Long heightAsLong = jMetaDataVideo.getHeightAsLong();
-            Resolution resolution = null;
-            if (heightAsLong != null) {
-                resolution = MediaInfoHelper.getClosestResolution(heightAsLong);
-            }
-
-            final Resolution expectedResolution = this.videoResolutionSearchEnum.getResolution();
-            if (resolution != null && expectedResolution != null) {
-                result = conditionMatch(resolution, expectedResolution, this.operation);
+            final AspectRatio aspectRatio = MediaInfoHelper.getClosestRatio(widthAsLong, heightAsLong);
+            final AspectRatio expectedAspectRatio = this.videoAspectRatioSearchEnum.getAspectRatio();
+            if (aspectRatio != null && expectedAspectRatio != null) {
+                result = conditionMatch(aspectRatio, expectedAspectRatio, this.operation);
             }
         }
         return result;

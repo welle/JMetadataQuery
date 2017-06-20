@@ -6,10 +6,24 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition;
 
 import aka.jmetadata.main.JMetaData;
 
+/**
+ * Abstract class to be implemented to be a search.
+ *
+ * @author charlottew
+ *
+ * @param <S> Search enum
+ * @param <T> Type for compare
+ */
 public abstract class Criteria<S, T extends Comparable<T>> {
 
-    public Criteria(final S s) {
+    /**
+     * Constructor.
+     *
+     * @param s
+     */
+    public Criteria(@NonNull final S s) {
         // Nothing to do
+        // Purpose is to force the object
     }
 
     /**

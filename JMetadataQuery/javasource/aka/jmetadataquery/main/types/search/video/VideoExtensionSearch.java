@@ -13,6 +13,11 @@ import aka.jmetadataquery.main.types.constants.videos.VideoExtensionSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.subtypes.VideoExtensionEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
+/**
+ * Video extension search.
+ *
+ * @author charlottew
+ */
 public class VideoExtensionSearch extends Criteria<VideoExtensionSearchEnum, String> {
 
     private final Op operation;
@@ -22,6 +27,7 @@ public class VideoExtensionSearch extends Criteria<VideoExtensionSearchEnum, Str
      * Constructor.
      *
      * @param operation
+     * @param videoExtensionSearchEnum
      */
     public VideoExtensionSearch(final BinaryCondition.Op operation, @NonNull final VideoExtensionSearchEnum videoExtensionSearchEnum) {
         super(videoExtensionSearchEnum);

@@ -10,8 +10,10 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 import aka.jmetadata.test.JMetaDataMenu_Test;
 import aka.jmetadataquery.main.JMediaSearch;
 import aka.jmetadataquery.main.types.SearchQuery;
+import aka.jmetadataquery.main.types.constants.videos.VideoAspectRatioSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoExtensionSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
+import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
 import aka.jmetadataquery.main.types.search.video.VideoExtensionSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
@@ -70,6 +72,39 @@ public class JMediaSearch_Test {
         query = new SearchQuery();
         videoResolutionSearch = new VideoResolutionSearch(Op.GREATER_THAN, VideoResolutionSearchEnum.R_480);
         query.addSearchCriteria(videoResolutionSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testVideoAspectRatio() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        VideoAspectRatioSearch videoAspectRatioSearch = new VideoAspectRatioSearch(Op.NOT_EQUAL_TO, VideoAspectRatioSearchEnum.AS_2_20);
+        query.addSearchCriteria(videoAspectRatioSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertFalse(result);
+
+        query = new SearchQuery();
+        videoAspectRatioSearch = new VideoAspectRatioSearch(Op.EQUAL_TO, VideoAspectRatioSearchEnum.AS_2_20);
+        query.addSearchCriteria(videoAspectRatioSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoAspectRatioSearch = new VideoAspectRatioSearch(Op.GREATER_THAN, VideoAspectRatioSearchEnum.AS_1_66);
+        query.addSearchCriteria(videoAspectRatioSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
