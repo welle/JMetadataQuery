@@ -66,5 +66,12 @@ public class JMediaSearch_Test {
         query.addSearchCriteria(videoResolutionSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
+
+        query = new SearchQuery();
+        videoResolutionSearch = new VideoResolutionSearch(Op.GREATER_THAN, VideoResolutionSearchEnum.R_480);
+        query.addSearchCriteria(videoResolutionSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
     }
 }

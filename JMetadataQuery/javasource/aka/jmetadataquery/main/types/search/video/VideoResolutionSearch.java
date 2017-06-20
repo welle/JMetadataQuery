@@ -16,7 +16,7 @@ import aka.jmetadata.main.helper.MediaInfoHelper;
 import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
-public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, String> {
+public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, Resolution> {
 
     private final Op operation;
     private final List<@NonNull String> extensionList = new ArrayList<>();
@@ -41,14 +41,15 @@ public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, S
         if (!videoStreams.isEmpty()) {
             final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
             @Nullable
-            final Long widthAsLong = jMetaDataVideo.getWidthAsLong();
+            final Long heightAsLong = jMetaDataVideo.getHeightAsLong();
             Resolution resolution = null;
-            if (widthAsLong != null) {
-                resolution = MediaInfoHelper.getClosestResolution(widthAsLong);
+            if (heightAsLong != null) {
+                resolution = MediaInfoHelper.getClosestResolution(heightAsLong);
             }
 
-            if (resolution != null) {
-                result = resolution == this.videoResolutionSearchEnum.getResolution();
+            final Resolution expectedResolution = this.videoResolutionSearchEnum.getResolution();
+            if (resolution != null && expectedResolution != null) {
+                result = conditionMatch(resolution, expectedResolution, this.operation);
             }
         }
         return result;

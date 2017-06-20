@@ -37,8 +37,6 @@ public final class SearchQuery {
         for (final Criteria searchkey : searchKeys) {
             this.searchEnumList.remove(searchkey);
         }
-
-//        final SearchQuery query = new SearchQuery(new SearchKeys(VideoExtensionSearchEnum.AVI, BinaryCondition.lessThanOrEq(VideoExtensionSearchEnum.AVI, null)), null);
     }
 
     public @NonNull List<@NonNull Criteria> getSearchs() {

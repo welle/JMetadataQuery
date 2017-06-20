@@ -31,7 +31,6 @@ public abstract class Criteria<S, T extends Comparable<T>> {
     public boolean conditionMatch(@NonNull final T wantedValue, @NonNull final T currentValue, final BinaryCondition.Op operation) {
         boolean result = false;
 
-        System.err.println(currentValue + " :: " + wantedValue);
         if (operation == BinaryCondition.Op.EQUAL_TO) {
             result = wantedValue.equals(currentValue);
         } else if (operation == BinaryCondition.Op.GREATER_THAN) {
