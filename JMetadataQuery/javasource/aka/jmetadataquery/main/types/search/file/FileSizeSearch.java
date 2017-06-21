@@ -44,11 +44,13 @@ public class FileSizeSearch extends Criteria<Long, Long> {
         final List<@NonNull Integer> result = new ArrayList<>();
 
         final Long size = jMetaData.getGeneral().getFileSizeAsLong();
-
         if (size != null) {
-            final Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+            Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
             final boolean match = conditionMatch(size, this.fileSize, this.operation);
-            if (match && idAsInteger != null) {
+            if (match) {
+                if (idAsInteger == null) {
+                    idAsInteger = Integer.valueOf(-1);
+                }
                 result.add(idAsInteger);
             }
         }
