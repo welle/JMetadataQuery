@@ -10,6 +10,7 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 import aka.jmetadata.main.constants.codecs.AudioMatroskaCodecIdEnum;
 import aka.jmetadata.main.constants.codecs.VideoMatroskaCodecIdEnum;
 import aka.jmetadata.main.constants.format.FormatEnum;
+import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadata.test.JMetaDataMenu_Test;
 import aka.jmetadataquery.main.JMediaSearch;
 import aka.jmetadataquery.main.types.SearchQuery;
@@ -20,7 +21,6 @@ import aka.jmetadataquery.main.types.search.audio.AudioChannelSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
-import aka.jmetadataquery.main.types.search.constants.video.VideoAspectRatioSearchEnum;
 import aka.jmetadataquery.main.types.search.constants.video.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.file.FileExtensionSearch;
 import aka.jmetadataquery.main.types.search.file.FileSizeSearch;
@@ -556,21 +556,21 @@ public class JMediaSearch_Test {
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        VideoAspectRatioSearch videoAspectRatioSearch = new VideoAspectRatioSearch(Op.NOT_EQUAL_TO, VideoAspectRatioSearchEnum.AS_2_20);
+        VideoAspectRatioSearch videoAspectRatioSearch = new VideoAspectRatioSearch(Op.NOT_EQUAL_TO, AspectRatio.AS_2_20);
         query.addSearchCriteria(videoAspectRatioSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertFalse(result);
 
         query = new SearchQuery();
-        videoAspectRatioSearch = new VideoAspectRatioSearch(Op.EQUAL_TO, VideoAspectRatioSearchEnum.AS_2_20);
+        videoAspectRatioSearch = new VideoAspectRatioSearch(Op.EQUAL_TO, AspectRatio.AS_2_20);
         query.addSearchCriteria(videoAspectRatioSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        videoAspectRatioSearch = new VideoAspectRatioSearch(Op.GREATER_THAN, VideoAspectRatioSearchEnum.AS_1_66);
+        videoAspectRatioSearch = new VideoAspectRatioSearch(Op.GREATER_THAN, AspectRatio.AS_1_66);
         query.addSearchCriteria(videoAspectRatioSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);

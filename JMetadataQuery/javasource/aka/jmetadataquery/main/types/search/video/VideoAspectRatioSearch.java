@@ -13,28 +13,27 @@ import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadata.main.helper.MediaInfoHelper;
 import aka.jmetadataquery.main.types.search.Criteria;
-import aka.jmetadataquery.main.types.search.constants.video.VideoAspectRatioSearchEnum;
 
 /**
  * Video aspect ratio search.
  *
  * @author charlottew
  */
-public class VideoAspectRatioSearch extends Criteria<VideoAspectRatioSearchEnum, AspectRatio> {
+public class VideoAspectRatioSearch extends Criteria<AspectRatio, AspectRatio> {
 
     private final Op operation;
-    private @NonNull final VideoAspectRatioSearchEnum videoAspectRatioSearchEnum;
+    private @NonNull final AspectRatio aspectRatio;
 
     /**
      * Constructor.
      *
      * @param operation
-     * @param videoAspectRatioSearchEnum
+     * @param aspectRatio
      */
-    public VideoAspectRatioSearch(final BinaryCondition.Op operation, @NonNull final VideoAspectRatioSearchEnum videoAspectRatioSearchEnum) {
-        super(videoAspectRatioSearchEnum);
+    public VideoAspectRatioSearch(final BinaryCondition.Op operation, @NonNull final AspectRatio aspectRatio) {
+        super(aspectRatio);
         this.operation = operation;
-        this.videoAspectRatioSearchEnum = videoAspectRatioSearchEnum;
+        this.aspectRatio = aspectRatio;
     }
 
     @Override
@@ -47,10 +46,9 @@ public class VideoAspectRatioSearch extends Criteria<VideoAspectRatioSearchEnum,
             @Nullable
             final Long widthAsLong = jMetaDataVideo.getWidthAsLong();
             final Long heightAsLong = jMetaDataVideo.getHeightAsLong();
-            final AspectRatio aspectRatio = MediaInfoHelper.getClosestRatio(widthAsLong, heightAsLong);
-            final AspectRatio expectedAspectRatio = this.videoAspectRatioSearchEnum.getAspectRatio();
-            if (aspectRatio != null && expectedAspectRatio != null) {
-                result = conditionMatch(aspectRatio, expectedAspectRatio, this.operation);
+            final AspectRatio ratio = MediaInfoHelper.getClosestRatio(widthAsLong, heightAsLong);
+            if (ratio != null) {
+                result = conditionMatch(ratio, this.aspectRatio, this.operation);
             }
         }
         return result;
