@@ -1,17 +1,14 @@
 package aka.jmetadataquery.main;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.annotation.NonNull;
 
 import aka.jmetadata.main.JMetaData;
-import aka.jmetadata.main.exception.LibNotfoundException;
 import aka.jmetadataquery.main.types.SearchQuery;
 import aka.jmetadataquery.main.types.search.Criteria;
 
@@ -59,21 +56,17 @@ public final class JMediaSearch {
      */
     public boolean isFileMatchingCriteria(@NonNull final File currentFile, @NonNull final SearchQuery query) {
         boolean isFileMatchingCriteria = true;
-        try {
-            final JMetaData jMetaData = new JMetaData();
-            jMetaData.open(currentFile);
-            if (jMetaData.open(currentFile)) {
-                for (final Criteria<?, ?> criteria : query.getSearchs()) {
-                    isFileMatchingCriteria = criteria.matchCriteria(jMetaData);
-                    if (!isFileMatchingCriteria) {
-                        break;
-                    }
+        final JMetaData jMetaData = new JMetaData();
+        jMetaData.open(currentFile);
+        if (jMetaData.open(currentFile)) {
+            for (final Criteria<?, ?> criteria : query.getSearchs()) {
+                isFileMatchingCriteria = criteria.matchCriteria(jMetaData);
+                if (!isFileMatchingCriteria) {
+                    break;
                 }
             }
-            jMetaData.close();
-        } catch (IOException | LibNotfoundException e) {
-            LOGGER.logp(Level.SEVERE, "JMediaSearch", "isFileMatchingCriteria", e.getMessage(), e);
         }
+        jMetaData.close();
 
         return isFileMatchingCriteria;
     }

@@ -16,6 +16,7 @@ import aka.jmetadataquery.main.types.SearchQuery;
 import aka.jmetadataquery.main.types.constants.LanguageEnum;
 import aka.jmetadataquery.main.types.constants.file.FileExtensionSearchEnum;
 import aka.jmetadataquery.main.types.search.audio.AudioBitRateSearch;
+import aka.jmetadataquery.main.types.search.audio.AudioChannelSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
@@ -254,6 +255,64 @@ public class JMediaSearch_Test {
         query.addSearchCriteria(audioBitRateSearch);
         audioBitRateSearch = new AudioBitRateSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(192000));
         query.addSearchCriteria(audioBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAudioChannelSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        AudioChannelSearch audioChannelSearch = new AudioChannelSearch(Op.NOT_EQUAL_TO, Long.valueOf(3));
+        query.addSearchCriteria(audioChannelSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioChannelSearch = new AudioChannelSearch(Op.EQUAL_TO, Long.valueOf(2));
+        query.addSearchCriteria(audioChannelSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioChannelSearch = new AudioChannelSearch(Op.GREATER_THAN, Long.valueOf(1));
+        query.addSearchCriteria(audioChannelSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioChannelSearch = new AudioChannelSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(1));
+        query.addSearchCriteria(audioChannelSearch);
+        audioChannelSearch = new AudioChannelSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(2));
+        query.addSearchCriteria(audioChannelSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioChannelSearch = new AudioChannelSearch(Op.LESS_THAN, Long.valueOf(3));
+        query.addSearchCriteria(audioChannelSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioChannelSearch = new AudioChannelSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(3));
+        query.addSearchCriteria(audioChannelSearch);
+        audioChannelSearch = new AudioChannelSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(2));
+        query.addSearchCriteria(audioChannelSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
