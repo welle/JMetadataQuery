@@ -15,6 +15,7 @@ import aka.jmetadataquery.main.JMediaSearch;
 import aka.jmetadataquery.main.types.SearchQuery;
 import aka.jmetadataquery.main.types.constants.LanguageEnum;
 import aka.jmetadataquery.main.types.constants.file.FileExtensionSearchEnum;
+import aka.jmetadataquery.main.types.search.audio.AudioBitRateSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
@@ -27,6 +28,7 @@ import aka.jmetadataquery.main.types.search.text.TextLanguageSearch;
 import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
 import aka.jmetadataquery.main.types.search.video.VideoCodecIdSearch;
 import aka.jmetadataquery.main.types.search.video.VideoFormatSearch;
+import aka.jmetadataquery.main.types.search.video.VideoMaxBitRateSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
 public class JMediaSearch_Test {
@@ -136,6 +138,122 @@ public class JMediaSearch_Test {
         query.addSearchCriteria(videoFormatSearch);
         videoFormatSearch = new FileSizeSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(6299254));
         query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testVideoMaxBitRateSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        VideoMaxBitRateSearch videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.NOT_EQUAL_TO, Long.valueOf(19999745));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.EQUAL_TO, Long.valueOf(19999744));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.GREATER_THAN, Long.valueOf(19999743));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(19999743));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+        videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(19999744));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.LESS_THAN, Long.valueOf(19999745));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(19999745));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+        videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(19999744));
+        query.addSearchCriteria(videoMaxBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAudioBitRateSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        AudioBitRateSearch audioBitRateSearch = new AudioBitRateSearch(Op.NOT_EQUAL_TO, Long.valueOf(192001));
+        query.addSearchCriteria(audioBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioBitRateSearch = new AudioBitRateSearch(Op.EQUAL_TO, Long.valueOf(192000));
+        query.addSearchCriteria(audioBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioBitRateSearch = new AudioBitRateSearch(Op.GREATER_THAN, Long.valueOf(19200));
+        query.addSearchCriteria(audioBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioBitRateSearch = new AudioBitRateSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(19200));
+        query.addSearchCriteria(audioBitRateSearch);
+        audioBitRateSearch = new AudioBitRateSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(192000));
+        query.addSearchCriteria(audioBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioBitRateSearch = new AudioBitRateSearch(Op.LESS_THAN, Long.valueOf(192001));
+        query.addSearchCriteria(audioBitRateSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioBitRateSearch = new AudioBitRateSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(192001));
+        query.addSearchCriteria(audioBitRateSearch);
+        audioBitRateSearch = new AudioBitRateSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(192000));
+        query.addSearchCriteria(audioBitRateSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
