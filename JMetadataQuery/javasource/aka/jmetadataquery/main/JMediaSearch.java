@@ -70,6 +70,7 @@ public final class JMediaSearch {
                     }
                 }
             }
+            jMetaData.close();
         } catch (IOException | LibNotfoundException e) {
             LOGGER.logp(Level.SEVERE, "JMediaSearch", "isFileMatchingCriteria", e.getMessage(), e);
         }

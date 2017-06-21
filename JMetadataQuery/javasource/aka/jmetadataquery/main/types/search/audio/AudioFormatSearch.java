@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.search.video;
+package aka.jmetadataquery.main.types.search.audio;
 
 import java.util.List;
 
@@ -9,16 +9,16 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
 import aka.jmetadata.main.JMetaData;
-import aka.jmetadata.main.JMetaDataVideo;
+import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
 /**
- * Video Format search.
+ * Audio Format search.
  *
  * @author charlottew
  */
-public class VideoFormatSearch extends Criteria<FormatEnum, String> {
+public class AudioFormatSearch extends Criteria<FormatEnum, String> {
 
     private final Op operation;
     private @NonNull final FormatEnum formatEnum;
@@ -29,7 +29,7 @@ public class VideoFormatSearch extends Criteria<FormatEnum, String> {
      * @param operation
      * @param formatEnum
      */
-    public VideoFormatSearch(final BinaryCondition.Op operation, @NonNull final FormatEnum formatEnum) {
+    public AudioFormatSearch(final BinaryCondition.Op operation, @NonNull final FormatEnum formatEnum) {
         super(formatEnum);
         this.operation = operation;
         this.formatEnum = formatEnum;
@@ -38,14 +38,14 @@ public class VideoFormatSearch extends Criteria<FormatEnum, String> {
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
         boolean result = false;
+
         @NonNull
-        final List<@NonNull JMetaDataVideo> videoStreams = jMetaData.getVideoStreams();
-        if (!videoStreams.isEmpty()) {
-            final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
+        final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
+        for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
             @Nullable
-            final String formatCommercial = jMetaDataVideo.getFormatCommercialAsString();
+            final String formatCommercial = jMetaDataAudio.getFormatCommercialAsString();
             if (formatCommercial == null) {
-                final String format = jMetaDataVideo.getFormatAsString();
+                final String format = jMetaDataAudio.getFormatAsString();
                 if (format != null) {
                     final String codec = this.formatEnum.getName();
                     result = conditionMatch(codec, format, this.operation);
@@ -54,11 +54,14 @@ public class VideoFormatSearch extends Criteria<FormatEnum, String> {
                 final String codec = this.formatEnum.getName();
                 result = conditionMatch(codec, formatCommercial, this.operation);
                 if (!result) {
-                    final String format = jMetaDataVideo.getFormatAsString();
+                    final String format = jMetaDataAudio.getFormatAsString();
                     if (format != null) {
                         result = conditionMatch(codec, format, this.operation);
                     }
                 }
+            }
+            if (result) {
+                break;
             }
         }
         return result;

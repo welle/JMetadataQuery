@@ -18,6 +18,7 @@ import aka.jmetadataquery.main.types.constants.videos.VideoAspectRatioSearchEnum
 import aka.jmetadataquery.main.types.constants.videos.VideoExtensionSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
+import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
 import aka.jmetadataquery.main.types.search.text.TextLanguageSearch;
 import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
@@ -29,7 +30,7 @@ import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 public class JMediaSearch_Test {
 
     @Test
-    public void testVideoExtension() {
+    public void testVideoExtensionSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -55,7 +56,7 @@ public class JMediaSearch_Test {
     }
 
     @Test
-    public void testVideoFormat() {
+    public void testVideoFormatSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -66,22 +67,50 @@ public class JMediaSearch_Test {
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        VideoFormatSearch videoCodecSearch = new VideoFormatSearch(Op.NOT_EQUAL_TO, FormatEnum.HEVC);
-        query.addSearchCriteria(videoCodecSearch);
+        VideoFormatSearch videoFormatSearch = new VideoFormatSearch(Op.NOT_EQUAL_TO, FormatEnum.HEVC);
+        query.addSearchCriteria(videoFormatSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        videoCodecSearch = new VideoFormatSearch(Op.EQUAL_TO, FormatEnum.AVC);
-        query.addSearchCriteria(videoCodecSearch);
+        videoFormatSearch = new VideoFormatSearch(Op.EQUAL_TO, FormatEnum.AVC);
+        query.addSearchCriteria(videoFormatSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
     }
 
     @Test
-    public void testVideoCodec() {
+    public void testAudioFormatSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        AudioFormatSearch audioFormatSearch = new AudioFormatSearch(Op.NOT_EQUAL_TO, FormatEnum.AAF);
+        query.addSearchCriteria(audioFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioFormatSearch = new AudioFormatSearch(Op.EQUAL_TO, FormatEnum.MPEG_AUDIO);
+        query.addSearchCriteria(audioFormatSearch);
+        audioFormatSearch = new AudioFormatSearch(Op.EQUAL_TO, FormatEnum.AAC);
+        query.addSearchCriteria(audioFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testVideoCodecSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -107,7 +136,7 @@ public class JMediaSearch_Test {
     }
 
     @Test
-    public void testAudioLanguage() {
+    public void testAudioLanguageSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -133,7 +162,7 @@ public class JMediaSearch_Test {
     }
 
     @Test
-    public void testTextLanguage() {
+    public void testTextLanguageSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -161,7 +190,7 @@ public class JMediaSearch_Test {
     }
 
     @Test
-    public void testAudioCodec() {
+    public void testAudioCodecSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -189,7 +218,7 @@ public class JMediaSearch_Test {
     }
 
     @Test
-    public void testVideoResolution() {
+    public void testVideoResolutionSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -221,7 +250,7 @@ public class JMediaSearch_Test {
     }
 
     @Test
-    public void testVideoAspectRatio() {
+    public void testVideoAspectRatioSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
