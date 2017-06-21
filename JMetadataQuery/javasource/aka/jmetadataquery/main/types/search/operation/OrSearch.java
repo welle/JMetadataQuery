@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import aka.jmetadata.main.JMetaData;
 import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchInterface;
 
 /**
@@ -43,8 +42,7 @@ public class OrSearch implements OperatorSearchInterface {
     }
 
     @Override
-    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
         return new ArrayList<>();
     }
-
 }

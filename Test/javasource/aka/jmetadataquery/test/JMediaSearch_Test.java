@@ -60,7 +60,7 @@ public class JMediaSearch_Test {
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
 
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
-        final AndSearch andSearch = new AndSearch(fileExtensionSearch, fileExtensionSearch2);
+        final AndSearch andSearch = new AndSearch(fileExtensionSearch, fileExtensionSearch2, false);
 
         final boolean result = andSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);

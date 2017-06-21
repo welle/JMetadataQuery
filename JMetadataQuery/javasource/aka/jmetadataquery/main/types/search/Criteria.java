@@ -1,6 +1,8 @@
 package aka.jmetadataquery.main.types.search;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -36,6 +38,35 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
      * @return <code>true</code> if the file match the criteria
      */
     public abstract boolean matchCriteria(@NonNull JMetaData jMetaData);
+
+    /**
+     * Which stream in the given file match the given query.
+     *
+     * @param jMetaData
+     * @return List of stream id founded
+     */
+    @NonNull
+    public abstract List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull JMetaData jMetaData);
+
+    /**
+     * Is the given file match the given query.
+     *
+     * @param currentFile
+     * @return <code>true</code>If file match the given criteria
+     */
+    @Override
+    @NonNull
+    public List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
+        final List<@NonNull Integer> result = new ArrayList<>();
+        final JMetaData jMetaData = new JMetaData();
+        jMetaData.open(currentFile);
+        if (jMetaData.open(currentFile)) {
+            result.addAll(getStreamsIDInFileMatchingCriteria(jMetaData));
+        }
+        jMetaData.close();
+
+        return result;
+    }
 
     /**
      * Is the given file match the given query.

@@ -1,6 +1,5 @@
 package aka.jmetadataquery.main.types.search.video;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, R
     }
 
     @Override
-    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
         final List<@NonNull Integer> result = new ArrayList<>();
 
         @NonNull
