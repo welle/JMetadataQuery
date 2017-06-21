@@ -1,0 +1,42 @@
+package aka.jmetadataquery.main.types.search.operation;
+
+import java.io.File;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchInterface;
+
+/**
+ * Combo condition "AND" of two OperatorSearchInterface.
+ *
+ * @author charlottew
+ */
+public class AndSearch implements OperatorSearchInterface {
+
+    private @NonNull final OperatorSearchInterface query1;
+    private @NonNull final OperatorSearchInterface query2;
+
+    /**
+     * Constructor.
+     *
+     * @param query1
+     * @param query2
+     */
+    public AndSearch(@NonNull final OperatorSearchInterface query1, @NonNull final OperatorSearchInterface query2) {
+        this.query1 = query1;
+        this.query2 = query2;
+    }
+
+    /**
+     * Is the given file match the given query.
+     *
+     * @param currentFile
+     * @return List of file founded
+     */
+    @Override
+    public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
+        final boolean isFileMatchingCriteria = this.query1.isFileMatchingCriteria(currentFile) && this.query2.isFileMatchingCriteria(currentFile);
+        return isFileMatchingCriteria;
+    }
+
+}

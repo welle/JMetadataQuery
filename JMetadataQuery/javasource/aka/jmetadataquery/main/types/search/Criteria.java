@@ -1,10 +1,13 @@
 package aka.jmetadataquery.main.types.search;
 
+import java.io.File;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
 
 import aka.jmetadata.main.JMetaData;
+import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchInterface;
 
 /**
  * Abstract class to be implemented to be a search.
@@ -14,7 +17,7 @@ import aka.jmetadata.main.JMetaData;
  * @param <S> Search enum
  * @param <T> Type for compare
  */
-public abstract class Criteria<S, T extends Comparable<T>> {
+public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSearchInterface {
 
     /**
      * Constructor.
@@ -23,7 +26,7 @@ public abstract class Criteria<S, T extends Comparable<T>> {
      */
     public Criteria(@NonNull final S s) {
         // Nothing to do
-        // Purpose is to force the object
+        // Purpose is to force the parent object to be T typed
     }
 
     /**
@@ -33,6 +36,25 @@ public abstract class Criteria<S, T extends Comparable<T>> {
      * @return <code>true</code> if the file match the criteria
      */
     public abstract boolean matchCriteria(@NonNull JMetaData jMetaData);
+
+    /**
+     * Is the given file match the given query.
+     *
+     * @param currentFile
+     * @return List of file founded
+     */
+    @Override
+    public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
+        boolean isFileMatchingCriteria = true;
+        final JMetaData jMetaData = new JMetaData();
+        jMetaData.open(currentFile);
+        if (jMetaData.open(currentFile)) {
+            isFileMatchingCriteria = matchCriteria(jMetaData);
+        }
+        jMetaData.close();
+
+        return isFileMatchingCriteria;
+    }
 
     /**
      * Are the both param match the criteria ?
