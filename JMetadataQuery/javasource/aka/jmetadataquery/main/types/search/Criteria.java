@@ -50,6 +50,8 @@ public abstract class Criteria<S, T extends Comparable<T>> {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
                 result = currentValueString.equals(wantedValueString);
+                System.err.println(currentValueString + "::" + wantedValueString);
+
             } else {
                 result = wantedValue.equals(currentValue);
             }
@@ -96,7 +98,6 @@ public abstract class Criteria<S, T extends Comparable<T>> {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
                 result = !currentValueString.equals(wantedValueString);
-                System.err.println(currentValueString + "::" + wantedValueString);
             } else {
                 result = !wantedValue.equals(currentValue);
             }

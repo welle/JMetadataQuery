@@ -7,19 +7,23 @@ import org.junit.Test;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
+import aka.jmetadata.main.constants.codecs.AudioMatroskaCodecIdEnum;
+import aka.jmetadata.main.constants.codecs.VideoMatroskaCodecIdEnum;
+import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadata.test.JMetaDataMenu_Test;
 import aka.jmetadataquery.main.JMediaSearch;
 import aka.jmetadataquery.main.types.SearchQuery;
 import aka.jmetadataquery.main.types.constants.subtypes.LanguageEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoAspectRatioSearchEnum;
-import aka.jmetadataquery.main.types.constants.videos.VideoCodecSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoExtensionSearchEnum;
 import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
+import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
 import aka.jmetadataquery.main.types.search.text.TextLanguageSearch;
 import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
-import aka.jmetadataquery.main.types.search.video.VideoCodecSearch;
+import aka.jmetadataquery.main.types.search.video.VideoCodecIdSearch;
 import aka.jmetadataquery.main.types.search.video.VideoExtensionSearch;
+import aka.jmetadataquery.main.types.search.video.VideoFormatSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
 public class JMediaSearch_Test {
@@ -62,14 +66,40 @@ public class JMediaSearch_Test {
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        VideoCodecSearch videoCodecSearch = new VideoCodecSearch(Op.NOT_EQUAL_TO, VideoCodecSearchEnum.HEVC);
+        VideoFormatSearch videoCodecSearch = new VideoFormatSearch(Op.NOT_EQUAL_TO, FormatEnum.HEVC);
         query.addSearchCriteria(videoCodecSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        videoCodecSearch = new VideoCodecSearch(Op.EQUAL_TO, VideoCodecSearchEnum.H264);
+        videoCodecSearch = new VideoFormatSearch(Op.EQUAL_TO, FormatEnum.AVC);
+        query.addSearchCriteria(videoCodecSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testVideoCodec() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        VideoCodecIdSearch videoCodecSearch = new VideoCodecIdSearch(Op.NOT_EQUAL_TO, VideoMatroskaCodecIdEnum.V_MPEG4_IS0_ASP);
+        query.addSearchCriteria(videoCodecSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoCodecSearch = new VideoCodecIdSearch(Op.EQUAL_TO, VideoMatroskaCodecIdEnum.V_MPEG4_ISO_AVC);
         query.addSearchCriteria(videoCodecSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
@@ -125,6 +155,34 @@ public class JMediaSearch_Test {
         query.addSearchCriteria(textLanguageSearch);
         textLanguageSearch = new TextLanguageSearch(Op.EQUAL_TO, LanguageEnum.ENGLISH);
         query.addSearchCriteria(textLanguageSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAudioCodec() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        AudioCodecIdSearch audioCodecIdSearch = new AudioCodecIdSearch(Op.NOT_EQUAL_TO, AudioMatroskaCodecIdEnum.A_AAC_MPEG2_LC);
+        query.addSearchCriteria(audioCodecIdSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioCodecIdSearch = new AudioCodecIdSearch(Op.EQUAL_TO, AudioMatroskaCodecIdEnum.A_AAC);
+        query.addSearchCriteria(audioCodecIdSearch);
+        audioCodecIdSearch = new AudioCodecIdSearch(Op.EQUAL_TO, AudioMatroskaCodecIdEnum.A_MPEG_L3);
+        query.addSearchCriteria(audioCodecIdSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);

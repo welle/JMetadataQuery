@@ -9,45 +9,45 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
-import aka.jmetadataquery.main.types.constants.subtypes.LanguageEnum;
+import aka.jmetadata.main.constants.codecs.interfaces.CodecEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
 /**
- * Audio language search.
+ * Video Format search.
  *
  * @author charlottew
  */
-public class AudioLanguageSearch extends Criteria<LanguageEnum, String> {
+public class AudioCodecIdSearch extends Criteria<CodecEnum, String> {
 
     private final Op operation;
-    private @NonNull final LanguageEnum languageEnum;
+    private @NonNull final CodecEnum codecEnum;
 
     /**
      * Constructor.
      *
      * @param operation
-     * @param languageEnum
+     * @param codecEnum
      */
-    public AudioLanguageSearch(final BinaryCondition.Op operation, @NonNull final LanguageEnum languageEnum) {
-        super(languageEnum);
+    public AudioCodecIdSearch(final BinaryCondition.Op operation, @NonNull final CodecEnum codecEnum) {
+        super(codecEnum);
         this.operation = operation;
-        this.languageEnum = languageEnum;
+        this.codecEnum = codecEnum;
     }
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
         boolean result = false;
 
-        final @NonNull List<@NonNull String> expectedLanguages = this.languageEnum.getValues();
         @NonNull
         final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
         for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
-            final String language = jMetaDataAudio.getLanguageAsString();
-
-            if (language != null) {
-                for (final String expectedLanguage : expectedLanguages) {
-                    result = conditionMatch(language, expectedLanguage, this.operation);
-                    if (result) {
+            final String codecId = jMetaDataAudio.getCodecIDAsString();
+            final boolean allMustMatch = this.operation == BinaryCondition.Op.NOT_EQUAL_TO;
+            if (codecId != null) {
+                for (final String codec : this.codecEnum.getValues()) {
+                    result = conditionMatch(codec, codecId, this.operation);
+                    if (result && !allMustMatch) {
+                        // just break
                         break;
                     }
                 }
@@ -56,7 +56,6 @@ public class AudioLanguageSearch extends Criteria<LanguageEnum, String> {
                 break;
             }
         }
-
         return result;
     }
 

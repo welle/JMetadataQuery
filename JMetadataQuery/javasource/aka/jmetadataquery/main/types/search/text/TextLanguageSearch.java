@@ -47,10 +47,13 @@ public class TextLanguageSearch extends Criteria<LanguageEnum, String> {
             if (language != null) {
                 for (final String expectedLanguage : expectedLanguages) {
                     result = conditionMatch(language, expectedLanguage, this.operation);
+                    if (result) {
+                        break;
+                    }
                 }
-                if (result) {
-                    break;
-                }
+            }
+            if (result) {
+                break;
             }
         }
 
