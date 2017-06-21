@@ -14,11 +14,13 @@ import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadata.test.JMetaDataMenu_Test;
 import aka.jmetadataquery.main.JMediaSearch;
 import aka.jmetadataquery.main.types.SearchQuery;
+import aka.jmetadataquery.main.types.constants.CompressionModeEnum;
 import aka.jmetadataquery.main.types.constants.LanguageEnum;
 import aka.jmetadataquery.main.types.constants.file.FileExtensionSearchEnum;
 import aka.jmetadataquery.main.types.search.audio.AudioBitRateSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioChannelSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
+import aka.jmetadataquery.main.types.search.audio.AudioCompressionModeSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
 import aka.jmetadataquery.main.types.search.constants.video.VideoResolutionSearchEnum;
@@ -55,6 +57,32 @@ public class JMediaSearch_Test {
         query = new SearchQuery();
         fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         query.addSearchCriteria(fileExtensionSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAudioCompressionModeSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        AudioCompressionModeSearch audioCompressionModeSearch = new AudioCompressionModeSearch(Op.NOT_EQUAL_TO, CompressionModeEnum.LOSSLESS);
+        query.addSearchCriteria(audioCompressionModeSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioCompressionModeSearch = new AudioCompressionModeSearch(Op.EQUAL_TO, CompressionModeEnum.LOSSY);
+        query.addSearchCriteria(audioCompressionModeSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
