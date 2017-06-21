@@ -22,6 +22,7 @@ import aka.jmetadataquery.main.types.search.constants.video.VideoAspectRatioSear
 import aka.jmetadataquery.main.types.search.constants.video.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.file.FileExtensionSearch;
 import aka.jmetadataquery.main.types.search.file.FileSizeSearch;
+import aka.jmetadataquery.main.types.search.general.GeneralDurationSearch;
 import aka.jmetadataquery.main.types.search.text.TextLanguageSearch;
 import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
 import aka.jmetadataquery.main.types.search.video.VideoCodecIdSearch;
@@ -31,7 +32,7 @@ import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 public class JMediaSearch_Test {
 
     @Test
-    public void testVideoExtensionSearch() {
+    public void testFileExtensionSearch() {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
 
@@ -42,15 +43,15 @@ public class JMediaSearch_Test {
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        FileExtensionSearch videoExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
-        query.addSearchCriteria(videoExtensionSearch);
+        FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
+        query.addSearchCriteria(fileExtensionSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        videoExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
-        query.addSearchCriteria(videoExtensionSearch);
+        fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
+        query.addSearchCriteria(fileExtensionSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
@@ -115,6 +116,8 @@ public class JMediaSearch_Test {
         Assert.assertTrue(result);
 
         query = new SearchQuery();
+        videoFormatSearch = new FileSizeSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(6299253));
+        query.addSearchCriteria(videoFormatSearch);
         videoFormatSearch = new FileSizeSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(6299254));
         query.addSearchCriteria(videoFormatSearch);
 
@@ -129,8 +132,68 @@ public class JMediaSearch_Test {
         Assert.assertTrue(result);
 
         query = new SearchQuery();
+        videoFormatSearch = new FileSizeSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(6299255));
+        query.addSearchCriteria(videoFormatSearch);
         videoFormatSearch = new FileSizeSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(6299254));
         query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testGeneralDurationSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        GeneralDurationSearch generalDurationSearch = new GeneralDurationSearch(Op.NOT_EQUAL_TO, Long.valueOf(898169));
+        query.addSearchCriteria(generalDurationSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        generalDurationSearch = new GeneralDurationSearch(Op.EQUAL_TO, Long.valueOf(898167));
+        query.addSearchCriteria(generalDurationSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        generalDurationSearch = new GeneralDurationSearch(Op.GREATER_THAN, Long.valueOf(898166));
+        query.addSearchCriteria(generalDurationSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        generalDurationSearch = new GeneralDurationSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(898167));
+        query.addSearchCriteria(generalDurationSearch);
+        generalDurationSearch = new GeneralDurationSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(898166));
+        query.addSearchCriteria(generalDurationSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        generalDurationSearch = new GeneralDurationSearch(Op.LESS_THAN, Long.valueOf(898168));
+        query.addSearchCriteria(generalDurationSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        generalDurationSearch = new GeneralDurationSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(898167));
+        query.addSearchCriteria(generalDurationSearch);
+        generalDurationSearch = new GeneralDurationSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(898168));
+        query.addSearchCriteria(generalDurationSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
