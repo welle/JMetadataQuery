@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.constants.subtypes;
+package aka.jmetadataquery.main.types.constants;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;

@@ -13,17 +13,18 @@ import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadata.test.JMetaDataMenu_Test;
 import aka.jmetadataquery.main.JMediaSearch;
 import aka.jmetadataquery.main.types.SearchQuery;
-import aka.jmetadataquery.main.types.constants.subtypes.LanguageEnum;
-import aka.jmetadataquery.main.types.constants.videos.VideoAspectRatioSearchEnum;
-import aka.jmetadataquery.main.types.constants.videos.VideoExtensionSearchEnum;
-import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
+import aka.jmetadataquery.main.types.constants.LanguageEnum;
+import aka.jmetadataquery.main.types.constants.file.FileExtensionSearchEnum;
 import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
+import aka.jmetadataquery.main.types.search.constants.video.VideoAspectRatioSearchEnum;
+import aka.jmetadataquery.main.types.search.constants.video.VideoResolutionSearchEnum;
+import aka.jmetadataquery.main.types.search.file.FileExtensionSearch;
+import aka.jmetadataquery.main.types.search.file.FileSizeSearch;
 import aka.jmetadataquery.main.types.search.text.TextLanguageSearch;
 import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
 import aka.jmetadataquery.main.types.search.video.VideoCodecIdSearch;
-import aka.jmetadataquery.main.types.search.video.VideoExtensionSearch;
 import aka.jmetadataquery.main.types.search.video.VideoFormatSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
@@ -41,14 +42,14 @@ public class JMediaSearch_Test {
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        VideoExtensionSearch videoExtensionSearch = new VideoExtensionSearch(Op.NOT_EQUAL_TO, VideoExtensionSearchEnum.AVI);
+        FileExtensionSearch videoExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         query.addSearchCriteria(videoExtensionSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
 
         query = new SearchQuery();
-        videoExtensionSearch = new VideoExtensionSearch(Op.EQUAL_TO, VideoExtensionSearchEnum.MKV);
+        videoExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         query.addSearchCriteria(videoExtensionSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
@@ -75,6 +76,60 @@ public class JMediaSearch_Test {
 
         query = new SearchQuery();
         videoFormatSearch = new VideoFormatSearch(Op.EQUAL_TO, FormatEnum.AVC);
+        query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testFileSizeSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        FileSizeSearch videoFormatSearch = new FileSizeSearch(Op.NOT_EQUAL_TO, Long.valueOf(6299255));
+        query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoFormatSearch = new FileSizeSearch(Op.EQUAL_TO, Long.valueOf(6299254));
+        query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoFormatSearch = new FileSizeSearch(Op.GREATER_THAN, Long.valueOf(6299253));
+        query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoFormatSearch = new FileSizeSearch(Op.GREATER_THAN_OR_EQUAL_TO, Long.valueOf(6299254));
+        query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoFormatSearch = new FileSizeSearch(Op.LESS_THAN, Long.valueOf(6299255));
+        query.addSearchCriteria(videoFormatSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        videoFormatSearch = new FileSizeSearch(Op.LESS_THAN_OR_EQUAL_TO, Long.valueOf(6299254));
         query.addSearchCriteria(videoFormatSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);

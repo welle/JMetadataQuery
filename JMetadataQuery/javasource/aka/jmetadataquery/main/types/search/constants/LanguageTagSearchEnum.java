@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.constants;
+package aka.jmetadataquery.main.types.search.constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.List;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import aka.jmetadataquery.main.types.constants.subtypes.LanguageTagEnum;
+import aka.jmetadataquery.main.types.constants.LanguageTagEnum;
 
 /**
  * @author charlottew
@@ -33,7 +33,7 @@ public enum LanguageTagSearchEnum {
     VFF(LanguageTagEnum.VFF, LanguageTagEnum.VFI, LanguageTagEnum.VFB);
 
     @NonNull
-    private final List<aka.jmetadataquery.main.types.constants.subtypes.LanguageTagEnum> languageList = new ArrayList<>();
+    private final List<aka.jmetadataquery.main.types.constants.LanguageTagEnum> languageList = new ArrayList<>();
 
     LanguageTagSearchEnum(@NonNull final LanguageTagEnum @NonNull... languages) {
         this.languageList.addAll(Arrays.asList(languages));
@@ -45,7 +45,7 @@ public enum LanguageTagSearchEnum {
      * @return the value of the ENUM
      */
     @NonNull
-    public List<aka.jmetadataquery.main.types.constants.subtypes.LanguageTagEnum> getLanguagesList() {
+    public List<aka.jmetadataquery.main.types.constants.LanguageTagEnum> getLanguagesList() {
         return this.languageList;
     }
 

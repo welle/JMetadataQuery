@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.constants.videos;
+package aka.jmetadataquery.main.types.constants.file;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,13 +7,13 @@ import java.util.List;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import aka.jmetadataquery.main.types.constants.videos.subtypes.VideoExtensionEnum;
+import aka.jmetadataquery.main.types.constants.video.VideoExtensionEnum;
 
 /**
  * @author charlottew
  *
  */
-public enum VideoExtensionSearchEnum {
+public enum FileExtensionSearchEnum {
 
     /**
      * Matroska.
@@ -43,7 +43,7 @@ public enum VideoExtensionSearchEnum {
     @NonNull
     private final List<VideoExtensionEnum> extensionList = new ArrayList<>();
 
-    VideoExtensionSearchEnum(@NonNull final VideoExtensionEnum @NonNull... languages) {
+    FileExtensionSearchEnum(@NonNull final VideoExtensionEnum @NonNull... languages) {
         this.extensionList.addAll(Arrays.asList(languages));
     }
 
@@ -64,12 +64,12 @@ public enum VideoExtensionSearchEnum {
      * @return corresponding VideoExtensionSearchEnum
      */
     @Nullable
-    public static VideoExtensionSearchEnum getSearchEnum(@Nullable final String extension) {
-        VideoExtensionSearchEnum result = null;
+    public static FileExtensionSearchEnum getSearchEnum(@Nullable final String extension) {
+        FileExtensionSearchEnum result = null;
         if (extension != null) {
             final String trimmedLanguage = extension.trim();
             if (trimmedLanguage.length() > 0) {
-                for (final VideoExtensionSearchEnum videoSearchEnum : VideoExtensionSearchEnum.values()) {
+                for (final FileExtensionSearchEnum videoSearchEnum : FileExtensionSearchEnum.values()) {
                     final boolean containsSearchStr = videoSearchEnum.getExtensionsList().stream().filter(s -> s.getValue().equalsIgnoreCase(extension)).findFirst().isPresent();
                     if (containsSearchStr) {
                         result = videoSearchEnum;

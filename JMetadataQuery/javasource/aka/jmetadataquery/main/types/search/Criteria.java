@@ -51,7 +51,7 @@ public abstract class Criteria<S, T extends Comparable<T>> {
                 final String currentValueString = getString((@NonNull String) currentValue);
                 result = currentValueString.equals(wantedValueString);
             } else {
-                result = wantedValue.equals(currentValue);
+                result = wantedValue.compareTo(currentValue) == 0;
             }
         } else if (operation == BinaryCondition.Op.GREATER_THAN) {
             if (wantedValue instanceof String) {
@@ -97,7 +97,7 @@ public abstract class Criteria<S, T extends Comparable<T>> {
                 final String currentValueString = getString((@NonNull String) currentValue);
                 result = !currentValueString.equals(wantedValueString);
             } else {
-                result = !wantedValue.equals(currentValue);
+                result = wantedValue.compareTo(currentValue) != 0;
             }
         } else if (operation == BinaryCondition.Op.NOT_LIKE) {
             if (wantedValue instanceof String) {

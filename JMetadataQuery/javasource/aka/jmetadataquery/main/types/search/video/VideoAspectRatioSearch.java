@@ -12,8 +12,8 @@ import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadata.main.helper.MediaInfoHelper;
-import aka.jmetadataquery.main.types.constants.videos.VideoAspectRatioSearchEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.constants.video.VideoAspectRatioSearchEnum;
 
 /**
  * Video aspect ratio search.

@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.search.video;
+package aka.jmetadataquery.main.types.search.file;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +9,16 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
 import aka.jmetadata.main.JMetaData;
-import aka.jmetadataquery.main.types.constants.videos.VideoExtensionSearchEnum;
-import aka.jmetadataquery.main.types.constants.videos.subtypes.VideoExtensionEnum;
+import aka.jmetadataquery.main.types.constants.file.FileExtensionSearchEnum;
+import aka.jmetadataquery.main.types.constants.video.VideoExtensionEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
 /**
- * Video extension search.
+ * File extension search.
  *
  * @author charlottew
  */
-public class VideoExtensionSearch extends Criteria<VideoExtensionSearchEnum, String> {
+public class FileExtensionSearch extends Criteria<FileExtensionSearchEnum, String> {
 
     private final Op operation;
     private final List<@NonNull String> extensionList = new ArrayList<>();
@@ -29,7 +29,7 @@ public class VideoExtensionSearch extends Criteria<VideoExtensionSearchEnum, Str
      * @param operation
      * @param videoExtensionSearchEnum
      */
-    public VideoExtensionSearch(final BinaryCondition.Op operation, @NonNull final VideoExtensionSearchEnum videoExtensionSearchEnum) {
+    public FileExtensionSearch(final BinaryCondition.Op operation, @NonNull final FileExtensionSearchEnum videoExtensionSearchEnum) {
         super(videoExtensionSearchEnum);
         this.operation = operation;
 

@@ -12,8 +12,8 @@ import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadata.main.constants.video.Resolution;
 import aka.jmetadata.main.helper.MediaInfoHelper;
-import aka.jmetadataquery.main.types.constants.videos.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.constants.video.VideoResolutionSearchEnum;
 
 /**
  * Video resolution search.

@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.constants.subtypes;
+package aka.jmetadataquery.main.types.constants;
 
 import java.util.Arrays;
 import java.util.List;

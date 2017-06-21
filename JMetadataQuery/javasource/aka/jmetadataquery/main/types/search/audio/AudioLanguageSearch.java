@@ -9,7 +9,7 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
-import aka.jmetadataquery.main.types.constants.subtypes.LanguageEnum;
+import aka.jmetadataquery.main.types.constants.LanguageEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
 /**

@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.constants.videos.subtypes;
+package aka.jmetadataquery.main.types.constants.video;
 
 import java.util.ArrayList;
 import java.util.List;

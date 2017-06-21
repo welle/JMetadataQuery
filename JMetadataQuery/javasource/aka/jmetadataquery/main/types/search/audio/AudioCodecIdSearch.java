@@ -13,7 +13,7 @@ import aka.jmetadata.main.constants.codecs.interfaces.CodecEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
 
 /**
- * Video Format search.
+ * Audio Codec ID search.
  *
  * @author charlottew
  */

@@ -1,4 +1,4 @@
-package aka.jmetadataquery.main.types.constants.videos;
+package aka.jmetadataquery.main.types.search.constants.video;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
