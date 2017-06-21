@@ -10,6 +10,7 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 import aka.jmetadata.main.constants.codecs.AudioMatroskaCodecIdEnum;
 import aka.jmetadata.main.constants.codecs.VideoMatroskaCodecIdEnum;
 import aka.jmetadata.main.constants.format.FormatEnum;
+import aka.jmetadata.main.constants.profile.AudioProfileEnum;
 import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadata.test.JMetaDataMenu_Test;
 import aka.jmetadataquery.main.JMediaSearch;
@@ -23,6 +24,7 @@ import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioCompressionModeSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
+import aka.jmetadataquery.main.types.search.audio.AudioProfileSearch;
 import aka.jmetadataquery.main.types.search.constants.video.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.file.FileExtensionSearch;
 import aka.jmetadataquery.main.types.search.file.FileSizeSearch;
@@ -83,6 +85,32 @@ public class JMediaSearch_Test {
         query = new SearchQuery();
         audioCompressionModeSearch = new AudioCompressionModeSearch(Op.EQUAL_TO, CompressionModeEnum.LOSSY);
         query.addSearchCriteria(audioCompressionModeSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAudioProfileSearch() {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").getFile());
+
+        final JMediaSearch jMediaSearch = new JMediaSearch();
+        SearchQuery query = new SearchQuery();
+
+        boolean result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        AudioProfileSearch audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
+        query.addSearchCriteria(audioProfileSearch);
+
+        result = jMediaSearch.isFileMatchingCriteria(file, query);
+        Assert.assertTrue(result);
+
+        query = new SearchQuery();
+        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
+        query.addSearchCriteria(audioProfileSearch);
 
         result = jMediaSearch.isFileMatchingCriteria(file, query);
         Assert.assertTrue(result);
