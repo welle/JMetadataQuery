@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.search.audio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -36,24 +37,34 @@ public class AudioCodecIdSearch extends Criteria<CodecEnum, String> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        boolean result = false;
+        final boolean allMustMatch = this.operation == BinaryCondition.Op.NOT_EQUAL_TO;
+
+        boolean result;
+        if (allMustMatch) {
+            result = getStreamsIDInFileMatchingCriteria(jMetaData).size() == jMetaData.getVideoStreams().size();
+        } else {
+            result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        }
+        return result;
+    }
+
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
 
         @NonNull
         final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
         for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
             final String codecId = jMetaDataAudio.getCodecIDAsString();
-            final boolean allMustMatch = this.operation == BinaryCondition.Op.NOT_EQUAL_TO;
+            final Integer idAsInteger = jMetaDataAudio.getIDAsInteger();
+
             if (codecId != null) {
                 for (final String codec : this.codecEnum.getValues()) {
-                    result = conditionMatch(codec, codecId, this.operation);
-                    if (result && !allMustMatch) {
-                        // just break
-                        break;
+                    final boolean match = conditionMatch(codec, codecId, this.operation);
+                    if (match && idAsInteger != null) {
+                        result.add(idAsInteger);
                     }
                 }
-            }
-            if (result) {
-                break;
             }
         }
         return result;

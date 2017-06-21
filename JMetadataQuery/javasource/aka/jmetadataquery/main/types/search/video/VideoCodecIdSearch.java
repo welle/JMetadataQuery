@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.search.video;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -37,23 +38,34 @@ public class VideoCodecIdSearch extends Criteria<CodecEnum, String> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        boolean result = false;
+        final boolean allMustMatch = this.operation == BinaryCondition.Op.NOT_EQUAL_TO;
+
+        boolean result;
+        if (allMustMatch) {
+            result = getStreamsIDInFileMatchingCriteria(jMetaData).size() == jMetaData.getVideoStreams().size();
+        } else {
+            result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        }
+        return result;
+    }
+
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
+
         @NonNull
         final List<@NonNull JMetaDataVideo> videoStreams = jMetaData.getVideoStreams();
         if (!videoStreams.isEmpty()) {
             final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
-            final boolean allMustMatch = this.operation == BinaryCondition.Op.NOT_EQUAL_TO;
+            final Integer idAsInteger = jMetaDataVideo.getIDAsInteger();
+
             @Nullable
             final String codecId = jMetaDataVideo.getCodecIDAsString();
             if (codecId != null) {
-                final String format = jMetaDataVideo.getFormatAsString();
-                if (format != null) {
-                    for (final String codec : this.codecEnum.getValues()) {
-                        result = conditionMatch(codec, format, this.operation);
-                        if (result && !allMustMatch) {
-                            // just break
-                            break;
-                        }
+                for (final String codec : this.codecEnum.getValues()) {
+                    final boolean match = conditionMatch(codec, codecId, this.operation);
+                    if (match && idAsInteger != null) {
+                        result.add(idAsInteger);
                     }
                 }
             }

@@ -1,5 +1,8 @@
 package aka.jmetadataquery.main.types.search.general;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
@@ -32,11 +35,21 @@ public class GeneralDurationSearch extends Criteria<Long, Long> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        final Long durationGeneral = jMetaData.getGeneral().getDurationAsLong();
+        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        return result;
+    }
 
-        boolean result = false;
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
+
+        final Long durationGeneral = jMetaData.getGeneral().getDurationAsLong();
         if (durationGeneral != null) {
-            result = conditionMatch(durationGeneral, this.duration, this.operation);
+            final Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+            final boolean match = conditionMatch(durationGeneral, this.duration, this.operation);
+            if (match && idAsInteger != null) {
+                result.add(idAsInteger);
+            }
         }
         return result;
     }

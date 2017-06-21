@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.search.audio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -37,31 +38,42 @@ public class AudioFormatSearch extends Criteria<FormatEnum, String> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        boolean result = false;
+        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        return result;
+    }
 
-        @NonNull
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
         final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
         for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
+            final Integer idAsInteger = jMetaDataAudio.getIDAsInteger();
             @Nullable
             final String formatCommercial = jMetaDataAudio.getFormatCommercialAsString();
             if (formatCommercial == null) {
                 final String format = jMetaDataAudio.getFormatAsString();
                 if (format != null) {
                     final String codec = this.formatEnum.getName();
-                    result = conditionMatch(codec, format, this.operation);
+                    final boolean match = conditionMatch(codec, format, this.operation);
+                    if (match && idAsInteger != null) {
+                        result.add(idAsInteger);
+                    }
                 }
             } else {
                 final String codec = this.formatEnum.getName();
-                result = conditionMatch(codec, formatCommercial, this.operation);
-                if (!result) {
+                boolean match = conditionMatch(codec, formatCommercial, this.operation);
+                if (match && idAsInteger != null) {
+                    result.add(idAsInteger);
+                }
+                if (!match) {
                     final String format = jMetaDataAudio.getFormatAsString();
                     if (format != null) {
-                        result = conditionMatch(codec, format, this.operation);
+                        match = conditionMatch(codec, format, this.operation);
+                        if (match && idAsInteger != null) {
+                            result.add(idAsInteger);
+                        }
                     }
                 }
-            }
-            if (result) {
-                break;
             }
         }
         return result;

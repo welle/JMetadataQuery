@@ -1,9 +1,12 @@
 package aka.jmetadataquery.main.types.search.operation;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import aka.jmetadata.main.JMetaData;
 import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchInterface;
 
 /**
@@ -37,6 +40,11 @@ public class OrSearch implements OperatorSearchInterface {
     public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
         final boolean isFileMatchingCriteria = this.query1.isFileMatchingCriteria(currentFile) || this.query2.isFileMatchingCriteria(currentFile);
         return isFileMatchingCriteria;
+    }
+
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        return new ArrayList<>();
     }
 
 }

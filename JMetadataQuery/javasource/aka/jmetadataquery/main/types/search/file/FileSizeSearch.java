@@ -1,5 +1,8 @@
 package aka.jmetadataquery.main.types.search.file;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
@@ -32,11 +35,22 @@ public class FileSizeSearch extends Criteria<Long, Long> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
+        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        return result;
+    }
+
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
+
         final Long size = jMetaData.getGeneral().getFileSizeAsLong();
 
-        boolean result = false;
         if (size != null) {
-            result = conditionMatch(size, this.fileSize, this.operation);
+            final Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+            final boolean match = conditionMatch(size, this.fileSize, this.operation);
+            if (match && idAsInteger != null) {
+                result.add(idAsInteger);
+            }
         }
         return result;
     }

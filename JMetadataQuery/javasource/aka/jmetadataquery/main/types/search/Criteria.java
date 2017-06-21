@@ -41,7 +41,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
      * Is the given file match the given query.
      *
      * @param currentFile
-     * @return List of file founded
+     * @return <code>true</code>If file match the given criteria
      */
     @Override
     public boolean isFileMatchingCriteria(@NonNull final File currentFile) {

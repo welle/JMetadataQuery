@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.search.audio;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -36,21 +37,24 @@ public class AudioProfileSearch extends Criteria<AudioProfileEnum, String> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        boolean result = false;
+        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        return result;
+    }
+
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
 
         @NonNull
         final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
         for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
             final String profile = jMetaDataAudio.getFormatProfileAsString();
             if (profile != null) {
-                result = conditionMatch(profile, this.audioProfileEnum.getName(), this.operation);
-                if (result) {
-                    // just break
-                    break;
+                final Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+                final boolean match = conditionMatch(profile, this.audioProfileEnum.getName(), this.operation);
+                if (match && idAsInteger != null) {
+                    result.add(idAsInteger);
                 }
-            }
-            if (result) {
-                break;
             }
         }
         return result;

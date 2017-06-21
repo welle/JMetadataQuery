@@ -41,15 +41,21 @@ public class FileExtensionSearch extends Criteria<FileExtensionSearchEnum, Strin
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        final String extensionFile = jMetaData.getGeneral().getFileExtensionAsString();
+        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        return result;
+    }
 
-        boolean result = false;
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
+
+        final String extensionFile = jMetaData.getGeneral().getFileExtensionAsString();
         if (extensionFile != null) {
+            final Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
             for (final String extension : this.extensionList) {
-                result = conditionMatch(extensionFile, extension, this.operation);
-                if (result) {
-                    // just break
-                    break;
+                final boolean match = conditionMatch(extensionFile, extension, this.operation);
+                if (match && idAsInteger != null) {
+                    result.add(idAsInteger);
                 }
             }
         }

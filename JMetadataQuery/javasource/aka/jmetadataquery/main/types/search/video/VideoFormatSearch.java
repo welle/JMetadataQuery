@@ -1,5 +1,6 @@
 package aka.jmetadataquery.main.types.search.video;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -37,26 +38,42 @@ public class VideoFormatSearch extends Criteria<FormatEnum, String> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        boolean result = false;
+        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        return result;
+    }
+
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final List<@NonNull Integer> result = new ArrayList<>();
         @NonNull
         final List<@NonNull JMetaDataVideo> videoStreams = jMetaData.getVideoStreams();
         if (!videoStreams.isEmpty()) {
             final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
+            final Integer idAsInteger = jMetaDataVideo.getIDAsInteger();
             @Nullable
             final String formatCommercial = jMetaDataVideo.getFormatCommercialAsString();
             if (formatCommercial == null) {
                 final String format = jMetaDataVideo.getFormatAsString();
                 if (format != null) {
                     final String codec = this.formatEnum.getName();
-                    result = conditionMatch(codec, format, this.operation);
+                    final boolean match = conditionMatch(codec, format, this.operation);
+                    if (match && idAsInteger != null) {
+                        result.add(idAsInteger);
+                    }
                 }
             } else {
                 final String codec = this.formatEnum.getName();
-                result = conditionMatch(codec, formatCommercial, this.operation);
-                if (!result) {
+                boolean match = conditionMatch(codec, formatCommercial, this.operation);
+                if (match && idAsInteger != null) {
+                    result.add(idAsInteger);
+                }
+                if (!match) {
                     final String format = jMetaDataVideo.getFormatAsString();
                     if (format != null) {
-                        result = conditionMatch(codec, format, this.operation);
+                        match = conditionMatch(codec, format, this.operation);
+                        if (match && idAsInteger != null) {
+                            result.add(idAsInteger);
+                        }
                     }
                 }
             }

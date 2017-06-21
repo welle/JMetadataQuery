@@ -1,5 +1,7 @@
 package aka.jmetadataquery.main.types.search.video;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -39,21 +41,33 @@ public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, R
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        boolean result = false;
+        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
+        return result;
+    }
+
+    @Override
+    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
+        final List<@NonNull Integer> result = new ArrayList<>();
+
         @NonNull
         final List<@NonNull JMetaDataVideo> videoStreams = jMetaData.getVideoStreams();
         if (!videoStreams.isEmpty()) {
             final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
+            final Integer idAsInteger = jMetaDataVideo.getIDAsInteger();
+
             @Nullable
             final Long heightAsLong = jMetaDataVideo.getHeightAsLong();
             Resolution resolution = null;
             if (heightAsLong != null) {
-                resolution = MediaInfoHelper.getClosestResolution(heightAsLong);
+                resolution = MediaInfoHelper.getClosestResolution(heightAsLong.doubleValue());
             }
 
             final Resolution expectedResolution = this.videoResolutionSearchEnum.getResolution();
-            if (resolution != null && expectedResolution != null) {
-                result = conditionMatch(resolution, expectedResolution, this.operation);
+            if (resolution != null) {
+                final boolean match = conditionMatch(resolution, expectedResolution, this.operation);
+                if (match && idAsInteger != null) {
+                    result.add(idAsInteger);
+                }
             }
         }
         return result;
