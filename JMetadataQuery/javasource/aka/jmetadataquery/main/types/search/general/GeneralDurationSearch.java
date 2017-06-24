@@ -1,7 +1,7 @@
 package aka.jmetadataquery.main.types.search.general;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -40,14 +40,17 @@ public class GeneralDurationSearch extends Criteria<Long, Long> {
     }
 
     @Override
-    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
-        final List<@NonNull Integer> result = new ArrayList<>();
+    public @NonNull Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final Set<@NonNull Integer> result = new HashSet<>();
 
         final Long durationGeneral = jMetaData.getGeneral().getDurationAsLong();
         if (durationGeneral != null) {
-            final Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+            Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+            if (idAsInteger == null) {
+                idAsInteger = Integer.valueOf(-1);
+            }
             final boolean match = conditionMatch(durationGeneral, this.duration, this.operation);
-            if (match && idAsInteger != null) {
+            if (match) {
                 result.add(idAsInteger);
             }
         }

@@ -1,7 +1,8 @@
 package aka.jmetadataquery.main.types.search.video;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -44,21 +45,24 @@ public class VideoAspectRatioSearch extends Criteria<AspectRatio, AspectRatio> {
     }
 
     @Override
-    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
-        final List<@NonNull Integer> result = new ArrayList<>();
+    public @NonNull Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final Set<@NonNull Integer> result = new HashSet<>();
 
         @NonNull
         final List<@NonNull JMetaDataVideo> videoStreams = jMetaData.getVideoStreams();
         if (!videoStreams.isEmpty()) {
             final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
-            final Integer idAsInteger = jMetaDataVideo.getIDAsInteger();
+            Integer idAsInteger = jMetaDataVideo.getIDAsInteger();
+            if (idAsInteger == null) {
+                idAsInteger = Integer.valueOf(-1);
+            }
             @Nullable
             final Long widthAsLong = jMetaDataVideo.getWidthAsLong();
             final Long heightAsLong = jMetaDataVideo.getHeightAsLong();
             final AspectRatio ratio = MediaInfoHelper.getClosestRatio(widthAsLong, heightAsLong);
             if (ratio != null) {
                 final boolean match = conditionMatch(ratio, this.aspectRatio, this.operation);
-                if (match && idAsInteger != null) {
+                if (match) {
                     result.add(idAsInteger);
                 }
             }

@@ -1,7 +1,7 @@
 package aka.jmetadataquery.main.types.search.file;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -40,8 +40,8 @@ public class FileSizeSearch extends Criteria<Long, Long> {
     }
 
     @Override
-    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
-        final List<@NonNull Integer> result = new ArrayList<>();
+    public @NonNull Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final Set<@NonNull Integer> result = new HashSet<>();
 
         final Long size = jMetaData.getGeneral().getFileSizeAsLong();
         if (size != null) {

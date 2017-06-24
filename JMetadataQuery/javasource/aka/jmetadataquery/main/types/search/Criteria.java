@@ -3,6 +3,9 @@ package aka.jmetadataquery.main.types.search;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -46,7 +49,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
      * @return List of stream id founded
      */
     @NonNull
-    public abstract List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull JMetaData jMetaData);
+    public abstract Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull JMetaData jMetaData);
 
     /**
      * Is the given file match the given query.
@@ -78,9 +81,11 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
     public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
         boolean isFileMatchingCriteria = true;
         final JMetaData jMetaData = new JMetaData();
-        jMetaData.open(currentFile);
         if (jMetaData.open(currentFile)) {
             isFileMatchingCriteria = matchCriteria(jMetaData);
+        } else {
+            Logger.getAnonymousLogger().logp(Level.SEVERE, "Criteria", "isFileMatchingCriteria", "Can not open file!");
+            throw new RuntimeException();
         }
         jMetaData.close();
 
