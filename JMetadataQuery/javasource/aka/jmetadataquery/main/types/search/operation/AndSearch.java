@@ -2,7 +2,6 @@ package aka.jmetadataquery.main.types.search.operation;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class AndSearch implements OperatorSearchInterface {
 
     private boolean sameStream = false;
     @NonNull
-    private List<@NonNull OperatorSearchInterface> queries = new ArrayList<>();
+    private final List<@NonNull OperatorSearchInterface> queries = new ArrayList<>();
 
     /**
      * Constructor.
@@ -44,7 +43,9 @@ public class AndSearch implements OperatorSearchInterface {
      * @param sameStream both query must be applied for the same streams ?
      */
     public AndSearch(final boolean sameStream, @NonNull final OperatorSearchInterface @NonNull... queries) {
-        this.queries = Arrays.asList(queries);
+        for (final OperatorSearchInterface operatorSearchInterface : queries) {
+            this.queries.add(operatorSearchInterface);
+        }
         this.sameStream = sameStream;
     }
 

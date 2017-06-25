@@ -57,7 +57,6 @@ public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, R
             if (idAsInteger == null) {
                 idAsInteger = Integer.valueOf(-1);
             }
-            System.err.println("[VideoResolutionSearch] getStreamsIDInFileMatchingCriteria - " + idAsInteger);
             @Nullable
             final Long heightAsLong = jMetaDataVideo.getHeightAsLong();
             Resolution resolution = null;
