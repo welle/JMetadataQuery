@@ -45,7 +45,6 @@ public class JMediaSearch_Test {
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
 
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.AVI);
-
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         final OrSearch orSearch = new OrSearch(fileExtensionSearch, fileExtensionSearch2);
 
@@ -106,7 +105,6 @@ public class JMediaSearch_Test {
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
 
         AudioCompressionModeSearch audioCompressionModeSearch = new AudioCompressionModeSearch(Op.NOT_EQUAL_TO, CompressionModeEnum.LOSSLESS);
-
         boolean result = audioCompressionModeSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
 
