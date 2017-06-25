@@ -74,7 +74,7 @@ public class AndSearch implements OperatorSearchInterface {
             }
         } else {
             for (final OperatorSearchInterface operatorSearchInterface : this.queries) {
-                isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) || isFileMatchingCriteria;
+                isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) && isFileMatchingCriteria;
             }
         }
         return isFileMatchingCriteria;
