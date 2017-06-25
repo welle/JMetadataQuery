@@ -17,9 +17,25 @@ import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchI
  */
 public class AndSearch implements OperatorSearchInterface {
 
-    private final boolean sameStream;
+    private boolean sameStream = false;
     @NonNull
-    private final List<@NonNull OperatorSearchInterface> queries;
+    private List<@NonNull OperatorSearchInterface> queries = new ArrayList<>();
+
+    /**
+     * Constructor.
+     */
+    public AndSearch() {
+        // Default constructor.
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param sameStream both query must be applied for the same streams ?
+     */
+    public AndSearch(final boolean sameStream) {
+        this.sameStream = sameStream;
+    }
 
     /**
      * Constructor.
@@ -70,6 +86,15 @@ public class AndSearch implements OperatorSearchInterface {
      */
     public void addSearch(@NonNull final OperatorSearchInterface operatorSearchInterface) {
         this.queries.add(operatorSearchInterface);
+    }
+
+    /**
+     * Check for the same stream ?
+     *
+     * @param sameStream
+     */
+    public void setSameStream(final boolean sameStream) {
+        this.sameStream = sameStream;
     }
 
     @Override

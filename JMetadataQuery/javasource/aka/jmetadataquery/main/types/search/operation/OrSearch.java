@@ -17,7 +17,15 @@ import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchI
 public class OrSearch implements OperatorSearchInterface {
 
     @NonNull
-    private final List<@NonNull OperatorSearchInterface> queries;
+    private List<@NonNull OperatorSearchInterface> queries = new ArrayList<>();
+
+    /**
+     * Constructor.
+     *
+     */
+    public OrSearch() {
+        // Default constructor.
+    }
 
     /**
      * Constructor.
