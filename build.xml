@@ -25,7 +25,7 @@
     <target name="jars" depends="init">
         <echo message="Build JMetadataQuery Jars" />
 
-        <property name="classes" value="JMetadataQuery/classes" />
+        <property name="classes" value="classes" />
 
         <ant antfile="buildJars.xml" />
     </target>

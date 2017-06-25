@@ -45,9 +45,6 @@
     	<jar jarfile="${target.applications}/build/${project}-${version}.jar" basedir="${classes}"
     	             includes="${pkg_base}/**/" 
     	             excludes="${pkg_base}/**/*_JUnitTest.*">
-        	<fileset dir="${project}/../lib/"
-                     includes="libmediainfo.dylib, mediainfo.dll, mediainfo64.dll"
-            />
             <manifest>
                 <attribute name="version" value="${version}" />
                 <attribute name="time" value="${TODAY_UK}" />
