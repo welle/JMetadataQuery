@@ -2,6 +2,7 @@ package aka.jmetadataquery.main.types.search.operation;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,20 +17,18 @@ import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchI
  */
 public class AndSearch implements OperatorSearchInterface {
 
-    private @NonNull final OperatorSearchInterface query1;
-    private @NonNull final OperatorSearchInterface query2;
     private final boolean sameStream;
+    @NonNull
+    private final List<@NonNull OperatorSearchInterface> queries;
 
     /**
      * Constructor.
      *
-     * @param query1
-     * @param query2
+     * @param queries
      * @param sameStream both query must be applied for the same streams ?
      */
-    public AndSearch(@NonNull final OperatorSearchInterface query1, @NonNull final OperatorSearchInterface query2, final boolean sameStream) {
-        this.query1 = query1;
-        this.query2 = query2;
+    public AndSearch(final boolean sameStream, @NonNull final OperatorSearchInterface @NonNull... queries) {
+        this.queries = Arrays.asList(queries);
         this.sameStream = sameStream;
     }
 
@@ -41,15 +40,36 @@ public class AndSearch implements OperatorSearchInterface {
      */
     @Override
     public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
-        boolean isFileMatchingCriteria;
+        boolean isFileMatchingCriteria = true;
+
         if (this.sameStream) {
-            final List<Integer> idList = this.query1.getStreamsIDInFileMatchingCriteria(currentFile);
-            final List<Integer> idList2 = this.query2.getStreamsIDInFileMatchingCriteria(currentFile);
-            isFileMatchingCriteria = !Collections.disjoint(idList, idList2);
+            final List<@NonNull List<@NonNull Integer>> idListList = new ArrayList<>();
+            for (final OperatorSearchInterface operatorSearchInterface : this.queries) {
+                final List<Integer> idList = operatorSearchInterface.getStreamsIDInFileMatchingCriteria(currentFile);
+                idListList.add(idList);
+            }
+            List<Integer> idList1 = null;
+            for (final List<Integer> idList : idListList) {
+                if (idList1 != null) {
+                    isFileMatchingCriteria = !Collections.disjoint(idList1, idList);
+                }
+                idList1 = idList;
+            }
         } else {
-            isFileMatchingCriteria = this.query1.isFileMatchingCriteria(currentFile) && this.query2.isFileMatchingCriteria(currentFile);
+            for (final OperatorSearchInterface operatorSearchInterface : this.queries) {
+                isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) || isFileMatchingCriteria;
+            }
         }
         return isFileMatchingCriteria;
+    }
+
+    /**
+     * Add search.
+     *
+     * @param operatorSearchInterface
+     */
+    public void addSearch(@NonNull final OperatorSearchInterface operatorSearchInterface) {
+        this.queries.add(operatorSearchInterface);
     }
 
     @Override

@@ -30,7 +30,7 @@ public enum LanguageEnum {
 
     private @NonNull List<@NonNull String> languages;
 
-    LanguageEnum(@NonNull final String... languages) {
+    LanguageEnum(@NonNull final String @NonNull... languages) {
         this.languages = Arrays.asList(languages);
     }
 

@@ -2,6 +2,7 @@ package aka.jmetadataquery.main.types.search.operation;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -15,18 +16,16 @@ import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchI
  */
 public class OrSearch implements OperatorSearchInterface {
 
-    private @NonNull final OperatorSearchInterface query1;
-    private @NonNull final OperatorSearchInterface query2;
+    @NonNull
+    private final List<@NonNull OperatorSearchInterface> queries;
 
     /**
      * Constructor.
      *
-     * @param query1
-     * @param query2
+     * @param queries
      */
-    public OrSearch(@NonNull final OperatorSearchInterface query1, @NonNull final OperatorSearchInterface query2) {
-        this.query1 = query1;
-        this.query2 = query2;
+    public OrSearch(@NonNull final OperatorSearchInterface @NonNull... queries) {
+        this.queries = Arrays.asList(queries);
     }
 
     /**
@@ -37,12 +36,25 @@ public class OrSearch implements OperatorSearchInterface {
      */
     @Override
     public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
-        final boolean isFileMatchingCriteria = this.query1.isFileMatchingCriteria(currentFile) || this.query2.isFileMatchingCriteria(currentFile);
+        boolean isFileMatchingCriteria = true;
+        for (final OperatorSearchInterface operatorSearchInterface : this.queries) {
+            isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) || isFileMatchingCriteria;
+        }
+
         return isFileMatchingCriteria;
     }
 
     @Override
     public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
         return new ArrayList<>();
+    }
+
+    /**
+     * Add search.
+     *
+     * @param operatorSearchInterface
+     */
+    public void addSearch(@NonNull final OperatorSearchInterface operatorSearchInterface) {
+        this.queries.add(operatorSearchInterface);
     }
 }

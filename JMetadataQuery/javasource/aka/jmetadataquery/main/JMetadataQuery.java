@@ -15,7 +15,7 @@ import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchI
  *
  * @author cha
  */
-public final class JMediaSearch {
+public final class JMetadataQuery {
 
     /**
      * Search into the given directory (recursively if depth is set to <code>true</code>) for files matching the list of search criteria.

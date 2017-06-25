@@ -37,7 +37,7 @@ import aka.jmetadataquery.main.types.search.video.VideoFormatSearch;
 import aka.jmetadataquery.main.types.search.video.VideoMaxBitRateSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
-public class JMediaSearch_Test {
+public class JMetadatQuery_Test {
 
     @Test
     public void testORSearch() throws URISyntaxException {
@@ -59,7 +59,7 @@ public class JMediaSearch_Test {
 
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
-        final AndSearch andSearch = new AndSearch(fileExtensionSearch, fileExtensionSearch2, false);
+        final AndSearch andSearch = new AndSearch(false, fileExtensionSearch, fileExtensionSearch2);
 
         final boolean result = andSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -72,14 +72,14 @@ public class JMediaSearch_Test {
 
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
-        AndSearch andSearch = new AndSearch(fileExtensionSearch, fileExtensionSearch2, true);
+        AndSearch andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
 
         boolean result = andSearch.isFileMatchingCriteria(file);
         Assert.assertFalse(result);
 
         final AudioCompressionModeSearch audioCompressionModeSearch = new AudioCompressionModeSearch(Op.EQUAL_TO, CompressionModeEnum.LOSSY);
         final VideoFormatSearch videoFormatSearch = new VideoFormatSearch(Op.EQUAL_TO, FormatEnum.AVC);
-        andSearch = new AndSearch(audioCompressionModeSearch, videoFormatSearch, true);
+        andSearch = new AndSearch(true, audioCompressionModeSearch, videoFormatSearch);
 
         result = videoFormatSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
