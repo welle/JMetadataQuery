@@ -20,10 +20,6 @@ import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchI
  *
  * @author charlottew
  */
-/**
- * @author charlottew
- *
- */
 public abstract class AsbtractOperatorSearch implements OperatorSearchInterface {
 
     private boolean sameStream = false;
@@ -160,15 +156,17 @@ public abstract class AsbtractOperatorSearch implements OperatorSearchInterface 
             if (count.intValue() == size) {
                 // Check if has same boolean
                 final Integer id = entry.getKey();
-                for (final @NonNull Map<@NonNull Integer, Boolean> entry2 : idMapList) {
-                    final Boolean bool = entry2.get(id);
-                    if (bool != null) {
-                        List<Boolean> boolList = idBooleanListMap.get(id);
-                        if (boolList == null) {
-                            boolList = new ArrayList<>();
-                            idBooleanListMap.put(id, boolList);
+                if (id != null) {
+                    for (final @NonNull Map<@NonNull Integer, Boolean> entry2 : idMapList) {
+                        final Boolean bool = entry2.get(id);
+                        if (bool != null) {
+                            List<Boolean> boolList = idBooleanListMap.get(id);
+                            if (boolList == null) {
+                                boolList = new ArrayList<>();
+                                idBooleanListMap.put(id, boolList);
+                            }
+                            boolList.add(bool);
                         }
-                        boolList.add(bool);
                     }
                 }
             }
@@ -178,7 +176,10 @@ public abstract class AsbtractOperatorSearch implements OperatorSearchInterface 
         for (final Entry<@NonNull Integer, List<Boolean>> entry : idBooleanListMap.entrySet()) {
             final boolean allEqual = entry.getValue().stream().distinct().limit(2).count() <= 1;
             if (allEqual) {
-                result.add(entry.getValue().get(0));
+                final Boolean e = entry.getValue().get(0);
+                if (e != null) {
+                    result.add(e);
+                }
             }
         }
 
