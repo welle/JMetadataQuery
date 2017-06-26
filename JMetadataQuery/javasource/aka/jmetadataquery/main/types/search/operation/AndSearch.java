@@ -2,104 +2,75 @@ package aka.jmetadataquery.main.types.search.operation;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
 import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchInterface;
 
 /**
- * Combo condition "AND" of two OperatorSearchInterface.
+ * Combo condition "AND" of n OperatorSearchInterface.
  *
  * @author charlottew
  */
-public class AndSearch implements OperatorSearchInterface {
-
-    private boolean sameStream = false;
-    @NonNull
-    private final List<@NonNull OperatorSearchInterface> queries = new ArrayList<>();
+public class AndSearch extends AsbtractOperatorSearch {
 
     /**
      * Constructor.
      */
     public AndSearch() {
         // Default constructor.
+        super();
     }
 
     /**
      * Constructor.
      *
-     * @param sameStream both query must be applied for the same streams ?
+     * @param sameStream queries must be applied for the same streams ?
      */
     public AndSearch(final boolean sameStream) {
-        this.sameStream = sameStream;
+        super(sameStream);
     }
 
     /**
      * Constructor.
      *
      * @param queries
-     * @param sameStream both query must be applied for the same streams ?
+     * @param sameStream queries must be applied for the same streams ?
      */
     public AndSearch(final boolean sameStream, @NonNull final OperatorSearchInterface @NonNull... queries) {
-        for (final OperatorSearchInterface operatorSearchInterface : queries) {
-            this.queries.add(operatorSearchInterface);
-        }
-        this.sameStream = sameStream;
+        super(sameStream, queries);
     }
 
     /**
-     * Is the given file match the given query.
+     * Is the given file match the query.
      *
      * @param currentFile
-     * @return List of file founded
+     * @return <code>true</code> if the given file match the query
      */
     @Override
     public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
         boolean isFileMatchingCriteria = true;
 
-        if (this.sameStream) {
-            final List<@NonNull List<@NonNull Integer>> idListList = new ArrayList<>();
-            for (final OperatorSearchInterface operatorSearchInterface : this.queries) {
-                final List<Integer> idList = operatorSearchInterface.getStreamsIDInFileMatchingCriteria(currentFile);
-                idListList.add(idList);
+        if (checkSameStream()) {
+            final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
+            for (final OperatorSearchInterface operatorSearchInterface : getQueries()) {
+                final @NonNull Map<@NonNull Integer, Boolean> idList = operatorSearchInterface.getStreamsIDInFileMatchingCriteria(currentFile);
+                idMapList.add(idList);
             }
-            List<Integer> idList1 = null;
-            for (final List<Integer> idList : idListList) {
-                if (idList1 != null) {
-                    isFileMatchingCriteria = !Collections.disjoint(idList1, idList);
-                }
-                idList1 = idList;
-            }
+            isFileMatchingCriteria = SearchHelper.isMatching(idMapList, getQueries().size(), true);
         } else {
-            for (final OperatorSearchInterface operatorSearchInterface : this.queries) {
+            for (final OperatorSearchInterface operatorSearchInterface : getQueries()) {
                 isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) && isFileMatchingCriteria;
+                if (!isFileMatchingCriteria) {
+                    // no need to continue
+                    break;
+                }
             }
         }
         return isFileMatchingCriteria;
     }
 
-    /**
-     * Add search.
-     *
-     * @param operatorSearchInterface
-     */
-    public void addSearch(@NonNull final OperatorSearchInterface operatorSearchInterface) {
-        this.queries.add(operatorSearchInterface);
-    }
-
-    /**
-     * Check for the same stream ?
-     *
-     * @param sameStream
-     */
-    public void setSameStream(final boolean sameStream) {
-        this.sameStream = sameStream;
-    }
-
-    @Override
-    public @NonNull List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
-        return new ArrayList<>();
-    }
 }

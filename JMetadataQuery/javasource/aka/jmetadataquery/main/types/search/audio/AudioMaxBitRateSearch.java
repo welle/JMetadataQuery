@@ -1,8 +1,9 @@
 package aka.jmetadataquery.main.types.search.audio;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -12,6 +13,7 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
 
 /**
  * Audio max bit rate search.
@@ -37,26 +39,30 @@ public class AudioMaxBitRateSearch extends Criteria<Long, Long> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
-        return result;
+        final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
+        final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
+        idMapList.add(map);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
-    public @NonNull Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
-        final Set<@NonNull Integer> result = new HashSet<>();
+    public @NonNull Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final Map<@NonNull Integer, Boolean> result = new HashMap<>();
 
+        int i = -1;
         @NonNull
         final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
         for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
             final Long rate = jMetaDataAudio.getBitRateMaximumAsLong();
+            Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+            if (idAsInteger == null) {
+                idAsInteger = Integer.valueOf(i);
+                i--;
+            }
             if (rate != null) {
-                Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
-                if (idAsInteger == null) {
-                    idAsInteger = Integer.valueOf(-1);
-                }
                 final boolean match = conditionMatch(rate, this.maxBitRate, this.operation);
-                if (match) {
-                    result.add(idAsInteger);
+                if (!result.containsKey(idAsInteger)) {
+                    result.put(idAsInteger, Boolean.valueOf(match));
                 }
             }
         }

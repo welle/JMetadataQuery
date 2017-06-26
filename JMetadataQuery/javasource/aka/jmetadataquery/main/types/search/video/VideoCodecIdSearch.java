@@ -1,8 +1,9 @@
 package aka.jmetadataquery.main.types.search.video;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -14,6 +15,7 @@ import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadata.main.constants.codecs.interfaces.CodecEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
 
 /**
  * Video Format search.
@@ -39,28 +41,24 @@ public class VideoCodecIdSearch extends Criteria<CodecEnum, String> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        final boolean allMustMatch = this.operation == BinaryCondition.Op.NOT_EQUAL_TO;
-
-        boolean result;
-        if (allMustMatch) {
-            result = getStreamsIDInFileMatchingCriteria(jMetaData).size() == jMetaData.getVideoStreams().size();
-        } else {
-            result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
-        }
-        return result;
+        final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
+        final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
+        idMapList.add(map);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
-    public @NonNull Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
-        final Set<@NonNull Integer> result = new HashSet<>();
+    public @NonNull Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final Map<@NonNull Integer, Boolean> result = new HashMap<>();
 
+        int i = -1;
         @NonNull
         final List<@NonNull JMetaDataVideo> videoStreams = jMetaData.getVideoStreams();
-        if (!videoStreams.isEmpty()) {
-            final JMetaDataVideo jMetaDataVideo = videoStreams.get(0);
+        for (final @NonNull JMetaDataVideo jMetaDataVideo : videoStreams) {
             Integer idAsInteger = jMetaDataVideo.getIDAsInteger();
             if (idAsInteger == null) {
-                idAsInteger = Integer.valueOf(-1);
+                idAsInteger = Integer.valueOf(i);
+                i--;
             }
 
             @Nullable
@@ -68,8 +66,8 @@ public class VideoCodecIdSearch extends Criteria<CodecEnum, String> {
             if (codecId != null) {
                 for (final String codec : this.codecEnum.getValues()) {
                     final boolean match = conditionMatch(codec, codecId, this.operation);
-                    if (match) {
-                        result.add(idAsInteger);
+                    if (!result.containsKey(idAsInteger)) {
+                        result.put(idAsInteger, Boolean.valueOf(match));
                     }
                 }
             }

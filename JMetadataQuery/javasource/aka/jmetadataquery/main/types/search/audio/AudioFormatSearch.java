@@ -1,8 +1,9 @@
 package aka.jmetadataquery.main.types.search.audio;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -14,6 +15,7 @@ import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
 
 /**
  * Audio Format search.
@@ -39,19 +41,23 @@ public class AudioFormatSearch extends Criteria<FormatEnum, String> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
-        return result;
+        final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
+        final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
+        idMapList.add(map);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
-    public @NonNull Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
-        final Set<@NonNull Integer> result = new HashSet<>();
+    public @NonNull Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final Map<@NonNull Integer, Boolean> result = new HashMap<>();
 
+        int i = -1;
         final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
         for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
             Integer idAsInteger = jMetaDataAudio.getIDAsInteger();
             if (idAsInteger == null) {
-                idAsInteger = Integer.valueOf(-1);
+                idAsInteger = Integer.valueOf(i);
+                i--;
             }
             @Nullable
             final String formatCommercial = jMetaDataAudio.getFormatCommercialAsString();
@@ -60,22 +66,22 @@ public class AudioFormatSearch extends Criteria<FormatEnum, String> {
                 if (format != null) {
                     final String codec = this.formatEnum.getName();
                     final boolean match = conditionMatch(codec, format, this.operation);
-                    if (match) {
-                        result.add(idAsInteger);
+                    if (!result.containsKey(idAsInteger)) {
+                        result.put(idAsInteger, Boolean.valueOf(match));
                     }
                 }
             } else {
                 final String codec = this.formatEnum.getName();
                 boolean match = conditionMatch(codec, formatCommercial, this.operation);
-                if (match) {
-                    result.add(idAsInteger);
+                if (!result.containsKey(idAsInteger)) {
+                    result.put(idAsInteger, Boolean.valueOf(match));
                 }
                 if (!match) {
                     final String format = jMetaDataAudio.getFormatAsString();
                     if (format != null) {
                         match = conditionMatch(codec, format, this.operation);
-                        if (match) {
-                            result.add(idAsInteger);
+                        if (!result.containsKey(idAsInteger)) {
+                            result.put(idAsInteger, Boolean.valueOf(match));
                         }
                     }
                 }
