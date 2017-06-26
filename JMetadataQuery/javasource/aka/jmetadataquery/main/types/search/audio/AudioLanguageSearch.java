@@ -43,7 +43,7 @@ public class AudioLanguageSearch extends Criteria<LanguageEnum, String> {
         final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
         final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
         idMapList.add(map);
-        return SearchHelper.isMatching(idMapList, 1);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
@@ -64,8 +64,8 @@ public class AudioLanguageSearch extends Criteria<LanguageEnum, String> {
             if (language != null) {
                 for (final String expectedLanguage : expectedLanguages) {
                     final boolean match = conditionMatch(language, expectedLanguage, this.operation);
-                    if (!result.containsKey(idAsInteger)) {
-                        result.put(idAsInteger, match);
+                    if (!result.containsKey(idAsInteger) && (result.get(idAsInteger) != null && !result.get(idAsInteger))) {
+                        result.put(idAsInteger, Boolean.valueOf(match));
                     }
                 }
             }

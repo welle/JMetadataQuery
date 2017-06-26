@@ -43,7 +43,7 @@ public class AudioCompressionModeSearch extends Criteria<CompressionModeEnum, St
         final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
         final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
         idMapList.add(map);
-        return SearchHelper.isMatching(idMapList, 1);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AudioCompressionModeSearch extends Criteria<CompressionModeEnum, St
             if (mode != null) {
                 final boolean match = conditionMatch(mode, this.compressionModeEnum.getValue(), this.operation);
                 if (!result.containsKey(idAsInteger)) {
-                    result.put(idAsInteger, match);
+                    result.put(idAsInteger, Boolean.valueOf(match));
                 }
             }
         }

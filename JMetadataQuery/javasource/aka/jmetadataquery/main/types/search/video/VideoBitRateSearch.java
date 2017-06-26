@@ -42,7 +42,7 @@ public class VideoBitRateSearch extends Criteria<Long, Long> {
         final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
         final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
         idMapList.add(map);
-        return SearchHelper.isMatching(idMapList, 1);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class VideoBitRateSearch extends Criteria<Long, Long> {
             if (rate != null) {
                 final boolean match = conditionMatch(rate, this.bitRate, this.operation);
                 if (!result.containsKey(idAsInteger)) {
-                    result.put(idAsInteger, match);
+                    result.put(idAsInteger, Boolean.valueOf(match));
                 }
             }
         }

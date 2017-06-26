@@ -44,7 +44,7 @@ public class AudioFormatSearch extends Criteria<FormatEnum, String> {
         final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
         final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
         idMapList.add(map);
-        return SearchHelper.isMatching(idMapList, 1);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
@@ -67,21 +67,21 @@ public class AudioFormatSearch extends Criteria<FormatEnum, String> {
                     final String codec = this.formatEnum.getName();
                     final boolean match = conditionMatch(codec, format, this.operation);
                     if (!result.containsKey(idAsInteger)) {
-                        result.put(idAsInteger, match);
+                        result.put(idAsInteger, Boolean.valueOf(match));
                     }
                 }
             } else {
                 final String codec = this.formatEnum.getName();
                 boolean match = conditionMatch(codec, formatCommercial, this.operation);
                 if (!result.containsKey(idAsInteger)) {
-                    result.put(idAsInteger, match);
+                    result.put(idAsInteger, Boolean.valueOf(match));
                 }
                 if (!match) {
                     final String format = jMetaDataAudio.getFormatAsString();
                     if (format != null) {
                         match = conditionMatch(codec, format, this.operation);
                         if (!result.containsKey(idAsInteger)) {
-                            result.put(idAsInteger, match);
+                            result.put(idAsInteger, Boolean.valueOf(match));
                         }
                     }
                 }

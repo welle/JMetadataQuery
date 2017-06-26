@@ -47,7 +47,7 @@ public class FileExtensionSearch extends Criteria<FileExtensionSearchEnum, Strin
         final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
         final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
         idMapList.add(map);
-        return SearchHelper.isMatching(idMapList, 1);
+        return SearchHelper.isMatching(idMapList, 1, false);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class FileExtensionSearch extends Criteria<FileExtensionSearchEnum, Strin
             for (final String extension : this.extensionList) {
                 final boolean match = conditionMatch(extensionFile, extension, this.operation);
                 if (!result.containsKey(idAsInteger)) {
-                    result.put(idAsInteger, match);
+                    result.put(idAsInteger, Boolean.valueOf(match));
                 }
             }
         }

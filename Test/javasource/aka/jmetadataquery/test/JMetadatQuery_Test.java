@@ -148,22 +148,37 @@ public class JMetadatQuery_Test {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
 
-        final AndSearch sameStreamAndSearch = new AndSearch(true);
+        AndSearch sameStreamAndSearch = new AndSearch(true);
         AudioProfileSearch audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
         sameStreamAndSearch.addSearch(audioProfileSearch);
         audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
         sameStreamAndSearch.addSearch(audioProfileSearch);
         boolean result = sameStreamAndSearch.isFileMatchingCriteria(file);
-        Assert.assertFalse(result);
+        Assert.assertTrue(result);
 
+        sameStreamAndSearch = new AndSearch(true);
         audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
         sameStreamAndSearch.addSearch(audioProfileSearch);
-
-        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
+        audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3_ATMOS);
         sameStreamAndSearch.addSearch(audioProfileSearch);
-
         result = sameStreamAndSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
+
+        sameStreamAndSearch = new AndSearch(true);
+        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.AC_3);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+        result = sameStreamAndSearch.isFileMatchingCriteria(file);
+        Assert.assertFalse(result);
+
+        sameStreamAndSearch = new AndSearch(true);
+        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.AC_3);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.AC_3_ATMOS);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+        result = sameStreamAndSearch.isFileMatchingCriteria(file);
+        Assert.assertFalse(result);
     }
 
     @Test

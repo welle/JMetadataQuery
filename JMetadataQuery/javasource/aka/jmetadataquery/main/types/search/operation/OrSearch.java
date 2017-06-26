@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
 import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchInterface;
 
 /**
@@ -59,8 +60,7 @@ public class OrSearch extends AsbtractOperatorSearch {
                 final @NonNull Map<@NonNull Integer, Boolean> idList = operatorSearchInterface.getStreamsIDInFileMatchingCriteria(currentFile);
                 idMapList.add(idList);
             }
-            final @NonNull List<@NonNull Boolean> resultList = getResultList(idMapList, getQueries().size());
-            isFileMatchingCriteria = !resultList.isEmpty();
+            isFileMatchingCriteria = SearchHelper.isMatching(idMapList, getQueries().size(), false);
         } else {
             for (final OperatorSearchInterface operatorSearchInterface : getQueries()) {
                 isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) || isFileMatchingCriteria;

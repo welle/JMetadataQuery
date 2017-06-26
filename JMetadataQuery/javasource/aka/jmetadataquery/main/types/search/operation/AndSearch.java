@@ -60,7 +60,7 @@ public class AndSearch extends AsbtractOperatorSearch {
                 final @NonNull Map<@NonNull Integer, Boolean> idList = operatorSearchInterface.getStreamsIDInFileMatchingCriteria(currentFile);
                 idMapList.add(idList);
             }
-            isFileMatchingCriteria = SearchHelper.isMatching(idMapList, getQueries().size());
+            isFileMatchingCriteria = SearchHelper.isMatching(idMapList, getQueries().size(), true);
         } else {
             for (final OperatorSearchInterface operatorSearchInterface : getQueries()) {
                 isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) && isFileMatchingCriteria;

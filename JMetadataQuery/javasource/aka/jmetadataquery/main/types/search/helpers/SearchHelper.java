@@ -17,8 +17,8 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public class SearchHelper {
 
-    public static boolean isMatching(@NonNull final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList, final int size) {
-        final @NonNull List<@NonNull Boolean> resultList = getResultList(idMapList, size);
+    public static boolean isMatching(@NonNull final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList, final int size, final boolean allMustMatch) {
+        final @NonNull List<@NonNull Boolean> resultList = getResultList(idMapList, size, allMustMatch);
 
         return getMatchingResult(resultList);
     }
@@ -44,7 +44,7 @@ public class SearchHelper {
      * @return list of result
      */
     @NonNull
-    public static List<@NonNull Boolean> getResultList(@NonNull final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList, final int size) {
+    public static List<@NonNull Boolean> getResultList(@NonNull final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList, final int size, final boolean allMustMatch) {
         final List<@NonNull Boolean> result = new ArrayList<>();
 
         // Check if at least one of Integer (stream Id) is in each map and has same boolean
@@ -77,9 +77,14 @@ public class SearchHelper {
 
         // Check if all bool in list in idBooleanListMap are the same
         for (final Entry<@NonNull Integer, List<Boolean>> entry : idBooleanListMap.entrySet()) {
-            final boolean allEqual = entry.getValue().stream().distinct().limit(2).count() <= 1;
-            if (allEqual) {
-                result.add(entry.getValue().get(0));
+            if (allMustMatch) {
+                final boolean allEqual = entry.getValue().stream().distinct().limit(2).count() <= 1;
+                if (allEqual) {
+                    result.add(entry.getValue().get(0));
+                }
+            } else {
+                final boolean atLeastOne = entry.getValue().contains(Boolean.valueOf(true));
+                result.add(Boolean.valueOf(atLeastOne));
             }
         }
 
