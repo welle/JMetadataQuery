@@ -53,6 +53,22 @@ public class JMetadatQuery_Test {
     }
 
     @Test
+    public void testMultiple() throws URISyntaxException {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
+
+        final AndSearch subRootAndSearch = new AndSearch(true);
+        // Get all required
+        final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.AVI);
+        subRootAndSearch.addSearch(fileExtensionSearch);
+        final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
+        subRootAndSearch.addSearch(fileExtensionSearch2);
+
+        final boolean result = subRootAndSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+    }
+
+    @Test
     public void testANDSearch() throws URISyntaxException {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
