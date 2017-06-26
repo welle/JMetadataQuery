@@ -1,7 +1,9 @@
 package aka.jmetadataquery.main.types.search.general;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -10,6 +12,7 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
 
 /**
  * General duration search.
@@ -35,23 +38,27 @@ public class GeneralDurationSearch extends Criteria<Long, Long> {
 
     @Override
     public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
-        final boolean result = !getStreamsIDInFileMatchingCriteria(jMetaData).isEmpty();
-        return result;
+        final Map<@NonNull Integer, Boolean> map = getStreamsIDInFileMatchingCriteria(jMetaData);
+        final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
+        idMapList.add(map);
+        return SearchHelper.isMatching(idMapList, 1);
     }
 
     @Override
-    public @NonNull Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
-        final Set<@NonNull Integer> result = new HashSet<>();
+    public @NonNull Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+        final Map<@NonNull Integer, Boolean> result = new HashMap<>();
 
+        int i = -1;
         final Long durationGeneral = jMetaData.getGeneral().getDurationAsLong();
         if (durationGeneral != null) {
             Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
             if (idAsInteger == null) {
-                idAsInteger = Integer.valueOf(-1);
+                idAsInteger = Integer.valueOf(i);
+                i--;
             }
             final boolean match = conditionMatch(durationGeneral, this.duration, this.operation);
-            if (match) {
-                result.add(idAsInteger);
+            if (!result.containsKey(idAsInteger)) {
+                result.put(idAsInteger, match);
             }
         }
         return result;

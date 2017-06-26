@@ -1,9 +1,8 @@
 package aka.jmetadataquery.main.types.search;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,7 +48,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
      * @return List of stream id founded
      */
     @NonNull
-    public abstract Set<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull JMetaData jMetaData);
+    public abstract Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull JMetaData jMetaData);
 
     /**
      * Is the given file match the given query.
@@ -59,12 +58,11 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
      */
     @Override
     @NonNull
-    public List<@NonNull Integer> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
-        final List<@NonNull Integer> result = new ArrayList<>();
+    public Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
+        final Map<@NonNull Integer, Boolean> result = new HashMap<>();
         final JMetaData jMetaData = new JMetaData();
-        jMetaData.open(currentFile);
         if (jMetaData.open(currentFile)) {
-            result.addAll(getStreamsIDInFileMatchingCriteria(jMetaData));
+            result.putAll(getStreamsIDInFileMatchingCriteria(jMetaData));
         }
         jMetaData.close();
 
@@ -93,7 +91,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
     }
 
     /**
-     * Are the both param match the criteria ?
+     * Are the both parameters match the criteria ?
      *
      * @param wantedValue
      * @param currentValue

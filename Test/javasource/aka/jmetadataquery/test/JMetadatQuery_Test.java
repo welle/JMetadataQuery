@@ -37,6 +37,7 @@ import aka.jmetadataquery.main.types.search.video.VideoFormatSearch;
 import aka.jmetadataquery.main.types.search.video.VideoMaxBitRateSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
+@SuppressWarnings("javadoc")
 public class JMetadatQuery_Test {
 
     @Test
@@ -46,7 +47,7 @@ public class JMetadatQuery_Test {
 
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.AVI);
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
-        final OrSearch orSearch = new OrSearch(fileExtensionSearch, fileExtensionSearch2);
+        final OrSearch orSearch = new OrSearch(false, fileExtensionSearch, fileExtensionSearch2);
 
         final boolean result = orSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -70,11 +71,25 @@ public class JMetadatQuery_Test {
         final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
         final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
 
-        final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
-        final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
+        FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
+        FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         AndSearch andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
 
         boolean result = andSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
+        fileExtensionSearch2 = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
+        andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
+
+        result = andSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
+        fileExtensionSearch2 = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
+        andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
+
+        result = andSearch.isFileMatchingCriteria(file);
         Assert.assertFalse(result);
 
         final AudioCompressionModeSearch audioCompressionModeSearch = new AudioCompressionModeSearch(Op.EQUAL_TO, CompressionModeEnum.LOSSY);
@@ -123,8 +138,31 @@ public class JMetadatQuery_Test {
         boolean result = audioProfileSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
 
-        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
+        audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.LAYER_3);
         result = audioProfileSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testMultipleSearch() throws URISyntaxException {
+        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
+        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
+
+        final AndSearch sameStreamAndSearch = new AndSearch(true);
+        AudioProfileSearch audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+        boolean result = sameStreamAndSearch.isFileMatchingCriteria(file);
+        Assert.assertFalse(result);
+
+        audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+
+        audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
+        sameStreamAndSearch.addSearch(audioProfileSearch);
+
+        result = sameStreamAndSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
     }
 
