@@ -1,10 +1,4 @@
-<project name="Example Ant Build with JaCoCo" default="rebuild"
-	xmlns:jacoco="antlib:org.jacoco.ant">
-
-	<description>
-		Example Ant build file that demonstrates how a JaCoCo coverage report
-		can be itegrated into an existing build in three simple steps.
-	</description>
+<project name="Ant Build with JaCoCo" default="rebuild" xmlns:jacoco="antlib:org.jacoco.ant">
 
 	<property name="debuglevel" value="source,lines,vars" />
 	<property name="src.dir" location="./JMetadataQuery/javasource" />
@@ -15,7 +9,6 @@
 	<property name="result.report.dir" location="${result.dir}/site/jacoco" />
 	<property name="result.exec.file" location="${result.dir}/jacoco/jacoco.exec" />
 
-	<!-- Step 1: Import JaCoCo Ant tasks -->
 	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
 		<classpath path="libTest/org.jacoco.ant-0.7.9-nodeps.jar" />
 	</taskdef>
@@ -27,27 +20,29 @@
 	<target name="compile">
 		<mkdir dir="${result.classes.dir}" />
 		<javac encoding="8859_1" destdir="${result.classes.dir}" debug="true" debuglevel="${debuglevel}" source="1.8" target="1.8" includeantruntime="false">
-            <src path="JMetadataQuery/javasource" />
-            <classpath refid="JMetadataQuery.classpath" />
-        </javac>
+			<src path="JMetadataQuery/javasource" />
+			<classpath refid="JMetadataQuery.classpath" />
+		</javac>
 
-        <javac encoding="8859_1" destdir="${result.test-classes.dir}" debug="true" debuglevel="${debuglevel}" source="1.8" target="1.8" includeantruntime="false">
-            <src path="Test/javasource" />
-        	<classpath refid="JMetadataQuery.classpath" />
-        	<classpath refid="JMetadataQueryTest.classpath" />
-        </javac>
-		<javac srcdir="${src.dir}" destdir="${result.classes.dir}"
-			debug="true" includeantruntime="false" />
+		<javac encoding="8859_1" destdir="${result.test-classes.dir}" debug="true" debuglevel="${debuglevel}" source="1.8" target="1.8" includeantruntime="false">
+			<src path="Test/javasource" />
+			<classpath refid="JMetadataQuery.classpath" />
+			<classpath refid="JMetadataQueryTest.classpath" />
+		</javac>
+		<javac srcdir="${src.dir}" destdir="${result.classes.dir}" debug="true" includeantruntime="false" />
 	</target>
 
 
 	<target name="unittest">
-	   <mkdir dir="reports/junit/"/>
-        <copy file="Test/videosamples/Sintel_DivXPlus_6500kbps.mkv" tofile="${result.classes.dir}/aka/jmetadataquery/test/Sintel_DivXPlus_6500kbps.mkv" overwrite="false" verbose="true" />
-		<!-- Step 2: Wrap test execution with the JaCoCo coverage task -->
+		<path id="JUnit.classpath">
+			<pathelement location="${result.test-classes.dir}" />
+
+			<path refid="JMetadataQueryTest.classpath" />
+		</path>
+		<delete dir="reports/junit/" />
+		<mkdir dir="reports/junit/" />
 		<jacoco:coverage destfile="${result.exec.file}">
-			<junit fork="yes" forkmode="once" printsummary="yes"
-				haltonfailure="no" showoutput="yes">
+			<junit fork="yes" forkmode="once" printsummary="yes" haltonfailure="no" showoutput="yes">
 				<jvmarg value="-noverify" />
 
 				<assertions>
@@ -55,15 +50,8 @@
 				</assertions>
 				<jvmarg value="-Xms256m" />
 				<jvmarg value="-Xmx2048m" />
-				<!-- Specify the name of the coverage data file to use. The value specified 
-					below is the default. -->
 
-				<classpath refid="JMetadataQuery.classpath" />
-				<classpath refid="JMetadataQueryTest.classpath" />
-				<classpath>
-					<pathelement location="${result.test-classes.dir}" />
-					<pathelement location="${result.classes.dir}/aka/jmetadataquery/test/Sintel_DivXPlus_6500kbps.mkv" />
-				</classpath>
+				<classpath refid="JUnit.classpath" />
 				<formatter type="xml" />
 
 				<batchtest todir="reports/junit/" haltonfailure="no">
@@ -77,16 +65,19 @@
 	</target>
 
 	<target name="report">
-		<!-- Step 3: Create coverage report -->
-		<jacoco:report>
+		<path id="JUnit.classpath">
+			<pathelement location="${result.test-classes.dir}" />
 
-			<!-- This task needs the collected execution data and ... -->
+			<path refid="JMetadataQueryTest.classpath" />
+		</path>
+		<delete dir="reports/junit/" />
+		<mkdir dir="reports/junit/" />
+		<jacoco:report>
 			<executiondata>
 				<file file="${result.exec.file}" />
 			</executiondata>
 
-			<!-- the class files and optional source files ... -->
-			<structure name="JaCoCo Ant Example">
+			<structure name="JaCoCo Ant">
 				<classfiles>
 					<fileset dir="${result.classes.dir}" />
 				</classfiles>
@@ -95,7 +86,6 @@
 				</sourcefiles>
 			</structure>
 
-			<!-- to produce reports in different formats. -->
 			<html destdir="${result.report.dir}" />
 			<csv destfile="${result.report.dir}/report.csv" />
 			<xml destfile="${result.report.dir}/report.xml" />

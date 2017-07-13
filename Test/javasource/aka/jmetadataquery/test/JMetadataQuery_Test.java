@@ -1,9 +1,14 @@
 package aka.jmetadataquery.test;
 
 import java.io.File;
-import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.management.RuntimeErrorException;
+
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
@@ -13,7 +18,6 @@ import aka.jmetadata.main.constants.codecs.VideoMatroskaCodecIdEnum;
 import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadata.main.constants.profile.AudioProfileEnum;
 import aka.jmetadata.main.constants.video.AspectRatio;
-import aka.jmetadata.test.JMetaDataMenu_Test;
 import aka.jmetadataquery.main.types.constants.CompressionModeEnum;
 import aka.jmetadataquery.main.types.constants.LanguageEnum;
 import aka.jmetadataquery.main.types.constants.file.FileExtensionSearchEnum;
@@ -39,12 +43,26 @@ import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
 @SuppressWarnings("javadoc")
 public class JMetadataQuery_Test {
+    private static @NonNull final Logger LOGGER = Logger.getLogger(JMetadataQuery_Test.class.getName());
+
+    private static File file;
+
+    /**
+     * Initialize test.
+     */
+    @BeforeClass
+    public static void beforeUnit() {
+        try {
+            final String filePath = new File("").getAbsolutePath();
+            file = new File(filePath.concat("/Test/videosamples/Sintel_DivXPlus_6500kbps.mkv"));
+        } catch (final Throwable e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new RuntimeErrorException(null, "Can not find file.");
+        }
+    }
 
     @Test
-    public void testORSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testORSearch() {
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.AVI);
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         final OrSearch orSearch = new OrSearch(false, fileExtensionSearch, fileExtensionSearch2);
@@ -54,10 +72,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testMultiple() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testMultiple() {
         final AndSearch subRootAndSearch = new AndSearch(true);
         // Get all required
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.AVI);
@@ -70,10 +85,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testANDSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testANDSearch() {
         final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         final AndSearch andSearch = new AndSearch(false, fileExtensionSearch, fileExtensionSearch2);
@@ -83,10 +95,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testSameStreamSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testSameStreamSearch() {
         FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         AndSearch andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
@@ -117,10 +126,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testFileExtensionSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testFileExtensionSearch() {
         FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         boolean result = fileExtensionSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -131,10 +137,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testAudioCompressionModeSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testAudioCompressionModeSearch() {
         AudioCompressionModeSearch audioCompressionModeSearch = new AudioCompressionModeSearch(Op.NOT_EQUAL_TO, CompressionModeEnum.LOSSLESS);
         boolean result = audioCompressionModeSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -146,10 +149,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testAudioProfileSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testAudioProfileSearch() {
         AudioProfileSearch audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
         boolean result = audioProfileSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -160,10 +160,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testMultipleSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testMultipleSearch() {
         AndSearch sameStreamAndSearch = new AndSearch(true);
         AudioProfileSearch audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
         sameStreamAndSearch.addSearch(audioProfileSearch);
@@ -198,10 +195,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testVideoFormatSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testVideoFormatSearch() {
         VideoFormatSearch videoFormatSearch = new VideoFormatSearch(Op.NOT_EQUAL_TO, FormatEnum.HEVC);
 
         boolean result = videoFormatSearch.isFileMatchingCriteria(file);
@@ -213,10 +207,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testFileSizeSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testFileSizeSearch() {
         FileSizeSearch videoFormatSearch = new FileSizeSearch(Op.NOT_EQUAL_TO, Long.valueOf(6299255));
         boolean result = videoFormatSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -251,10 +242,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testVideoMaxBitRateSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testVideoMaxBitRateSearch() {
         VideoMaxBitRateSearch videoMaxBitRateSearch = new VideoMaxBitRateSearch(Op.NOT_EQUAL_TO, Long.valueOf(19999745));
 
         boolean result = videoMaxBitRateSearch.isFileMatchingCriteria(file);
@@ -290,10 +278,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testAudioBitRateSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testAudioBitRateSearch() {
         AudioBitRateSearch audioBitRateSearch = new AudioBitRateSearch(Op.NOT_EQUAL_TO, Long.valueOf(192001));
         boolean result = audioBitRateSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -328,10 +313,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testAudioChannelSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testAudioChannelSearch() {
         AudioChannelSearch audioChannelSearch = new AudioChannelSearch(Op.NOT_EQUAL_TO, Long.valueOf(3));
 
         boolean result = audioChannelSearch.isFileMatchingCriteria(file);
@@ -368,10 +350,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testGeneralDurationSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testGeneralDurationSearch() {
         GeneralDurationSearch generalDurationSearch = new GeneralDurationSearch(Op.NOT_EQUAL_TO, Long.valueOf(898169));
 
         boolean result = generalDurationSearch.isFileMatchingCriteria(file);
@@ -407,10 +386,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testAudioFormatSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testAudioFormatSearch() {
         AudioFormatSearch audioFormatSearch = new AudioFormatSearch(Op.NOT_EQUAL_TO, FormatEnum.AAF);
         boolean result = audioFormatSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -428,10 +404,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testVideoCodecSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testVideoCodecSearch() {
         VideoCodecIdSearch videoCodecSearch = new VideoCodecIdSearch(Op.NOT_EQUAL_TO, VideoMatroskaCodecIdEnum.V_MPEG4_IS0_ASP);
         boolean result = videoCodecSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -442,10 +415,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testAudioLanguageSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testAudioLanguageSearch() {
         AudioLanguageSearch audioLanguageSearch = new AudioLanguageSearch(Op.NOT_EQUAL_TO, LanguageEnum.FRENCH);
         boolean result = audioLanguageSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -456,10 +426,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testTextLanguageSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testTextLanguageSearch() {
         TextLanguageSearch textLanguageSearch = new TextLanguageSearch(Op.NOT_EQUAL_TO, LanguageEnum.FRENCH);
         boolean result = textLanguageSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -477,10 +444,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testAudioCodecSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testAudioCodecSearch() {
         AudioCodecIdSearch audioCodecIdSearch = new AudioCodecIdSearch(Op.NOT_EQUAL_TO, AudioMatroskaCodecIdEnum.A_AAC_MPEG2_LC);
         boolean result = audioCodecIdSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
@@ -498,10 +462,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testVideoResolutionSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testVideoResolutionSearch() {
         VideoResolutionSearch videoResolutionSearch = new VideoResolutionSearch(Op.NOT_EQUAL_TO, VideoResolutionSearchEnum.R_720);
         boolean result = videoResolutionSearch.isFileMatchingCriteria(file);
         Assert.assertFalse(result);
@@ -516,10 +477,7 @@ public class JMetadataQuery_Test {
     }
 
     @Test
-    public void testVideoAspectRatioSearch() throws URISyntaxException {
-        final ClassLoader classLoader = JMetaDataMenu_Test.class.getClassLoader();
-        final File file = new File(classLoader.getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
-
+    public void testVideoAspectRatioSearch() {
         VideoAspectRatioSearch videoAspectRatioSearch = new VideoAspectRatioSearch(Op.NOT_EQUAL_TO, AspectRatio.AS_2_20);
         boolean result = videoAspectRatioSearch.isFileMatchingCriteria(file);
         Assert.assertFalse(result);

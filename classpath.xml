@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <project name="JMetadataQuery Classpath">
 
-    <path id="JMetadataQuery.classpath">
-        <fileset dir="libs/">
-            <include name="*.jar" />
-        </fileset>
-    </path>
-    <path id="JMetadataQueryTest.classpath">
-        <fileset dir="libs/">
-            <include name="*.jar" />
-        </fileset>
-        <fileset dir="libTest/">
-            <include name="*.jar" />
-        </fileset>
-    </path>
+	<path id="JMetadataQuery.classpath">
+		<fileset dir="libs/">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<path id="JMetadataQueryTest.classpath">
+		<fileset dir="libs/">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="build/">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="libTest/">
+			<include name="*.jar" />
+		</fileset>
+	</path>
 
 </project>
