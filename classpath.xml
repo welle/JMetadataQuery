@@ -6,5 +6,13 @@
             <include name="*.jar" />
         </fileset>
     </path>
+    <path id="JMetadataQueryTest.classpath">
+        <fileset dir="libs/">
+            <include name="*.jar" />
+        </fileset>
+        <fileset dir="libTest/">
+            <include name="*.jar" />
+        </fileset>
+    </path>
 
 </project>

@@ -38,7 +38,7 @@ import aka.jmetadataquery.main.types.search.video.VideoMaxBitRateSearch;
 import aka.jmetadataquery.main.types.search.video.VideoResolutionSearch;
 
 @SuppressWarnings("javadoc")
-public class JMetadatQuery_Test {
+public class JMetadataQuery_Test {
 
     @Test
     public void testORSearch() throws URISyntaxException {
