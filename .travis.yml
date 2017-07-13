@@ -3,7 +3,7 @@ sudo: false
 before_script:
   # Ant build tool configuration
   - cp build.properties.sample build.properties
-  - mkdir ./JMetaDataQuery/classes
+  - mkdir ./JMetadataQuery/classes
   - sed -i -e "s,jars_dest =,jars_dest =./," build.properties
 script:
   # other script steps might be done before running the actual analysis
@@ -11,7 +11,7 @@ script:
   - sonar-scanner
 env:
   global:
-    - classes=JMetaDataQuery/classes
+    - classes=JMetadataQuery/classes
     - jars_dest=./
 jdk:
   - oraclejdk8
