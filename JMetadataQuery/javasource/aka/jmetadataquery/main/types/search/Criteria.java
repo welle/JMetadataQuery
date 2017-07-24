@@ -1,6 +1,7 @@
 package aka.jmetadataquery.main.types.search;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -22,6 +23,8 @@ import aka.jmetadataquery.main.types.search.operation.interfaces.OperatorSearchI
  * @param <T> Type for compare
  */
 public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSearchInterface {
+
+    private static @NonNull final Logger LOGGER = Logger.getLogger(Criteria.class.getName());
 
     /**
      * Constructor.
@@ -60,11 +63,15 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
     @NonNull
     public Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
         final Map<@NonNull Integer, Boolean> result = new HashMap<>();
-        final JMetaData jMetaData = new JMetaData();
-        if (jMetaData.open(currentFile)) {
-            result.putAll(getStreamsIDInFileMatchingCriteria(jMetaData));
+        try {
+            final JMetaData jMetaData = new JMetaData();
+            if (jMetaData.open(currentFile)) {
+                result.putAll(getStreamsIDInFileMatchingCriteria(jMetaData));
+            }
+            jMetaData.close();
+        } catch (IllegalArgumentException | IOException e) {
+            LOGGER.logp(Level.SEVERE, "Criteria", "getStreamsIDInFileMatchingCriteria", e.getMessage(), e);
         }
-        jMetaData.close();
 
         return result;
     }
@@ -79,13 +86,17 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
     public boolean isFileMatchingCriteria(@NonNull final File currentFile) {
         boolean isFileMatchingCriteria = true;
         final JMetaData jMetaData = new JMetaData();
-        if (jMetaData.open(currentFile)) {
-            isFileMatchingCriteria = matchCriteria(jMetaData);
-        } else {
-            Logger.getAnonymousLogger().logp(Level.SEVERE, "Criteria", "isFileMatchingCriteria", "Can not open file!");
-            throw new RuntimeException();
+        try {
+            if (jMetaData.open(currentFile)) {
+                isFileMatchingCriteria = matchCriteria(jMetaData);
+            } else {
+                Logger.getAnonymousLogger().logp(Level.SEVERE, "Criteria", "isFileMatchingCriteria", "Can not open file!");
+                throw new RuntimeException();
+            }
+            jMetaData.close();
+        } catch (IllegalArgumentException | IOException e) {
+            LOGGER.logp(Level.SEVERE, "Criteria", "isFileMatchingCriteria", e.getMessage(), e);
         }
-        jMetaData.close();
 
         return isFileMatchingCriteria;
     }
