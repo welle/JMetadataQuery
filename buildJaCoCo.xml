@@ -36,7 +36,7 @@
 	<target name="unittest">
 		<path id="JUnit.classpath">
 			<pathelement location="${result.test-classes.dir}" />
-
+			<pathelement location="Test/videosamples/" />
 			<path refid="JMetadataQueryTest.classpath" />
 		</path>
 		<delete dir="reports/junit/" />
@@ -70,8 +70,6 @@
 
 			<path refid="JMetadataQueryTest.classpath" />
 		</path>
-		<delete dir="reports/junit/" />
-		<mkdir dir="reports/junit/" />
 		<jacoco:report>
 			<executiondata>
 				<file file="${result.exec.file}" />
