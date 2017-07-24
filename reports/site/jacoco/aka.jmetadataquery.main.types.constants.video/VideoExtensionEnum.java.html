@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VideoExtensionEnum.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Ant</a> &gt; <a href="index.source.html" class="el_package">aka.jmetadataquery.main.types.constants.video</a> &gt; <span class="el_source">VideoExtensionEnum.java</span></div><h1>VideoExtensionEnum.java</h1><pre class="source lang-java linenums">package aka.jmetadataquery.main.types.constants.video;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
+/**
+ * Enum of available video extension.
+ *
+ * @author charlottew
+ */
+<span class="pc" id="L14">public enum VideoExtensionEnum {</span>
+
+    /**
+     * Matroska.
+     */
+<span class="fc" id="L19">    MKV(&quot;mkv&quot;, &quot;Matroska&quot;),</span>
+    /**
+     * AVI.
+     */
+<span class="fc" id="L23">    AVI(&quot;avi&quot;, &quot;AVI&quot;),</span>
+    /**
+     * Windows Media Video.
+     */
+<span class="fc" id="L27">    WMV(&quot;wmv&quot;, &quot;Windows Media Video&quot;),</span>
+    /**
+     * MP4.
+     */
+<span class="fc" id="L31">    MP4(&quot;mp4&quot;, &quot;MPEG-4 Part 14 (MP4)&quot;),</span>
+    /**
+     * M4V.
+     */
+<span class="fc" id="L35">    M4V(&quot;m4v&quot;, &quot;MPEG-4 Part 14 (MP4)&quot;),</span>
+    /**
+     * MPEG.
+     */
+<span class="fc" id="L39">    MPG(&quot;mpg&quot;, &quot;MPEG&quot;),</span>
+    /**
+     * MPEG.
+     */
+<span class="fc" id="L43">    MP2(&quot;mp2&quot;, &quot;MPEG&quot;),</span>
+    /**
+     * MPEG.
+     */
+<span class="fc" id="L47">    MPEG(&quot;mpeg&quot;, &quot;MPEG&quot;),</span>
+    /**
+     * MPEG.
+     */
+<span class="fc" id="L51">    M2V(&quot;m2v&quot;, &quot;MPEG&quot;);</span>
+
+    private @NonNull String extension;
+    private @NonNull String description;
+<span class="fc" id="L55">    private static @NonNull final List&lt;@NonNull String&gt; ALL_EXTENSIONS = new ArrayList&lt;&gt;();</span>
+    static {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (final @NonNull VideoExtensionEnum videoExtensionEnum : VideoExtensionEnum.values()) {</span>
+<span class="fc" id="L58">            ALL_EXTENSIONS.add(videoExtensionEnum.extension);</span>
+        }
+<span class="fc" id="L60">    }</span>
+
+<span class="fc" id="L62">    VideoExtensionEnum(@NonNull final String extension, @NonNull final String description) {</span>
+<span class="fc" id="L63">        this.extension = extension;</span>
+<span class="fc" id="L64">        this.description = description;</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Get the value of the ENUM.
+     *
+     * @return the value of the ENUM
+     */
+    @NonNull
+    public String getValue() {
+<span class="fc" id="L74">        return this.extension;</span>
+    }
+
+    /**
+     * Get the description of the ENUM.
+     *
+     * @return the description of the ENUM
+     */
+    @NonNull
+    public String getDescription() {
+<span class="nc" id="L84">        return this.description;</span>
+    }
+
+    /**
+     * Get VideoExtensionEnum corresponding to given string.
+     *
+     * @param extensionStr
+     * @return corresponding VideoExtensionEnum
+     */
+    @Nullable
+    public VideoExtensionEnum geVideoExtensionEnum(@Nullable final String extensionStr) {
+<span class="nc" id="L95">        VideoExtensionEnum result = null;</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (extensionStr != null) {</span>
+<span class="nc" id="L97">            final String trimmedLanguage = extensionStr.trim();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (trimmedLanguage.length() &gt; 0) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                for (final VideoExtensionEnum videoExtensionEnum : VideoExtensionEnum.values()) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">                    if (videoExtensionEnum.getValue().equalsIgnoreCase(trimmedLanguage)) {</span>
+<span class="nc" id="L101">                        result = videoExtensionEnum;</span>
+                        // found, just break
+<span class="nc" id="L103">                        break;</span>
+                    }
+                }
+            }
+        }
+
+<span class="nc" id="L109">        return result;</span>
+    }
+
+    /**
+     * Get all extensions.
+     *
+     * @return all available extensions
+     */
+    @NonNull
+    public static List&lt;@NonNull String&gt; getAllExtensions() {
+<span class="nc" id="L119">        return ALL_EXTENSIONS;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

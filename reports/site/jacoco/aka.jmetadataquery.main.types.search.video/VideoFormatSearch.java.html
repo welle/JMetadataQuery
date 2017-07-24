@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VideoFormatSearch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Ant</a> &gt; <a href="index.source.html" class="el_package">aka.jmetadataquery.main.types.search.video</a> &gt; <span class="el_source">VideoFormatSearch.java</span></div><h1>VideoFormatSearch.java</h1><pre class="source lang-java linenums">package aka.jmetadataquery.main.types.search.video;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
+import com.healthmarketscience.sqlbuilder.BinaryCondition;
+import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
+
+import aka.jmetadata.main.JMetaData;
+import aka.jmetadata.main.JMetaDataVideo;
+import aka.jmetadata.main.constants.format.FormatEnum;
+import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
+
+/**
+ * Video Format search.
+ *
+ * @author charlottew
+ */
+public class VideoFormatSearch extends Criteria&lt;FormatEnum, String&gt; {
+
+    private final Op operation;
+    private @NonNull final FormatEnum formatEnum;
+
+    /**
+     * Constructor.
+     *
+     * @param operation
+     * @param formatEnum
+     */
+    public VideoFormatSearch(final BinaryCondition.Op operation, @NonNull final FormatEnum formatEnum) {
+<span class="fc" id="L37">        super(formatEnum);</span>
+<span class="fc" id="L38">        this.operation = operation;</span>
+<span class="fc" id="L39">        this.formatEnum = formatEnum;</span>
+<span class="fc" id="L40">    }</span>
+
+    @Override
+    public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
+<span class="nc" id="L44">        final Map&lt;@NonNull Integer, Boolean&gt; map = getStreamsIDInFileMatchingCriteria(jMetaData);</span>
+<span class="nc" id="L45">        final List&lt;@NonNull Map&lt;@NonNull Integer, Boolean&gt;&gt; idMapList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L46">        idMapList.add(map);</span>
+<span class="nc" id="L47">        return SearchHelper.isMatching(idMapList, 1, false);</span>
+    }
+
+    @Override
+    public @NonNull Map&lt;@NonNull Integer, Boolean&gt; getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+<span class="nc" id="L52">        final Map&lt;@NonNull Integer, Boolean&gt; result = new HashMap&lt;&gt;();</span>
+
+<span class="nc" id="L54">        int i = -1;</span>
+        @NonNull
+<span class="nc" id="L56">        final List&lt;@NonNull JMetaDataVideo&gt; videoStreams = jMetaData.getVideoStreams();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        for (final @NonNull JMetaDataVideo jMetaDataVideo : videoStreams) {</span>
+<span class="nc" id="L58">            Integer idAsInteger = jMetaDataVideo.getIDAsInteger();</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (idAsInteger == null) {</span>
+<span class="nc" id="L60">                idAsInteger = Integer.valueOf(i);</span>
+<span class="nc" id="L61">                i--;</span>
+            }
+            @Nullable
+<span class="nc" id="L64">            final String formatCommercial = jMetaDataVideo.getFormatCommercialAsString();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (formatCommercial == null) {</span>
+<span class="nc" id="L66">                final String format = jMetaDataVideo.getFormatAsString();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (format != null) {</span>
+<span class="nc" id="L68">                    final String codec = this.formatEnum.getName();</span>
+<span class="nc" id="L69">                    final boolean match = conditionMatch(codec, format, this.operation);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">                    if (!result.containsKey(idAsInteger)) {</span>
+<span class="nc" id="L71">                        result.put(idAsInteger, Boolean.valueOf(match));</span>
+                    }
+                }
+<span class="nc" id="L74">            } else {</span>
+<span class="nc" id="L75">                final String codec = this.formatEnum.getName();</span>
+<span class="nc" id="L76">                boolean match = conditionMatch(codec, formatCommercial, this.operation);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                if (!result.containsKey(idAsInteger)) {</span>
+<span class="nc" id="L78">                    result.put(idAsInteger, Boolean.valueOf(match));</span>
+                }
+<span class="nc bnc" id="L80" title="All 2 branches missed.">                if (!match) {</span>
+<span class="nc" id="L81">                    final String format = jMetaDataVideo.getFormatAsString();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                    if (format != null) {</span>
+<span class="nc" id="L83">                        match = conditionMatch(codec, format, this.operation);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                        if (!result.containsKey(idAsInteger)) {</span>
+<span class="nc" id="L85">                            result.put(idAsInteger, Boolean.valueOf(match));</span>
+                        }
+                    }
+                }
+            }
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

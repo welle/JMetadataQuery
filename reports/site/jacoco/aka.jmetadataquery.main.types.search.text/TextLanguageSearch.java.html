@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextLanguageSearch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Ant</a> &gt; <a href="index.source.html" class="el_package">aka.jmetadataquery.main.types.search.text</a> &gt; <span class="el_source">TextLanguageSearch.java</span></div><h1>TextLanguageSearch.java</h1><pre class="source lang-java linenums">package aka.jmetadataquery.main.types.search.text;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import com.healthmarketscience.sqlbuilder.BinaryCondition;
+import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
+
+import aka.jmetadata.main.JMetaData;
+import aka.jmetadata.main.JMetaDataText;
+import aka.jmetadataquery.main.types.constants.LanguageEnum;
+import aka.jmetadataquery.main.types.search.Criteria;
+import aka.jmetadataquery.main.types.search.helpers.SearchHelper;
+
+/**
+ * Text language search.
+ *
+ * @author charlottew
+ */
+public class TextLanguageSearch extends Criteria&lt;LanguageEnum, String&gt; {
+
+    private final Op operation;
+    private @NonNull final LanguageEnum languageEnum;
+
+    /**
+     * Constructor.
+     *
+     * @param operation
+     * @param languageEnum
+     */
+    public TextLanguageSearch(final BinaryCondition.Op operation, @NonNull final LanguageEnum languageEnum) {
+<span class="fc" id="L36">        super(languageEnum);</span>
+<span class="fc" id="L37">        this.operation = operation;</span>
+<span class="fc" id="L38">        this.languageEnum = languageEnum;</span>
+<span class="fc" id="L39">    }</span>
+
+    @Override
+    public boolean matchCriteria(@NonNull final JMetaData jMetaData) {
+<span class="nc" id="L43">        final Map&lt;@NonNull Integer, Boolean&gt; map = getStreamsIDInFileMatchingCriteria(jMetaData);</span>
+<span class="nc" id="L44">        final List&lt;@NonNull Map&lt;@NonNull Integer, Boolean&gt;&gt; idMapList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L45">        idMapList.add(map);</span>
+<span class="nc" id="L46">        return SearchHelper.isMatching(idMapList, 1, false);</span>
+    }
+
+    @Override
+    public @NonNull Map&lt;@NonNull Integer, Boolean&gt; getStreamsIDInFileMatchingCriteria(@NonNull final JMetaData jMetaData) {
+<span class="nc" id="L51">        final Map&lt;@NonNull Integer, Boolean&gt; result = new HashMap&lt;&gt;();</span>
+
+<span class="nc" id="L53">        int i = -1;</span>
+<span class="nc" id="L54">        final @NonNull List&lt;@NonNull String&gt; expectedLanguages = this.languageEnum.getValues();</span>
+        @NonNull
+<span class="nc" id="L56">        final List&lt;@NonNull JMetaDataText&gt; textStreams = jMetaData.getSubtitleStreams();</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        for (final JMetaDataText jMetaDataText : textStreams) {</span>
+<span class="nc" id="L58">            Integer idAsInteger = jMetaDataText.getIDAsInteger();</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (idAsInteger == null) {</span>
+<span class="nc" id="L60">                idAsInteger = Integer.valueOf(i);</span>
+<span class="nc" id="L61">                i--;</span>
+            }
+<span class="nc" id="L63">            final String language = jMetaDataText.getLanguageAsString();</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (language != null) {</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">                for (final String expectedLanguage : expectedLanguages) {</span>
+<span class="nc" id="L66">                    final boolean match = conditionMatch(language, expectedLanguage, this.operation);</span>
+<span class="nc bnc" id="L67" title="All 6 branches missed.">                    if (!result.containsKey(idAsInteger) &amp;&amp; (result.get(idAsInteger) != null &amp;&amp; !result.get(idAsInteger).booleanValue())) {</span>
+<span class="nc" id="L68">                        result.put(idAsInteger, Boolean.valueOf(match));</span>
+                    }
+<span class="nc" id="L70">                }</span>
+            }
+<span class="nc" id="L72">        }</span>
+<span class="nc" id="L73">        return result;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
