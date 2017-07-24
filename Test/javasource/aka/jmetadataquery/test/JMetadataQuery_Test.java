@@ -53,9 +53,9 @@ public class JMetadataQuery_Test {
     @BeforeClass
     public static void beforeUnit() {
         try {
-            final String filePath = new File("").getAbsolutePath();
-            file = new File(filePath.concat("/Test/videosamples/Sintel_DivXPlus_6500kbps.mkv"));
+            file = new File(ClassLoader.getSystemClassLoader().getResource("Sintel_DivXPlus_6500kbps.mkv").toURI());
         } catch (final Throwable e) {
+            e.printStackTrace();
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new RuntimeErrorException(null, "Can not find file.");
         }

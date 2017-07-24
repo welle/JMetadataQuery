@@ -7,7 +7,7 @@ before_script:
   - sed -i -e "s,jars_dest =,jars_dest =./," build.properties
 script:
   # other script steps might be done before running the actual analysis
-  - ant jars
+  - ant run
   - sonar-scanner
 env:
   global:
