@@ -5,6 +5,7 @@ before_script:
   - cp build.properties.sample build.properties
   - mkdir ./JMetadataQuery/classes
   - sed -i -e "s,jars_dest =,jars_dest =./," build.properties
+  - sudo apt-get -f install libmediainfo-dev ant-optional
 script:
   # other script steps might be done before running the actual analysis
   - ant run
