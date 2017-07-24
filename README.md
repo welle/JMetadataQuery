@@ -1,4 +1,4 @@
-# JMetadataQuery [![Build Status](https://travis-ci.org/welle/JMetaDataQuery.svg?branch=master)](https://travis-ci.org/welle/JMetaDataQuery) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=JMetaDataQuery)](https://sonarcloud.io/dashboard/index/JMetaDataQuery) #
+# JMetadataQuery [![Build Status](https://travis-ci.org/welle/JMetadataQuery.svg?branch=master)](https://travis-ci.org/welle/JMetadataQuery) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=JMetadataQuery)](https://sonarcloud.io/dashboard/index/JMetadataQuery) #
 
 ## Quick summary ##
 JMetadataQuery is Java library providing query search for Mediainfo metadata.
