@@ -30,19 +30,6 @@ public class SearchHelper {
         return getMatchingResult(resultList);
     }
 
-    @SuppressWarnings("null")
-    private static boolean getMatchingResult(@NonNull final List<@NonNull Boolean> resultList) {
-        boolean isMatching = true;
-        if (resultList.size() >= 1) {
-            isMatching = resultList.get(0).booleanValue();
-        }
-        for (int i = 1; i < resultList.size(); i++) {
-            isMatching = resultList.get(i).booleanValue() || isMatching;
-        }
-
-        return isMatching;
-    }
-
     /**
      * Get result list.
      *
@@ -101,6 +88,19 @@ public class SearchHelper {
         }
 
         return result;
+    }
+
+    @SuppressWarnings("null")
+    private static boolean getMatchingResult(@NonNull final List<@NonNull Boolean> resultList) {
+        boolean isMatching = true;
+        if (resultList.size() >= 1) {
+            isMatching = resultList.get(0).booleanValue();
+        }
+        for (int i = 1; i < resultList.size(); i++) {
+            isMatching = resultList.get(i).booleanValue() || isMatching;
+        }
+
+        return isMatching;
     }
 
     private SearchHelper() {

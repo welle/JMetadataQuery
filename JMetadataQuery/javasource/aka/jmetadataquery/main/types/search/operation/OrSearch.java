@@ -62,11 +62,17 @@ public class OrSearch extends AsbtractOperatorSearch {
             }
             isFileMatchingCriteria = SearchHelper.isMatching(idMapList, getQueries().size(), false);
         } else {
-            for (final OperatorSearchInterface operatorSearchInterface : getQueries()) {
-                isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) || isFileMatchingCriteria;
-                if (isFileMatchingCriteria) {
-                    // no need to continue
-                    break;
+            final List<@NonNull OperatorSearchInterface> queryList = getQueries();
+            if (queryList.size() > 0) {
+                final OperatorSearchInterface firstOperatorInterface = queryList.get(0);
+                isFileMatchingCriteria = firstOperatorInterface.isFileMatchingCriteria(currentFile);
+                for (int i = 1; i < queryList.size(); i++) {
+                    final OperatorSearchInterface operatorSearchInterface = queryList.get(i);
+                    isFileMatchingCriteria = operatorSearchInterface.isFileMatchingCriteria(currentFile) || isFileMatchingCriteria;
+                    if (isFileMatchingCriteria) {
+                        // no need to continue
+                        break;
+                    }
                 }
             }
         }
