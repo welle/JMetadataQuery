@@ -75,7 +75,7 @@ public class JMetadataQuery_Test {
     public void testMultiple() {
         final AndSearch subRootAndSearch = new AndSearch(true);
         // Get all required
-        final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.AVI);
+        final FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         subRootAndSearch.addSearch(fileExtensionSearch);
         final FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         subRootAndSearch.addSearch(fileExtensionSearch2);
@@ -104,18 +104,11 @@ public class JMetadataQuery_Test {
         Assert.assertTrue(result);
 
         fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
-        fileExtensionSearch2 = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
+        fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
 
         result = andSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
-
-        fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
-        fileExtensionSearch2 = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
-        andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
-
-        result = andSearch.isFileMatchingCriteria(file);
-        Assert.assertFalse(result);
 
         final AudioCompressionModeSearch audioCompressionModeSearch = new AudioCompressionModeSearch(Op.EQUAL_TO, CompressionModeEnum.LOSSY);
         final VideoFormatSearch videoFormatSearch = new VideoFormatSearch(Op.EQUAL_TO, FormatEnum.AVC);
@@ -449,7 +442,7 @@ public class JMetadataQuery_Test {
         boolean result = audioCodecIdSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
 
-        audioCodecIdSearch = new AudioCodecIdSearch(Op.EQUAL_TO, AudioMatroskaCodecIdEnum.A_AAC);
+        audioCodecIdSearch = new AudioCodecIdSearch(Op.NOT_EQUAL_TO, AudioMatroskaCodecIdEnum.A_AAC);
         result = audioCodecIdSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
 

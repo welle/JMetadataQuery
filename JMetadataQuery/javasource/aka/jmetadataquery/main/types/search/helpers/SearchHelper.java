@@ -27,7 +27,6 @@ public class SearchHelper {
      */
     public static boolean isMatching(@NonNull final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList, final int size, final boolean allMustMatch) {
         final @NonNull List<@NonNull Boolean> resultList = getResultList(idMapList, size, allMustMatch);
-
         return getMatchingResult(resultList);
     }
 
@@ -92,6 +91,8 @@ public class SearchHelper {
                 final boolean allEqual = entry.getValue().stream().distinct().limit(2).count() <= 1;
                 if (allEqual) {
                     result.add(entry.getValue().get(0));
+                } else {
+                    result.add(Boolean.FALSE);
                 }
             } else {
                 final boolean atLeastOne = entry.getValue().contains(Boolean.valueOf(true));
