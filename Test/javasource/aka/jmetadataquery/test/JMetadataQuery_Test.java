@@ -27,6 +27,7 @@ import aka.jmetadataquery.main.types.search.audio.AudioCodecIdSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioCompressionModeSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioFormatSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioLanguageSearch;
+import aka.jmetadataquery.main.types.search.audio.AudioNumberOfStreamSearch;
 import aka.jmetadataquery.main.types.search.audio.AudioProfileSearch;
 import aka.jmetadataquery.main.types.search.constants.video.VideoResolutionSearchEnum;
 import aka.jmetadataquery.main.types.search.file.FileExtensionSearch;
@@ -35,6 +36,7 @@ import aka.jmetadataquery.main.types.search.general.GeneralDurationSearch;
 import aka.jmetadataquery.main.types.search.operation.AndSearch;
 import aka.jmetadataquery.main.types.search.operation.OrSearch;
 import aka.jmetadataquery.main.types.search.text.TextLanguageSearch;
+import aka.jmetadataquery.main.types.search.text.TextNumberOfStreamSearch;
 import aka.jmetadataquery.main.types.search.video.VideoAspectRatioSearch;
 import aka.jmetadataquery.main.types.search.video.VideoCodecIdSearch;
 import aka.jmetadataquery.main.types.search.video.VideoFormatSearch;
@@ -128,6 +130,32 @@ public class JMetadataQuery_Test {
         andSearch = new AndSearch(true, audioCompressionModeSearch, videoFormatSearch);
 
         result = videoFormatSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAudioNumberOfStream() {
+        AudioNumberOfStreamSearch audioNumberOfStreamSearch = new AudioNumberOfStreamSearch(Op.EQUAL_TO, Long.valueOf(2));
+        boolean result = audioNumberOfStreamSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        audioNumberOfStreamSearch = new AudioNumberOfStreamSearch(Op.NOT_EQUAL_TO, Long.valueOf(1));
+        result = audioNumberOfStreamSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testTextNumberOfStream() {
+        TextNumberOfStreamSearch textNumberOfStreamSearch = new TextNumberOfStreamSearch(Op.EQUAL_TO, Long.valueOf(8));
+        boolean result = textNumberOfStreamSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        textNumberOfStreamSearch = new TextNumberOfStreamSearch(Op.GREATER_THAN, Long.valueOf(2));
+        result = textNumberOfStreamSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        textNumberOfStreamSearch = new TextNumberOfStreamSearch(Op.NOT_EQUAL_TO, Long.valueOf(9));
+        result = textNumberOfStreamSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
     }
 
