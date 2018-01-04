@@ -1,7 +1,7 @@
 package aka.jmetadataquery.main.types.search.operation;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,11 +55,7 @@ public class OrSearch extends AsbtractOperatorSearch {
         boolean isFileMatchingCriteria = true;
 
         if (checkSameStream()) {
-            final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = new ArrayList<>();
-            for (final OperatorSearchInterface operatorSearchInterface : getQueries()) {
-                final @NonNull Map<@NonNull Integer, Boolean> idList = operatorSearchInterface.getStreamsIDInFileMatchingCriteria(currentFile);
-                idMapList.add(idList);
-            }
+            final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList = getIdMapList(currentFile, getQueries());
             isFileMatchingCriteria = SearchHelper.isMatching(idMapList, getQueries().size(), false);
         } else {
             final List<@NonNull OperatorSearchInterface> queryList = getQueries();
@@ -80,4 +76,8 @@ public class OrSearch extends AsbtractOperatorSearch {
         return isFileMatchingCriteria;
     }
 
+    @Override
+    public @NonNull Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
+        return new HashMap<>();
+    }
 }

@@ -96,16 +96,6 @@ public class JMetadataQuery_Test {
 
     @Test
     public void testSameStreamSearch() {
-        final AndSearch rootSearch = new AndSearch(true);
-        final FileExtensionSearch fileExtensionSearchTest = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
-        final FileExtensionSearch fileExtensionSearchTest2 = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.MKV);
-        final OrSearch orSearch = new OrSearch();
-        orSearch.addSearch(fileExtensionSearchTest);
-//        orSearch.addSearch(fileExtensionSearchTest2);
-        rootSearch.addSearch(orSearch);
-        final boolean fileMatchingCriteria = orSearch.isFileMatchingCriteria(file);
-        Assert.assertTrue(fileMatchingCriteria);
-
         FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         AndSearch andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);

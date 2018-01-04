@@ -75,11 +75,6 @@ public abstract class AsbtractOperatorSearch implements OperatorSearchInterface 
         this.sameStream = sameStream;
     }
 
-    @Override
-    public @NonNull Map<@NonNull Integer, Boolean> getStreamsIDInFileMatchingCriteria(@NonNull final File currentFile) {
-        return new HashMap<>();
-    }
-
     /**
      * Is the test must be made on the same stream(s) ?
      *
@@ -180,6 +175,22 @@ public abstract class AsbtractOperatorSearch implements OperatorSearchInterface 
                 if (e != null) {
                     result.add(e);
                 }
+            }
+        }
+
+        return result;
+    }
+
+    @NonNull
+    public List<@NonNull Map<@NonNull Integer, Boolean>> getIdMapList(@NonNull final File currentFile, final List<@NonNull OperatorSearchInterface> queriesList) {
+        final List<@NonNull Map<@NonNull Integer, Boolean>> result = new ArrayList<>();
+        for (final OperatorSearchInterface operatorSearchInterface : queriesList) {
+            if (operatorSearchInterface instanceof AsbtractOperatorSearch) {
+                final AsbtractOperatorSearch asbtractOperatorSearch = (AsbtractOperatorSearch) operatorSearchInterface;
+                result.addAll(getIdMapList(currentFile, asbtractOperatorSearch.getQueries()));
+            } else {
+                final @NonNull Map<@NonNull Integer, Boolean> idList = operatorSearchInterface.getStreamsIDInFileMatchingCriteria(currentFile);
+                result.add(idList);
             }
         }
 
