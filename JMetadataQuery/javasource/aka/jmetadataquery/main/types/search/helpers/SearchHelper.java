@@ -27,7 +27,7 @@ public class SearchHelper {
      */
     public static boolean isMatching(@NonNull final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList, final int size, final boolean allMustMatch) {
         final @NonNull List<@NonNull Boolean> resultList = getResultList(idMapList, size, allMustMatch);
-        return getMatchingResult(resultList);
+        return getMatchingResult(resultList, allMustMatch);
     }
 
     /**
@@ -91,13 +91,17 @@ public class SearchHelper {
     }
 
     @SuppressWarnings("null")
-    private static boolean getMatchingResult(@NonNull final List<@NonNull Boolean> resultList) {
+    private static boolean getMatchingResult(@NonNull final List<@NonNull Boolean> resultList, final boolean allMustMatch) {
         boolean isMatching = true;
         if (resultList.size() >= 1) {
             isMatching = resultList.get(0).booleanValue();
         }
         for (int i = 1; i < resultList.size(); i++) {
-            isMatching = resultList.get(i).booleanValue() || isMatching;
+            if (allMustMatch) {
+                isMatching = resultList.get(i).booleanValue() && isMatching;
+            } else {
+                isMatching = resultList.get(i).booleanValue() || isMatching;
+            }
         }
 
         return isMatching;
