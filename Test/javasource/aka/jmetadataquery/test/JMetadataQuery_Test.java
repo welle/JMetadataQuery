@@ -96,6 +96,19 @@ public class JMetadataQuery_Test {
 
     @Test
     public void testSameStreamSearch() {
+        final AndSearch rootSearch = new AndSearch(true);
+        final AudioFormatSearch audioFormatSearch = new AudioFormatSearch(Op.EQUAL_TO, FormatEnum.DTS);
+        final FileExtensionSearch fileExtensionSearchTest2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.AVI);
+        final OrSearch orSearch = new OrSearch();
+//        orSearch.addSearch(fileExtensionSearchTest);
+        orSearch.addSearch(audioFormatSearch);
+        orSearch.addSearch(fileExtensionSearchTest2);
+        rootSearch.addSearch(orSearch);
+        final File file2 = new File("d:/cha/High Tension (2003)/High Tension (2003).mkv");
+        final boolean fileMatchingCriteria = rootSearch.isFileMatchingCriteria(file2);
+        System.err.println("[JMetadataQuery_Test] testSameStreamSearch - ");
+        Assert.assertTrue(fileMatchingCriteria);
+
         FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Op.NOT_EQUAL_TO, FileExtensionSearchEnum.AVI);
         FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Op.EQUAL_TO, FileExtensionSearchEnum.MKV);
         AndSearch andSearch = new AndSearch(true, fileExtensionSearch, fileExtensionSearch2);
@@ -411,6 +424,10 @@ public class JMetadataQuery_Test {
     public void testAudioLanguageSearch() {
         AudioLanguageSearch audioLanguageSearch = new AudioLanguageSearch(Op.NOT_EQUAL_TO, LanguageEnum.FRENCH);
         boolean result = audioLanguageSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        audioLanguageSearch = new AudioLanguageSearch(Op.NOT_EQUAL_TO, LanguageEnum.GERMAN);
+        result = audioLanguageSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
 
         audioLanguageSearch = new AudioLanguageSearch(Op.EQUAL_TO, LanguageEnum.ENGLISH);

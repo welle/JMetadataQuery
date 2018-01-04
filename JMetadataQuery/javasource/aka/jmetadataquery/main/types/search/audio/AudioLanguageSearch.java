@@ -64,7 +64,7 @@ public class AudioLanguageSearch extends Criteria<LanguageEnum, String> {
             if (language != null) {
                 for (final String expectedLanguage : expectedLanguages) {
                     final boolean match = conditionMatch(language, expectedLanguage, this.operation);
-                    if (!result.containsKey(idAsInteger) && (result.get(idAsInteger) != null && !result.get(idAsInteger).booleanValue())) {
+                    if (!result.containsKey(idAsInteger) || (result.get(idAsInteger) != null && !result.get(idAsInteger).booleanValue())) {
                         result.put(idAsInteger, Boolean.valueOf(match));
                     }
                 }
