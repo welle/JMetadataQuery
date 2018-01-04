@@ -182,7 +182,7 @@ public class JMetadataQuery_Test {
 
     @Test
     public void testMultipleSearch() {
-        AndSearch sameStreamAndSearch = new AndSearch(true);
+        AndSearch sameStreamAndSearch = new AndSearch(false);
         AudioProfileSearch audioProfileSearch = new AudioProfileSearch(Op.NOT_EQUAL_TO, AudioProfileEnum.AC_3);
         sameStreamAndSearch.addSearch(audioProfileSearch);
         audioProfileSearch = new AudioProfileSearch(Op.EQUAL_TO, AudioProfileEnum.LAYER_3);
