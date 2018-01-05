@@ -97,11 +97,7 @@ public class SearchHelper {
             isMatching = resultList.get(0).booleanValue();
         }
         for (int i = 1; i < resultList.size(); i++) {
-            if (allMustMatch) {
-                isMatching = resultList.get(i).booleanValue() && isMatching;
-            } else {
-                isMatching = resultList.get(i).booleanValue() || isMatching;
-            }
+            isMatching = resultList.get(i).booleanValue() || isMatching;
         }
 
         return isMatching;
