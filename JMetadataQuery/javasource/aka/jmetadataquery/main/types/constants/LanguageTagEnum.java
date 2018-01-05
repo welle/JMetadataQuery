@@ -21,6 +21,11 @@ public enum LanguageTagEnum {
     VF("VF", "Version Francaise"),
 
     /**
+     * Version Francaise (TrueFrench).
+     */
+    VF_TRUEFRENCH("Truefrench", "Version Francaise (TrueFrench)"),
+
+    /**
      * Version Francophone Quebecoise.
      */
     VQF("VQF", "Version Francophone Quebecoise"),

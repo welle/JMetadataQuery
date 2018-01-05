@@ -19,21 +19,24 @@ public enum LanguageTagSearchEnum {
      * Version Originale (générique).
      */
     VO(LanguageTagEnum.VO),
+
     /**
      * Version Française (générique).
      */
     VF(LanguageTagEnum.VF),
+
     /**
      * Version Francophone Québécoise.
      */
     VQF(LanguageTagEnum.VQF, LanguageTagEnum.VFQ, LanguageTagEnum.VQ),
+
     /**
      * Version Francophone Française.
      */
-    VFF(LanguageTagEnum.VFF, LanguageTagEnum.VFI, LanguageTagEnum.VFB);
+    VFF(LanguageTagEnum.VFF, LanguageTagEnum.VFI, LanguageTagEnum.VFB, LanguageTagEnum.VF_TRUEFRENCH);
 
     @NonNull
-    private final List<aka.jmetadataquery.main.types.constants.LanguageTagEnum> languageList = new ArrayList<>();
+    private final List<@NonNull LanguageTagEnum> languageList = new ArrayList<>();
 
     LanguageTagSearchEnum(@NonNull final LanguageTagEnum @NonNull... languages) {
         this.languageList.addAll(Arrays.asList(languages));
@@ -45,7 +48,7 @@ public enum LanguageTagSearchEnum {
      * @return the value of the ENUM
      */
     @NonNull
-    public List<aka.jmetadataquery.main.types.constants.LanguageTagEnum> getLanguagesList() {
+    public List<@NonNull LanguageTagEnum> getLanguagesList() {
         return this.languageList;
     }
 
