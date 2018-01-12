@@ -16,22 +16,22 @@ import aka.jmetadataquery.main.types.constants.LanguageTagEnum;
 public enum LanguageTagSearchEnum {
 
     /**
-     * Version Originale (générique).
+     * Version Originale (generic).
      */
     VO(LanguageTagEnum.VO),
 
     /**
-     * Version Française (générique).
+     * Version Francaise (generic).
      */
     VF(LanguageTagEnum.VF),
 
     /**
-     * Version Francophone Québécoise.
+     * Version Francophone Quebec.
      */
     VQF(LanguageTagEnum.VQF, LanguageTagEnum.VFQ, LanguageTagEnum.VQ),
 
     /**
-     * Version Francophone Française.
+     * Version Francophone Francaise.
      */
     VFF(LanguageTagEnum.VFF, LanguageTagEnum.VFI, LanguageTagEnum.VFB, LanguageTagEnum.VF_TRUEFRENCH);
 
