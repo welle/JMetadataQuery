@@ -4,6 +4,9 @@
 	<groupId>aka.jmetadataquery</groupId>
 	<artifactId>JMetadataQuery</artifactId>
 	<version>1.0.0</version>
+	<properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 	<profiles>
 		<profile>
 			<id>m2e</id>
@@ -115,6 +118,7 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
