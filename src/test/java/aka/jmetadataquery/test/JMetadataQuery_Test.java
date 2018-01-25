@@ -19,14 +19,17 @@ import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadata.main.constants.profile.AudioProfileEnum;
 import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadataquery.search.constants.LanguageEnum;
+import aka.jmetadataquery.search.constants.audio.AudioCommercialFormatEnum;
 import aka.jmetadataquery.search.constants.audio.CompressionModeEnum;
 import aka.jmetadataquery.search.constants.file.FileExtensionSearchEnum;
+import aka.jmetadataquery.search.constants.video.VideoCommercialFormatEnum;
 import aka.jmetadataquery.search.constants.video.VideoResolutionSearchEnum;
 import aka.jmetadataquery.search.operation.AndSearch;
 import aka.jmetadataquery.search.operation.OrSearch;
 import aka.jmetadataquery.search.types.audio.AudioBitRateSearch;
 import aka.jmetadataquery.search.types.audio.AudioChannelSearch;
 import aka.jmetadataquery.search.types.audio.AudioCodecIdSearch;
+import aka.jmetadataquery.search.types.audio.AudioCommericalFormatSearch;
 import aka.jmetadataquery.search.types.audio.AudioCompressionModeSearch;
 import aka.jmetadataquery.search.types.audio.AudioFormatSearch;
 import aka.jmetadataquery.search.types.audio.AudioLanguageSearch;
@@ -39,6 +42,7 @@ import aka.jmetadataquery.search.types.text.TextLanguageSearch;
 import aka.jmetadataquery.search.types.text.TextNumberOfStreamSearch;
 import aka.jmetadataquery.search.types.video.VideoAspectRatioSearch;
 import aka.jmetadataquery.search.types.video.VideoCodecIdSearch;
+import aka.jmetadataquery.search.types.video.VideoCommercialFormatSearch;
 import aka.jmetadataquery.search.types.video.VideoFormatSearch;
 import aka.jmetadataquery.search.types.video.VideoMaxBitRateSearch;
 import aka.jmetadataquery.search.types.video.VideoResolutionSearch;
@@ -128,6 +132,28 @@ public class JMetadataQuery_Test {
 
         audioNumberOfStreamSearch = new AudioNumberOfStreamSearch(Op.NOT_EQUAL_TO, Long.valueOf(1));
         result = audioNumberOfStreamSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testAudioCommercialFormat() {
+        AudioCommericalFormatSearch audioCommericalFormatSearch = new AudioCommericalFormatSearch(Op.EQUAL_TO, AudioCommercialFormatEnum.AAC);
+        boolean result = audioCommericalFormatSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        audioCommericalFormatSearch = new AudioCommericalFormatSearch(Op.NOT_EQUAL_TO, AudioCommercialFormatEnum.VORBIS);
+        result = audioCommericalFormatSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+    }
+
+    @Test
+    public void testVideoCommercialFormat() {
+        VideoCommercialFormatSearch videoCommercialFormatSearch = new VideoCommercialFormatSearch(Op.EQUAL_TO, VideoCommercialFormatEnum.AVC);
+        boolean result = videoCommercialFormatSearch.isFileMatchingCriteria(file);
+        Assert.assertTrue(result);
+
+        videoCommercialFormatSearch = new VideoCommercialFormatSearch(Op.NOT_EQUAL_TO, VideoCommercialFormatEnum.DV);
+        result = videoCommercialFormatSearch.isFileMatchingCriteria(file);
         Assert.assertTrue(result);
     }
 

@@ -1,4 +1,4 @@
-package aka.jmetadataquery.search.types.audio;
+package aka.jmetadataquery.search.types.video;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,20 +12,20 @@ import com.healthmarketscience.sqlbuilder.BinaryCondition;
 import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
 
 import aka.jmetadata.main.JMetaData;
-import aka.jmetadata.main.JMetaDataAudio;
+import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
-import aka.jmetadataquery.search.constants.audio.AudioCommercialFormatEnum;
+import aka.jmetadataquery.search.constants.video.VideoCommercialFormatEnum;
 
 /**
- * Audio Commercial Format search.
+ * Video Commercial Format search.
  *
  * @author charlottew
  */
-public class AudioCommericalFormatSearch extends Criteria<AudioCommercialFormatEnum, String> {
+public class VideoCommercialFormatSearch extends Criteria<VideoCommercialFormatEnum, String> {
 
     private final Op operation;
-    private @NonNull final AudioCommercialFormatEnum commercialFormatEnum;
+    private @NonNull final VideoCommercialFormatEnum formatEnum;
 
     /**
      * Constructor.
@@ -33,10 +33,10 @@ public class AudioCommericalFormatSearch extends Criteria<AudioCommercialFormatE
      * @param operation
      * @param formatEnum
      */
-    public AudioCommericalFormatSearch(final BinaryCondition.Op operation, @NonNull final AudioCommercialFormatEnum formatEnum) {
+    public VideoCommercialFormatSearch(final BinaryCondition.Op operation, @NonNull final VideoCommercialFormatEnum formatEnum) {
         super(formatEnum);
         this.operation = operation;
-        this.commercialFormatEnum = formatEnum;
+        this.formatEnum = formatEnum;
     }
 
     @Override
@@ -52,23 +52,24 @@ public class AudioCommericalFormatSearch extends Criteria<AudioCommercialFormatE
         final Map<@NonNull Integer, Boolean> result = new HashMap<>();
 
         int i = -1;
-        final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
-        for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
-            Integer idAsInteger = jMetaDataAudio.getIDAsInteger();
+        @NonNull
+        final List<@NonNull JMetaDataVideo> videoStreams = jMetaData.getVideoStreams();
+        for (final @NonNull JMetaDataVideo jMetaDataVideo : videoStreams) {
+            Integer idAsInteger = jMetaDataVideo.getIDAsInteger();
             if (idAsInteger == null) {
                 idAsInteger = Integer.valueOf(i);
                 i--;
             }
             @Nullable
-            final String formatCommercial = jMetaDataAudio.getFormatCommercialAsString();
+            final String formatCommercial = jMetaDataVideo.getFormatCommercialAsString();
             if (formatCommercial != null) {
-                final String codec = this.commercialFormatEnum.getValue();
+                final String codec = this.formatEnum.getValue();
                 boolean match = conditionMatch(codec, formatCommercial, this.operation);
                 if (!result.containsKey(idAsInteger)) {
                     result.put(idAsInteger, Boolean.valueOf(match));
                 }
                 if (!match) {
-                    final String format = jMetaDataAudio.getFormatAsString();
+                    final String format = jMetaDataVideo.getFormatAsString();
                     if (format != null) {
                         match = conditionMatch(codec, format, this.operation);
                         if (!result.containsKey(idAsInteger)) {
