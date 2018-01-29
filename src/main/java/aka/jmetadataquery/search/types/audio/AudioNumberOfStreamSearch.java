@@ -53,7 +53,16 @@ public class AudioNumberOfStreamSearch extends Criteria<Long, Long> {
         final Long size = Long.valueOf(audioStreams.size());
         final boolean match = conditionMatch(size, this.numberOfStream, this.operation);
 
-        result.put(Integer.valueOf(Integer.MIN_VALUE), Boolean.valueOf(match));
+        int i = -1;
+        for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
+            Integer idAsInteger = jMetaDataAudio.getIDAsInteger();
+            if (idAsInteger == null) {
+                idAsInteger = Integer.valueOf(i);
+                i--;
+            }
+            result.put(idAsInteger, Boolean.valueOf(match));
+        }
+
         return result;
     }
 

@@ -54,7 +54,7 @@ public class AudioMaxBitRateSearch extends Criteria<Long, Long> {
         final List<@NonNull JMetaDataAudio> audioStreams = jMetaData.getAudioStreams();
         for (final JMetaDataAudio jMetaDataAudio : audioStreams) {
             final Long rate = jMetaDataAudio.getBitRateMaximumAsLong();
-            Integer idAsInteger = jMetaData.getGeneral().getIDAsInteger();
+            Integer idAsInteger = jMetaDataAudio.getIDAsInteger();
             if (idAsInteger == null) {
                 idAsInteger = Integer.valueOf(i);
                 i--;

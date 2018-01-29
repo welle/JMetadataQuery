@@ -53,7 +53,16 @@ public class TextNumberOfStreamSearch extends Criteria<Long, Long> {
         final Long size = Long.valueOf(textStreams.size());
         final boolean match = conditionMatch(size, this.numberOfStream, this.operation);
 
-        result.put(Integer.valueOf(Integer.MIN_VALUE), Boolean.valueOf(match));
+        int i = -1;
+        for (final JMetaDataText jMetaDataText : textStreams) {
+            Integer idAsInteger = jMetaDataText.getIDAsInteger();
+            if (idAsInteger == null) {
+                idAsInteger = Integer.valueOf(i);
+                i--;
+            }
+            result.put(idAsInteger, Boolean.valueOf(match));
+        }
+
         return result;
     }
 }
