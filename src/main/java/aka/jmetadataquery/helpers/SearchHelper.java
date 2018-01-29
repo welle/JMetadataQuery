@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -27,7 +29,7 @@ public class SearchHelper {
      */
     public static boolean isMatching(@NonNull final List<@NonNull Map<@NonNull Integer, Boolean>> idMapList, final int size, final boolean allMustMatch) {
         final @NonNull List<@NonNull Boolean> resultList = getResultList(idMapList, size, allMustMatch);
-        return getMatchingResult(resultList, allMustMatch);
+        return getMatchingResult(resultList);
     }
 
     /**
@@ -74,34 +76,37 @@ public class SearchHelper {
 
         // Check if all bool in list in idBooleanListMap are the same
         for (final Entry<@NonNull Integer, List<@NonNull Boolean>> entry : idBooleanListMap.entrySet()) {
+            Boolean boolStream = Boolean.TRUE;
             if (allMustMatch) {
-                final boolean allEqual = entry.getValue().stream().distinct().limit(2).count() <= 1;
-                if (allEqual) {
-                    result.add(entry.getValue().get(0));
+                final Supplier<Stream<@NonNull Boolean>> streamSupplier = () -> entry.getValue().stream();
+                final Stream<@NonNull Boolean> distinctEntriesList = streamSupplier.get().distinct();
+                if (distinctEntriesList == null || distinctEntriesList.toArray().length == 0) {
+                    boolStream = Boolean.TRUE;
                 } else {
-                    result.add(Boolean.FALSE);
+                    final boolean allEqual = streamSupplier.get().distinct().limit(2).count() <= 1;
+                    if (allEqual) {
+                        boolStream = entry.getValue().get(0);
+                    } else {
+                        boolStream = Boolean.FALSE;
+                    }
                 }
             } else {
                 final boolean atLeastOne = entry.getValue().contains(Boolean.valueOf(true));
-                result.add(Boolean.valueOf(atLeastOne));
+                boolStream = Boolean.valueOf(atLeastOne);
             }
+            result.add(boolStream);
         }
 
         return result;
     }
 
-    @SuppressWarnings("null")
-    private static boolean getMatchingResult(@NonNull final List<@NonNull Boolean> resultList, final boolean allMustMatch) {
+    private static boolean getMatchingResult(@NonNull final List<@NonNull Boolean> resultList) {
         boolean isMatching = true;
         if (resultList.size() >= 1) {
             isMatching = resultList.get(0).booleanValue();
         }
         for (int i = 1; i < resultList.size(); i++) {
-            if (allMustMatch) {
-                isMatching = resultList.get(i).booleanValue() && isMatching;
-            } else {
-                isMatching = resultList.get(i).booleanValue() || isMatching;
-            }
+            isMatching = resultList.get(i).booleanValue() || isMatching;
         }
 
         return isMatching;
