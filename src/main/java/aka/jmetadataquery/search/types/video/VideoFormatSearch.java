@@ -8,14 +8,12 @@ import java.util.Map;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Video Format search.
@@ -24,7 +22,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class VideoFormatSearch extends Criteria<FormatEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final FormatEnum formatEnum;
 
     /**
@@ -33,7 +31,7 @@ public class VideoFormatSearch extends Criteria<FormatEnum, String> {
      * @param operation
      * @param formatEnum
      */
-    public VideoFormatSearch(final BinaryCondition.Op operation, @NonNull final FormatEnum formatEnum) {
+    public VideoFormatSearch(final Operator operation, @NonNull final FormatEnum formatEnum) {
         super(formatEnum);
         this.operation = operation;
         this.formatEnum = formatEnum;

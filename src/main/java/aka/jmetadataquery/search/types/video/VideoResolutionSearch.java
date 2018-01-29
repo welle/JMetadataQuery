@@ -8,15 +8,13 @@ import java.util.Map;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadata.main.constants.video.Resolution;
 import aka.jmetadata.main.helper.MediaInfoHelper;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 import aka.jmetadataquery.search.constants.video.VideoResolutionSearchEnum;
 
 /**
@@ -26,7 +24,7 @@ import aka.jmetadataquery.search.constants.video.VideoResolutionSearchEnum;
  */
 public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, Resolution> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final VideoResolutionSearchEnum videoResolutionSearchEnum;
 
     /**
@@ -35,7 +33,7 @@ public class VideoResolutionSearch extends Criteria<VideoResolutionSearchEnum, R
      * @param operation
      * @param videoResolutionSearchEnum
      */
-    public VideoResolutionSearch(final BinaryCondition.Op operation, @NonNull final VideoResolutionSearchEnum videoResolutionSearchEnum) {
+    public VideoResolutionSearch(final Operator operation, @NonNull final VideoResolutionSearchEnum videoResolutionSearchEnum) {
         super(videoResolutionSearchEnum);
         this.operation = operation;
         this.videoResolutionSearchEnum = videoResolutionSearchEnum;

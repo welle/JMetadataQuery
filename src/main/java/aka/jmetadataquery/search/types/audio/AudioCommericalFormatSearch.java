@@ -8,14 +8,12 @@ import java.util.Map;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
 import aka.jmetadataquery.search.constants.audio.AudioCommercialFormatEnum;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Audio Commercial Format search.
@@ -24,7 +22,7 @@ import aka.jmetadataquery.search.constants.audio.AudioCommercialFormatEnum;
  */
 public class AudioCommericalFormatSearch extends Criteria<AudioCommercialFormatEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final AudioCommercialFormatEnum commercialFormatEnum;
 
     /**
@@ -33,7 +31,7 @@ public class AudioCommericalFormatSearch extends Criteria<AudioCommercialFormatE
      * @param operation
      * @param formatEnum
      */
-    public AudioCommericalFormatSearch(final BinaryCondition.Op operation, @NonNull final AudioCommercialFormatEnum formatEnum) {
+    public AudioCommericalFormatSearch(final Operator operation, @NonNull final AudioCommercialFormatEnum formatEnum) {
         super(formatEnum);
         this.operation = operation;
         this.commercialFormatEnum = formatEnum;

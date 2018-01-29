@@ -7,14 +7,12 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
 import aka.jmetadataquery.search.constants.audio.CompressionModeEnum;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Audio compression mode search.
@@ -23,7 +21,7 @@ import aka.jmetadataquery.search.constants.audio.CompressionModeEnum;
  */
 public class AudioCompressionModeSearch extends Criteria<CompressionModeEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final CompressionModeEnum compressionModeEnum;
 
     /**
@@ -32,7 +30,7 @@ public class AudioCompressionModeSearch extends Criteria<CompressionModeEnum, St
      * @param operation
      * @param compressionModeEnum Compression mode
      */
-    public AudioCompressionModeSearch(final BinaryCondition.Op operation, @NonNull final CompressionModeEnum compressionModeEnum) {
+    public AudioCompressionModeSearch(final Operator operation, @NonNull final CompressionModeEnum compressionModeEnum) {
         super(compressionModeEnum);
         this.operation = operation;
         this.compressionModeEnum = compressionModeEnum;

@@ -8,15 +8,13 @@ import java.util.Map;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadata.main.constants.video.AspectRatio;
 import aka.jmetadata.main.helper.MediaInfoHelper;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Video aspect ratio search.
@@ -25,7 +23,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class VideoAspectRatioSearch extends Criteria<AspectRatio, AspectRatio> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final AspectRatio aspectRatio;
 
     /**
@@ -34,7 +32,7 @@ public class VideoAspectRatioSearch extends Criteria<AspectRatio, AspectRatio> {
      * @param operation
      * @param aspectRatio
      */
-    public VideoAspectRatioSearch(final BinaryCondition.Op operation, @NonNull final AspectRatio aspectRatio) {
+    public VideoAspectRatioSearch(final Operator operation, @NonNull final AspectRatio aspectRatio) {
         super(aspectRatio);
         this.operation = operation;
         this.aspectRatio = aspectRatio;

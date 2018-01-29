@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>aka.jmetadataquery</groupId>
 	<artifactId>JMetadataQuery</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -94,12 +94,6 @@
 			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>org.eclipse.jdt.annotation</artifactId>
 			<version>2.0.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.healthmarketscience.sqlbuilder/sqlbuilder -->
-		<dependency>
-			<groupId>com.healthmarketscience.sqlbuilder</groupId>
-			<artifactId>sqlbuilder</artifactId>
-			<version>2.1.7</version>
 		</dependency>
 		<!-- JUnit -->
 		<dependency>

@@ -7,13 +7,11 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Video max bit rate search.
@@ -22,7 +20,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class VideoMaxBitRateSearch extends Criteria<Long, Long> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final Long maxBitRate;
 
     /**
@@ -31,7 +29,7 @@ public class VideoMaxBitRateSearch extends Criteria<Long, Long> {
      * @param operation
      * @param maxBitRate maximum bit rate in byte
      */
-    public VideoMaxBitRateSearch(final BinaryCondition.Op operation, @NonNull final Long maxBitRate) {
+    public VideoMaxBitRateSearch(final Operator operation, @NonNull final Long maxBitRate) {
         super(maxBitRate);
         this.operation = operation;
         this.maxBitRate = maxBitRate;

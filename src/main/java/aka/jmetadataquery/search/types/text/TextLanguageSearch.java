@@ -7,14 +7,12 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataText;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
 import aka.jmetadataquery.search.constants.LanguageEnum;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Text language search.
@@ -23,7 +21,7 @@ import aka.jmetadataquery.search.constants.LanguageEnum;
  */
 public class TextLanguageSearch extends Criteria<LanguageEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final LanguageEnum languageEnum;
 
     /**
@@ -32,7 +30,7 @@ public class TextLanguageSearch extends Criteria<LanguageEnum, String> {
      * @param operation
      * @param languageEnum
      */
-    public TextLanguageSearch(final BinaryCondition.Op operation, @NonNull final LanguageEnum languageEnum) {
+    public TextLanguageSearch(final Operator operation, @NonNull final LanguageEnum languageEnum) {
         super(languageEnum);
         this.operation = operation;
         this.languageEnum = languageEnum;

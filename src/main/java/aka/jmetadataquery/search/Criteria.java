@@ -9,9 +9,8 @@ import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-
 import aka.jmetadata.main.JMetaData;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 import aka.jmetadataquery.search.operation.interfaces.OperatorSearchInterface;
 
 /**
@@ -109,10 +108,10 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
      * @param operation
      * @return <code>true</code> if the both param match the criteria
      */
-    public boolean conditionMatch(@NonNull final T currentValue, @NonNull final T wantedValue, final BinaryCondition.Op operation) {
+    public boolean conditionMatch(@NonNull final T currentValue, @NonNull final T wantedValue, final Operator operation) {
         boolean result = false;
 
-        if (operation == BinaryCondition.Op.EQUAL_TO) {
+        if (operation == Operator.EQUAL_TO) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
@@ -120,7 +119,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
             } else {
                 result = currentValue.compareTo(wantedValue) == 0;
             }
-        } else if (operation == BinaryCondition.Op.GREATER_THAN) {
+        } else if (operation == Operator.GREATER_THAN) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
@@ -128,7 +127,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
             } else {
                 result = currentValue.compareTo(wantedValue) > 0;
             }
-        } else if (operation == BinaryCondition.Op.GREATER_THAN_OR_EQUAL_TO) {
+        } else if (operation == Operator.GREATER_THAN_OR_EQUAL_TO) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
@@ -136,7 +135,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
             } else {
                 result = currentValue.compareTo(wantedValue) >= 0;
             }
-        } else if (operation == BinaryCondition.Op.LESS_THAN) {
+        } else if (operation == Operator.LESS_THAN) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
@@ -144,7 +143,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
             } else {
                 result = currentValue.compareTo(wantedValue) < 0;
             }
-        } else if (operation == BinaryCondition.Op.LESS_THAN_OR_EQUAL_TO) {
+        } else if (operation == Operator.LESS_THAN_OR_EQUAL_TO) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
@@ -152,13 +151,13 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
             } else {
                 result = currentValue.compareTo(wantedValue) <= 0;
             }
-        } else if (operation == BinaryCondition.Op.LIKE) {
+        } else if (operation == Operator.LIKE) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
                 result = currentValueString.contains(wantedValueString);
             }
-        } else if (operation == BinaryCondition.Op.NOT_EQUAL_TO) {
+        } else if (operation == Operator.NOT_EQUAL_TO) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);
@@ -166,7 +165,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
             } else {
                 result = currentValue.compareTo(wantedValue) != 0;
             }
-        } else if (operation == BinaryCondition.Op.NOT_LIKE) {
+        } else if (operation == Operator.NOT_LIKE) {
             if (wantedValue instanceof String) {
                 final String wantedValueString = getString((@NonNull String) wantedValue);
                 final String currentValueString = getString((@NonNull String) currentValue);

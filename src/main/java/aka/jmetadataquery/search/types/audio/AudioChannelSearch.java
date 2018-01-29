@@ -7,13 +7,11 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Audio channel search.
@@ -22,7 +20,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class AudioChannelSearch extends Criteria<Long, Long> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final Long channel;
 
     /**
@@ -31,7 +29,7 @@ public class AudioChannelSearch extends Criteria<Long, Long> {
      * @param operation
      * @param channel number of channels
      */
-    public AudioChannelSearch(final BinaryCondition.Op operation, @NonNull final Long channel) {
+    public AudioChannelSearch(final Operator operation, @NonNull final Long channel) {
         super(channel);
         this.operation = operation;
         this.channel = channel;

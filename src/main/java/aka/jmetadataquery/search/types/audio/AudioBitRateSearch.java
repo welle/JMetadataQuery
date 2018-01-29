@@ -7,13 +7,11 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Audio Bit rate search.
@@ -22,7 +20,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class AudioBitRateSearch extends Criteria<Long, Long> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final Long bitRate;
 
     /**
@@ -31,7 +29,7 @@ public class AudioBitRateSearch extends Criteria<Long, Long> {
      * @param operation
      * @param bitRate in byte
      */
-    public AudioBitRateSearch(final BinaryCondition.Op operation, @NonNull final Long bitRate) {
+    public AudioBitRateSearch(final Operator operation, @NonNull final Long bitRate) {
         super(bitRate);
         this.operation = operation;
         this.bitRate = bitRate;

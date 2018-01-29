@@ -7,12 +7,10 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * General duration search.
@@ -21,7 +19,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class GeneralDurationSearch extends Criteria<Long, Long> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final Long duration;
 
     /**
@@ -30,7 +28,7 @@ public class GeneralDurationSearch extends Criteria<Long, Long> {
      * @param operation
      * @param duration in milliseconds
      */
-    public GeneralDurationSearch(final BinaryCondition.Op operation, @NonNull final Long duration) {
+    public GeneralDurationSearch(final Operator operation, @NonNull final Long duration) {
         super(duration);
         this.operation = operation;
         this.duration = duration;

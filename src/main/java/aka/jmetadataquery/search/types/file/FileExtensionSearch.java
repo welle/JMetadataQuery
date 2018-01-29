@@ -7,12 +7,10 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 import aka.jmetadataquery.search.constants.file.FileExtensionSearchEnum;
 import aka.jmetadataquery.search.constants.video.VideoExtensionEnum;
 
@@ -23,7 +21,7 @@ import aka.jmetadataquery.search.constants.video.VideoExtensionEnum;
  */
 public class FileExtensionSearch extends Criteria<FileExtensionSearchEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private final List<@NonNull String> extensionList = new ArrayList<>();
 
     /**
@@ -32,7 +30,7 @@ public class FileExtensionSearch extends Criteria<FileExtensionSearchEnum, Strin
      * @param operation
      * @param videoExtensionSearchEnum
      */
-    public FileExtensionSearch(final BinaryCondition.Op operation, @NonNull final FileExtensionSearchEnum videoExtensionSearchEnum) {
+    public FileExtensionSearch(final Operator operation, @NonNull final FileExtensionSearchEnum videoExtensionSearchEnum) {
         super(videoExtensionSearchEnum);
         this.operation = operation;
 

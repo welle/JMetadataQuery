@@ -7,13 +7,11 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataText;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Text number of stream search.
@@ -22,7 +20,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class TextNumberOfStreamSearch extends Criteria<Long, Long> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final Long numberOfStream;
 
     /**
@@ -31,7 +29,7 @@ public class TextNumberOfStreamSearch extends Criteria<Long, Long> {
      * @param operation
      * @param numberOfStream
      */
-    public TextNumberOfStreamSearch(final BinaryCondition.Op operation, @NonNull final Long numberOfStream) {
+    public TextNumberOfStreamSearch(final Operator operation, @NonNull final Long numberOfStream) {
         super(numberOfStream);
         this.operation = operation;
         this.numberOfStream = numberOfStream;

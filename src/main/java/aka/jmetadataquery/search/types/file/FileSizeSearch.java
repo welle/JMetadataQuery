@@ -7,12 +7,10 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * File size search.
@@ -21,7 +19,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class FileSizeSearch extends Criteria<Long, Long> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final Long fileSize;
 
     /**
@@ -30,7 +28,7 @@ public class FileSizeSearch extends Criteria<Long, Long> {
      * @param operation
      * @param fileSize in byte
      */
-    public FileSizeSearch(final BinaryCondition.Op operation, @NonNull final Long fileSize) {
+    public FileSizeSearch(final Operator operation, @NonNull final Long fileSize) {
         super(fileSize);
         this.operation = operation;
         this.fileSize = fileSize;

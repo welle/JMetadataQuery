@@ -7,15 +7,13 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
 import aka.jmetadataquery.search.constants.LanguageTagEnum;
 import aka.jmetadataquery.search.constants.LanguageTagSearchEnum;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Audio language tag search.
@@ -24,7 +22,7 @@ import aka.jmetadataquery.search.constants.LanguageTagSearchEnum;
  */
 public class AudioLanguageTagSearch extends Criteria<LanguageTagSearchEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final LanguageTagSearchEnum languageTagSearchEnum;
 
     /**
@@ -33,7 +31,7 @@ public class AudioLanguageTagSearch extends Criteria<LanguageTagSearchEnum, Stri
      * @param operation
      * @param languageTagSearchEnum
      */
-    public AudioLanguageTagSearch(final BinaryCondition.Op operation, @NonNull final LanguageTagSearchEnum languageTagSearchEnum) {
+    public AudioLanguageTagSearch(final Operator operation, @NonNull final LanguageTagSearchEnum languageTagSearchEnum) {
         super(languageTagSearchEnum);
         this.operation = operation;
         this.languageTagSearchEnum = languageTagSearchEnum;

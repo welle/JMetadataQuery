@@ -7,14 +7,12 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadata.main.constants.codecs.interfaces.CodecEnum;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Audio Codec ID search.
@@ -23,7 +21,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class AudioCodecIdSearch extends Criteria<CodecEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final CodecEnum codecEnum;
 
     /**
@@ -32,7 +30,7 @@ public class AudioCodecIdSearch extends Criteria<CodecEnum, String> {
      * @param operation
      * @param codecEnum
      */
-    public AudioCodecIdSearch(final BinaryCondition.Op operation, @NonNull final CodecEnum codecEnum) {
+    public AudioCodecIdSearch(final Operator operation, @NonNull final CodecEnum codecEnum) {
         super(codecEnum);
         this.operation = operation;
         this.codecEnum = codecEnum;

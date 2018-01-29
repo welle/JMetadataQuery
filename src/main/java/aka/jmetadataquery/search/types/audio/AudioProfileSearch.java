@@ -7,14 +7,12 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataAudio;
 import aka.jmetadata.main.constants.profile.AudioProfileEnum;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Audio profile search.
@@ -23,7 +21,7 @@ import aka.jmetadataquery.search.Criteria;
  */
 public class AudioProfileSearch extends Criteria<AudioProfileEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final AudioProfileEnum audioProfileEnum;
 
     /**
@@ -32,7 +30,7 @@ public class AudioProfileSearch extends Criteria<AudioProfileEnum, String> {
      * @param operation
      * @param audioProfileEnum
      */
-    public AudioProfileSearch(final BinaryCondition.Op operation, @NonNull final AudioProfileEnum audioProfileEnum) {
+    public AudioProfileSearch(final Operator operation, @NonNull final AudioProfileEnum audioProfileEnum) {
         super(audioProfileEnum);
         this.operation = operation;
         this.audioProfileEnum = audioProfileEnum;

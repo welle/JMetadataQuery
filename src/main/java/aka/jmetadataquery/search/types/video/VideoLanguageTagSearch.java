@@ -8,15 +8,13 @@ import java.util.Map;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.BinaryCondition.Op;
-
 import aka.jmetadata.main.JMetaData;
 import aka.jmetadata.main.JMetaDataVideo;
 import aka.jmetadataquery.helpers.SearchHelper;
 import aka.jmetadataquery.search.Criteria;
 import aka.jmetadataquery.search.constants.LanguageTagEnum;
 import aka.jmetadataquery.search.constants.LanguageTagSearchEnum;
+import aka.jmetadataquery.search.constants.conditions.Operator;
 
 /**
  * Video language tag search.
@@ -25,7 +23,7 @@ import aka.jmetadataquery.search.constants.LanguageTagSearchEnum;
  */
 public class VideoLanguageTagSearch extends Criteria<LanguageTagSearchEnum, String> {
 
-    private final Op operation;
+    private final Operator operation;
     private @NonNull final LanguageTagSearchEnum languageTagSearchEnum;
 
     /**
@@ -34,7 +32,7 @@ public class VideoLanguageTagSearch extends Criteria<LanguageTagSearchEnum, Stri
      * @param operation
      * @param languageTagSearchEnum
      */
-    public VideoLanguageTagSearch(final BinaryCondition.Op operation, @NonNull final LanguageTagSearchEnum languageTagSearchEnum) {
+    public VideoLanguageTagSearch(final Operator operation, @NonNull final LanguageTagSearchEnum languageTagSearchEnum) {
         super(languageTagSearchEnum);
         this.operation = operation;
         this.languageTagSearchEnum = languageTagSearchEnum;
