@@ -12,5 +12,11 @@ i.e.:
 See Unit tests to see how it works.
 You can fork and implementing other searches.
 
-### Dependencies ###
-All dependencies are in the libs directory.
+### Version
+
+Go to [my maven repository](https://github.com/welle/maven-repository) to get the latest version.
+
+## Notes
+Need the eclipse-external-annotations-m2e-plugin: 
+
+p2 update site to install this from: http://www.lastnpe.org/eclipse-external-annotations-m2e-plugin-p2-site/ (The 404 is normal, just because there is no index.html; it will work in Eclipse.)
