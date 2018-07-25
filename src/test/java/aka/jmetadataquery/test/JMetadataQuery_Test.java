@@ -1,6 +1,7 @@
 package aka.jmetadataquery.test;
 
 import java.io.File;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +17,8 @@ import aka.jmetadata.main.constants.codecs.VideoMatroskaCodecIdEnum;
 import aka.jmetadata.main.constants.format.FormatEnum;
 import aka.jmetadata.main.constants.profile.AudioProfileEnum;
 import aka.jmetadata.main.constants.video.AspectRatio;
+import aka.jmetadataquery.JMetadataQuery;
+import aka.jmetadataquery.consumer.FileConsumerContext;
 import aka.jmetadataquery.search.constants.LanguageEnum;
 import aka.jmetadataquery.search.constants.audio.AudioCommercialFormatEnum;
 import aka.jmetadataquery.search.constants.audio.CompressionModeEnum;
@@ -64,6 +67,49 @@ public class JMetadataQuery_Test {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new RuntimeErrorException(null, "Can not find file.");
         }
+    }
+
+    @Test
+    public void testApplyIntoDirectory() {
+        FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.AVI);
+        FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.MKV);
+        OrSearch orSearch = new OrSearch(false, fileExtensionSearch, fileExtensionSearch2);
+
+        final JMetadataQuery jMetadataQuery = new JMetadataQuery();
+        List<@NonNull FileConsumerContext> result = jMetadataQuery.applyIntoDirectory(file.getParent(), true, orSearch);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(2, result.size());
+
+        fileExtensionSearch = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.AVI);
+        fileExtensionSearch2 = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.MPEG);
+        orSearch = new OrSearch(false, fileExtensionSearch, fileExtensionSearch2);
+
+        result = jMetadataQuery.applyIntoDirectory(file.getParent(), true, orSearch);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(2, result.size());
+        for (final FileConsumerContext fileConsumerContext : result) {
+            Assert.assertFalse(fileConsumerContext.getResult());
+        }
+    }
+
+    @Test
+    public void testSearchIntoDirectory() {
+        FileExtensionSearch fileExtensionSearch = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.AVI);
+        FileExtensionSearch fileExtensionSearch2 = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.MKV);
+        OrSearch orSearch = new OrSearch(false, fileExtensionSearch, fileExtensionSearch2);
+
+        final JMetadataQuery jMetadataQuery = new JMetadataQuery();
+        List<@NonNull File> result = jMetadataQuery.searchIntoDirectory(file.getParent(), true, orSearch);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(1, result.size());
+
+        fileExtensionSearch = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.AVI);
+        fileExtensionSearch2 = new FileExtensionSearch(Operator.EQUAL_TO, FileExtensionSearchEnum.MPEG);
+        orSearch = new OrSearch(false, fileExtensionSearch, fileExtensionSearch2);
+
+        result = jMetadataQuery.searchIntoDirectory(file.getParent(), true, orSearch);
+        Assert.assertNotNull(result);
+        Assert.assertEquals(0, result.size());
     }
 
     @Test

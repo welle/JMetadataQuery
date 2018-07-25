@@ -94,6 +94,7 @@ public abstract class Criteria<S, T extends Comparable<T>> implements OperatorSe
             }
             jMetaData.close();
         } catch (IllegalArgumentException | IOException e) {
+            isFileMatchingCriteria = false;
             LOGGER.logp(Level.SEVERE, "Criteria", "isFileMatchingCriteria", e.getMessage(), e);
         }
 
