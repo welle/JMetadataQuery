@@ -28,8 +28,7 @@ public final class JMetadataQuery {
      * @return List of file founded
      */
     @NonNull
-    public <T extends OperatorSearchInterface> List<@NonNull File> searchIntoDirectory(@NonNull final String directory, final boolean recursive, @NonNull final T query) {
-
+    public List<@NonNull File> searchIntoDirectory(@NonNull final String directory, final boolean recursive, @NonNull final OperatorSearchInterface query) {
         final List<@NonNull FileConsumerContext> appliedIntoDirectoryFileConsumerContextList = applyIntoDirectory(directory, recursive, query);
         final List<@NonNull File> result = appliedIntoDirectoryFileConsumerContextList.stream()
                 .filter(line -> line.getResult())
@@ -48,7 +47,7 @@ public final class JMetadataQuery {
      * @return List of FileConsumerContext
      */
     @NonNull
-    public <T extends OperatorSearchInterface> List<@NonNull FileConsumerContext> applyIntoDirectory(@NonNull final String directory, final boolean recursive, @NonNull final T query) {
+    public List<@NonNull FileConsumerContext> applyIntoDirectory(@NonNull final String directory, final boolean recursive, @NonNull final OperatorSearchInterface query) {
         final List<@NonNull FileConsumerContext> fileConsumerContextsList = FileHelper.getFileConsumerContextInPath(directory, query, recursive);
         final FileConsumer consumer = new FileConsumer();
         fileConsumerContextsList.stream()

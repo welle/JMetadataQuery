@@ -53,7 +53,7 @@ public class FileHelper {
      * @return List of FileConsumerContext based on the files found recursively in the given path.
      */
     @NonNull
-    public static <T extends OperatorSearchInterface> List<@NonNull FileConsumerContext> getFileConsumerContextInPath(@NonNull final String path, @NonNull final T rootSearch, final boolean recursive) {
+    public static List<@NonNull FileConsumerContext> getFileConsumerContextInPath(@NonNull final String path, @NonNull final OperatorSearchInterface rootSearch, final boolean recursive) {
         final List<@NonNull File> fileList = getFilesInPath(path, recursive);
         List<@NonNull FileConsumerContext> result = fileList.stream()
                 .map(p -> new FileConsumerContext(rootSearch, p))

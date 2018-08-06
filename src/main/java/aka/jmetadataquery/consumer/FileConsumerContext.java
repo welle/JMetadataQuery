@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.eclipse.jdt.annotation.NonNull;
 
-import aka.jmetadataquery.search.operation.AndSearch;
 import aka.jmetadataquery.search.operation.interfaces.OperatorSearchInterface;
 
 /**
@@ -13,20 +12,20 @@ import aka.jmetadataquery.search.operation.interfaces.OperatorSearchInterface;
  *
  * @author charlottew
  */
-public class FileConsumerContext<T extends OperatorSearchInterface> {
+public class FileConsumerContext {
 
     private boolean isMatching = false;
-    private @NonNull final T andSearch;
+    private @NonNull final OperatorSearchInterface operatorSearchInterface;
     private @NonNull final File file;
 
     /**
      * Constructor.
      *
-     * @param andSearch search to handle
+     * @param operatorSearchInterface search to handle
      * @param file file to handle
      */
-    public FileConsumerContext(@NonNull final T andSearch, @NonNull final File file) {
-        this.andSearch = andSearch;
+    public FileConsumerContext(@NonNull final OperatorSearchInterface operatorSearchInterface, @NonNull final File file) {
+        this.operatorSearchInterface = operatorSearchInterface;
         this.file = file;
     }
 
@@ -34,7 +33,7 @@ public class FileConsumerContext<T extends OperatorSearchInterface> {
      * Process the andSearch.isFileMatchingCriteria(file).
      */
     public void process() {
-        this.isMatching = this.andSearch.isFileMatchingCriteria(this.file);
+        this.isMatching = this.operatorSearchInterface.isFileMatchingCriteria(this.file);
     }
 
     /**
