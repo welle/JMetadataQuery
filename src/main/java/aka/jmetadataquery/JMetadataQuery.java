@@ -34,7 +34,7 @@ public final class JMetadataQuery {
                 .filter(line -> line.getResult())
                 .map(line -> line.getFile())
                 .collect(Collectors.toList());
-
+        assert result != null;
         return result;
     }
 
